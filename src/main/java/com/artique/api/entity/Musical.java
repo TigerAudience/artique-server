@@ -16,8 +16,9 @@ public class Musical {
     private String placeName;
     private String genre;
     private String casting;
-    private Integer runningTime;
+    private String runningTime;
     @Column(columnDefinition = "TEXT")
     private String plot;
     private String posterUrl;
+    private String musicalStatus;
 }

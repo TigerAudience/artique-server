@@ -1,29 +1,59 @@
 package com.artique.api.session;
 
-import com.artique.api.member.exception.LoginErrorCode;
-import com.artique.api.member.exception.LoginException;
-import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.lang.annotation.Annotation;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class MemoryMySession implements CustomSession {
 
-  private final ConcurrentHashMap<UUID, String> memorySession = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<UUID, SessionValue> memorySession = new ConcurrentHashMap<>();
 
   @Override
   public String createSession(String memberId) {
     UUID sessionKey = UUID.randomUUID();
-    memorySession.put(sessionKey,memberId);
+    memorySession.put(sessionKey,new SessionValue(memberId));
     return sessionKey.toString();
   }
 
   @Override
   public boolean validateSessionId(String id) {
-    String userId = memorySession.get(UUID.fromString(id));
-    return !userId.isEmpty();
+    SessionValue session = memorySession.get(UUID.fromString(id));
+    if(session==null)
+        return false;
+    else{
+      checkSessionExpire(session,id);
+    }
+    return true;
+  }
+
+  private void checkSessionExpire(SessionValue session,String id){
+    session.increaseCount();
+    if(session.mustExpired())
+        memorySession.remove(UUID.fromString(id));
+  }
+
+  @AllArgsConstructor
+  @Getter
+  private static class SessionValue{
+    private String memberId;
+    private Integer count;
+    private Integer maxCount;
+
+    public SessionValue(String memberId){
+      this.memberId = memberId;
+      this.count=0;
+      this.maxCount=30;
+    }
+    public void increaseCount(){
+      this.count+=1;
+    }
+
+    public boolean mustExpired(){
+      return count > maxCount;
+    }
   }
 }

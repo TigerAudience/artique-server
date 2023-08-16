@@ -16,14 +16,8 @@ public class JoinMember {
   private String profileUrl;
   @Schema(description = "회원 가입 시 자동 생성된 자기소개",defaultValue = "null")
   private String introduce;
-  @Schema(description = "사용자 인증을 위한 쿠키값")
-  private String cookie;
 
   public static JoinMember of(Member member){
-    return new JoinMember(member.getId(),member.getNickname(),member.getProfileUrl(),member.getIntroduce(),null);
-  }
-
-  public void adjustCookie(String cookie){
-    this.cookie=cookie;
+    return new JoinMember(member.getId(),member.getNickname(),member.getProfileUrl(),member.getIntroduce());
   }
 }

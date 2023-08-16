@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController implements MemberControllerSwagger{
 
   private final MemberService memberService;
-  @GetMapping("member/duplicate")
+  @GetMapping("/member/duplicate")
   public MemberDuplicate checkDuplicateMember(@RequestParam("member-id")
                                                 @NotNull(message = "member-id는 필수 입력값입니다.") String memberId){
     return memberService.checkDuplicateMember(memberId);
   }
-  @PostMapping("member/join")
+  @PostMapping("/member/join")
   public JoinMember join(@RequestBody JoinMemberReq memberReq){
     memberService.checkDuplicateMember(memberReq.getMemberId());
     return memberService.join(memberReq);

@@ -38,3 +38,7 @@ out/
 
 **/application-*.yml
 **/application-*.properties
+
+### sql scripts
+
+**/*.sql

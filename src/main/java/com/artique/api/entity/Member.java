@@ -18,4 +18,5 @@ public class Member {
     private String nickname;
     private String profileUrl;
     private String introduce;
+    private String password;
 }

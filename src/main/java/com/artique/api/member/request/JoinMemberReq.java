@@ -18,10 +18,11 @@ public class JoinMemberReq {
   @Parameter(required = true)
   @NotNull(message = "member id는 필수 입력값입니다")
   private String memberId;
+  private String memberPW;
 
   public static Member toMember(JoinMemberReq joinMemberReq){
     return new Member(joinMemberReq.getMemberId(),
-            "임시 닉네임", "임시 url","임시 소개");
+            "임시 닉네임", "임시 url","임시 소개", joinMemberReq.getMemberPW());
   }
 
 }

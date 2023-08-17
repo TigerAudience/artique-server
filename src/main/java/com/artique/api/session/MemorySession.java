@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class MemoryMySession implements CustomSession {
+public class MemorySession implements CustomSession {
 
   private final ConcurrentHashMap<UUID, SessionValue> memorySession = new ConcurrentHashMap<>();
 

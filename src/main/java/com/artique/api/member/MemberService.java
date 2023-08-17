@@ -26,12 +26,10 @@ public class MemberService {
   private final CustomSession session;
 
   public MemberDuplicate checkDuplicateMember(String memberId){
-    Optional<Member> member = memberRepository.findById(memberId);
-    if (member.isEmpty()){
+    if(memberRepository.findById(memberId).isEmpty())
       return new MemberDuplicate(memberId);
-    }else{
+    else
       throw new LoginException("member id duplicate exception",LoginErrorCode.DUPLICATE_LOGIN_ID.toString());
-    }
   }
   public LoginMember login(LoginMemberReq memberReq, HttpServletResponse response){
     Optional<Member> member = memberRepository.findById(memberReq.getMemberId());

@@ -1,15 +1,17 @@
 package com.artique.api.member;
 
 import com.artique.api.exception.ErrorResponse;
-import com.artique.api.member.dto.DuplicateDto;
 import com.artique.api.member.request.JoinMemberReq;
+import com.artique.api.member.request.LoginMemberReq;
 import com.artique.api.member.response.JoinMember;
+import com.artique.api.member.response.LoginMember;
 import com.artique.api.member.response.MemberDuplicate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,4 +33,16 @@ public interface MemberControllerSwagger {
                   content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   public JoinMember join(@RequestBody JoinMemberReq memberReq);
+
+
+  @Operation(summary = "로그인 API", description = "로그인 API입니다.")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "successful operation",
+                  content = @Content(schema = @Schema(implementation = LoginMember.class))),
+          @ApiResponse(responseCode = "INVALID_PASSWORD(403)", description = "wrong password",
+                  content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+          @ApiResponse(responseCode = "INVALID_MEMBER_ID(403)", description = "invalid member id",
+                  content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+  })
+  public LoginMember login(@RequestBody LoginMemberReq memberReq, HttpServletResponse response);
 }

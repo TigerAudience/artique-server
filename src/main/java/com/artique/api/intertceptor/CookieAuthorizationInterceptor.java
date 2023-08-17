@@ -1,6 +1,6 @@
 package com.artique.api.intertceptor;
 
-import com.artique.api.member.exception.LoginErrorCode;
+import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.session.CustomSession;
 import jakarta.servlet.http.Cookie;
@@ -22,7 +22,7 @@ public class CookieAuthorizationInterceptor implements HandlerInterceptor {
       return HandlerInterceptor.super.preHandle(request, response, handler);
     String sessionId = getSessionIdFromCookie(request);
     if(sessionId == null || !session.validateSessionId(sessionId)){
-      throw new LoginException("invalid session id during login", LoginErrorCode.INVALID_SESSION_ID.toString());
+      throw new LoginException("invalid session id during login", LoginExceptionCode.INVALID_SESSION_ID.toString());
     }
     return HandlerInterceptor.super.preHandle(request,response,handler);
   }

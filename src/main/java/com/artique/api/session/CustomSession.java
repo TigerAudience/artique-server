@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface CustomSession {
-  public String createSession(Member member);
-  public boolean validateSessionId(String id);
-  public String getMemberId(String sessionId);
+  String createSession(Member member);
+  boolean validateSessionId(String id);
+  String getMemberId(String sessionId);
 }

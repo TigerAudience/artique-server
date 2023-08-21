@@ -1,7 +1,7 @@
 package com.artique.api.member;
 
 import com.artique.api.entity.Member;
-import com.artique.api.member.exception.LoginErrorCode;
+import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.member.request.JoinMemberReq;
 import com.artique.api.member.request.LoginMemberReq;
@@ -29,16 +29,16 @@ public class MemberService {
     if(memberRepository.findById(memberId).isEmpty())
       return new MemberDuplicate(memberId);
     else
-      throw new LoginException("member id duplicate exception",LoginErrorCode.DUPLICATE_LOGIN_ID.toString());
+      throw new LoginException("member id duplicate exception", LoginExceptionCode.DUPLICATE_LOGIN_ID.toString());
   }
   public LoginMember login(LoginMemberReq memberReq, HttpServletResponse response){
     Optional<Member> member = memberRepository.findById(memberReq.getMemberId());
     if (member.isEmpty())
-      throw new LoginException("invalid member id",LoginErrorCode.INVALID_MEMBER_ID.toString());
+      throw new LoginException("invalid member id", LoginExceptionCode.INVALID_MEMBER_ID.toString());
     if (!checkPassword(member.get(),memberReq))
-      throw new LoginException("wrong password",LoginErrorCode.INVALID_PASSWORD.toString());
+      throw new LoginException("wrong password", LoginExceptionCode.INVALID_PASSWORD.toString());
 
-    String sessionId = createSession(member.get());
+    String sessionId = session.createSession(member.get());
 
     adjustCookie(sessionId, response);
 
@@ -55,9 +55,5 @@ public class MemberService {
   public JoinMember join(JoinMemberReq memberReq){
     Member member = memberRepository.save(JoinMemberReq.toMember(memberReq));
     return JoinMember.of(member);
-  }
-
-  private String createSession(Member member){
-    return session.createSession(member.getId());
   }
 }

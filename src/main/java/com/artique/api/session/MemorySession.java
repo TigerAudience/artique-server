@@ -1,5 +1,6 @@
 package com.artique.api.session;
 
+import com.artique.api.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,11 @@ public class MemorySession implements CustomSession {
   private final ConcurrentHashMap<UUID, SessionValue> memorySession = new ConcurrentHashMap<>();
 
   @Override
-  public String createSession(String memberId) {
+  public String createSession(Member member) {
+    return createWithMemberId(member);
+  }
+  private String createWithMemberId(Member member){
+    String memberId = member.getId();
     UUID sessionKey = UUID.randomUUID();
     memorySession.put(sessionKey,new SessionValue(memberId));
     return sessionKey.toString();

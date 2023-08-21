@@ -38,7 +38,7 @@ public class MemberService {
     if (!checkPassword(member.get(),memberReq))
       throw new LoginException("wrong password", LoginExceptionCode.INVALID_PASSWORD.toString());
 
-    String sessionId = createSession(member.get());
+    String sessionId = session.createSession(member.get());
 
     adjustCookie(sessionId, response);
 
@@ -55,9 +55,5 @@ public class MemberService {
   public JoinMember join(JoinMemberReq memberReq){
     Member member = memberRepository.save(JoinMemberReq.toMember(memberReq));
     return JoinMember.of(member);
-  }
-
-  private String createSession(Member member){
-    return session.createSession(member.getId());
   }
 }

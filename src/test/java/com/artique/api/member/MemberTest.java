@@ -102,7 +102,7 @@ public class MemberTest {
             ,"sample_intro",memberReq.getMemberPW());
     MockHttpServletResponse response = new MockHttpServletResponse();
     String sampleSessionId = UUID.randomUUID().toString();
-    when(session.createSession(member.getId())).thenReturn(sampleSessionId);
+    when(session.createSession(member)).thenReturn(sampleSessionId);
     when(memberRepository.findById(member.getId())).thenReturn(Optional.of(member));
 
     //when

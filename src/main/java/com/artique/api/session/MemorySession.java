@@ -35,6 +35,11 @@ public class MemorySession implements CustomSession {
     return true;
   }
 
+  @Override
+  public String getMemberId(String sessionId) {
+    return memorySession.get(UUID.fromString(sessionId)).getMemberId();
+  }
+
   private void checkSessionExpire(SessionValue session,String id){
     session.increaseCount();
     if(session.mustExpired())
@@ -58,7 +63,7 @@ public class MemorySession implements CustomSession {
     }
 
     public boolean mustExpired(){
-      return count > maxCount;
+      return count >= maxCount;
     }
   }
 }

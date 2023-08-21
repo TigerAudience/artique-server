@@ -22,9 +22,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
   @Override
   public void addInterceptors(InterceptorRegistry registry){
     registry.addInterceptor(cookieAuthorizationInterceptor)
-            .excludePathPatterns("/css/**", "/images/**", "/js/**","/oauth-redirect/**",
-                    "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
-                    "/member/*");
+            .excludePathPatterns("/css/**", "/images/**", "/js/**","/favicon.ico","/webjars/**","/error/**",
+                    "/oauth-redirect/**", "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
+                    "/member/**","/oauth2/**","/oauth/**","META-INF/**");
   }
 
   @Override

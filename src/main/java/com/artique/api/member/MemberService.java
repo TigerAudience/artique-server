@@ -32,11 +32,8 @@ public class MemberService {
   private final MemberRepository memberRepository;
   private final CustomSession session;
 
-  public MemberDuplicate checkDuplicateMember(String memberId){
-    if(memberRepository.findById(memberId).isEmpty())
-      return new MemberDuplicate(memberId);
-    else
-      throw new LoginException("member id duplicate exception", LoginExceptionCode.DUPLICATE_LOGIN_ID.toString());
+  public boolean checkDuplicateMember(String memberId){
+    return memberRepository.findById(memberId).isEmpty();
   }
   public LoginMember login(LoginMemberReq memberReq, HttpServletResponse response){
     Optional<Member> member = memberRepository.findById(memberReq.getMemberId());

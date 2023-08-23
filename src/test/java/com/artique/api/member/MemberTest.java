@@ -48,14 +48,13 @@ public class MemberTest {
   void validateId(){
     //given
     String memberId = "sample_member_id";
-    MemberDuplicate memberDuplicate = new MemberDuplicate(memberId);
     when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
     //when
-    MemberDuplicate findMember  = memberService.checkDuplicateMember(memberId);
+    boolean isValid  = memberService.checkDuplicateMember(memberId);
 
     //then
-    assertThat(findMember.getMemberId()).isEqualTo(memberDuplicate.getMemberId());
+    assertThat(isValid).isTrue();
   }
 
   @Test
@@ -68,11 +67,9 @@ public class MemberTest {
     when(memberRepository.findById(memberId)).thenReturn(Optional.of(initMember));
 
     //when
-    LoginException exception = Assertions.assertThrows(LoginException.class,
-            ()->memberService.checkDuplicateMember(memberId));
+    boolean isValid = memberService.checkDuplicateMember(memberId);
     //then
-    LoginExceptionCode code = LoginExceptionCode.DUPLICATE_LOGIN_ID;
-    Assertions.assertEquals(exception.getErrorCode(), code.toString());
+    assertThat(isValid).isFalse();
   }
 
   @Test

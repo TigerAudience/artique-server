@@ -1,5 +1,6 @@
 package com.artique.api.session;
 
+import com.artique.api.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -8,12 +9,16 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class MemoryMySession implements CustomSession {
+public class MemorySession implements CustomSession {
 
   private final ConcurrentHashMap<UUID, SessionValue> memorySession = new ConcurrentHashMap<>();
 
   @Override
-  public String createSession(String memberId) {
+  public String createSession(Member member) {
+    return createWithMemberId(member);
+  }
+  private String createWithMemberId(Member member){
+    String memberId = member.getId();
     UUID sessionKey = UUID.randomUUID();
     memorySession.put(sessionKey,new SessionValue(memberId));
     return sessionKey.toString();
@@ -28,6 +33,11 @@ public class MemoryMySession implements CustomSession {
       checkSessionExpire(session,id);
     }
     return true;
+  }
+
+  @Override
+  public String getMemberId(String sessionId) {
+    return memorySession.get(UUID.fromString(sessionId)).getMemberId();
   }
 
   private void checkSessionExpire(SessionValue session,String id){
@@ -53,7 +63,7 @@ public class MemoryMySession implements CustomSession {
     }
 
     public boolean mustExpired(){
-      return count > maxCount;
+      return count >= maxCount;
     }
   }
 }

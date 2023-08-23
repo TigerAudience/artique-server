@@ -33,7 +33,6 @@ public class MemberController implements MemberControllerSwagger{
 
   @PostMapping("/member/oauth")
   public LoginMember oauth(@RequestBody OauthMemberReq memberReq, HttpServletResponse response){
-
-    return null;
+    return memberService.oauthLogin(memberReq,response);
   }
 }

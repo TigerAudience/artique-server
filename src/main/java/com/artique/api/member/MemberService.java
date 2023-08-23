@@ -50,7 +50,7 @@ public class MemberService {
     return LoginMember.of(member.get());
   }
   @Transactional
-  public LoginMember oauthLogin(OauthMemberReq memberReq, HttpServletResponse httpResponse) throws Exception{
+  public LoginMember oauthLogin(OauthMemberReq memberReq, HttpServletResponse httpResponse){
     RestTemplate restTemplate = new RestTemplate();
     String url = "https://kapi.kakao.com/v2/user/me";
 
@@ -62,7 +62,15 @@ public class MemberService {
     ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET,requestMessage,String.class);
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,true);
-    KakaoUser kakaoUser = objectMapper.readValue(response.getBody(), KakaoUser.class);
+    KakaoUser kakaoUser = null;
+    try {
+      kakaoUser = objectMapper.readValue(response.getBody(), KakaoUser.class);
+    }catch (Exception e){
+      throw LoginException.builder()
+              .message("oauth login failed while mapping kakao user")
+              .errorCode(LoginExceptionCode.INVALID_MEMBER_ID.toString())
+              .build();
+    }
 
     OauthMember oauthMember = OauthMember.of(kakaoUser);
     JoinMemberReq joinMemberReq = OauthMember.toJoinMemberReq(oauthMember);

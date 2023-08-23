@@ -1,6 +1,7 @@
 package com.artique.api.member;
 import com.artique.api.member.request.JoinMemberReq;
 import com.artique.api.member.request.LoginMemberReq;
+import com.artique.api.member.request.OauthMemberReq;
 import com.artique.api.member.response.JoinMember;
 import com.artique.api.member.response.LoginMember;
 import com.artique.api.member.response.MemberDuplicate;
@@ -28,5 +29,11 @@ public class MemberController implements MemberControllerSwagger{
   @PostMapping("/member/login")
   public LoginMember login(@RequestBody LoginMemberReq memberReq, HttpServletResponse response){
     return memberService.login(memberReq,response);
+  }
+
+  @PostMapping("/member/oauth")
+  public LoginMember oauth(@RequestBody OauthMemberReq memberReq, HttpServletResponse response){
+
+    return null;
   }
 }

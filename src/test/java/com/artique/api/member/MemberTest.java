@@ -7,22 +7,16 @@ import com.artique.api.member.request.JoinMemberReq;
 import com.artique.api.member.request.LoginMemberReq;
 import com.artique.api.member.response.JoinMember;
 import com.artique.api.member.response.LoginMember;
-import com.artique.api.member.response.MemberDuplicate;
 import com.artique.api.session.CustomSession;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -48,14 +42,13 @@ public class MemberTest {
   void validateId(){
     //given
     String memberId = "sample_member_id";
-    MemberDuplicate memberDuplicate = new MemberDuplicate(memberId);
     when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
     //when
-    MemberDuplicate findMember  = memberService.checkDuplicateMember(memberId);
+    boolean isValid  = memberService.checkDuplicateMember(memberId);
 
     //then
-    assertThat(findMember.getMemberId()).isEqualTo(memberDuplicate.getMemberId());
+    assertThat(isValid).isTrue();
   }
 
   @Test
@@ -68,11 +61,9 @@ public class MemberTest {
     when(memberRepository.findById(memberId)).thenReturn(Optional.of(initMember));
 
     //when
-    LoginException exception = Assertions.assertThrows(LoginException.class,
-            ()->memberService.checkDuplicateMember(memberId));
+    boolean isValid = memberService.checkDuplicateMember(memberId);
     //then
-    LoginExceptionCode code = LoginExceptionCode.DUPLICATE_LOGIN_ID;
-    Assertions.assertEquals(exception.getErrorCode(), code.toString());
+    assertThat(isValid).isFalse();
   }
 
   @Test

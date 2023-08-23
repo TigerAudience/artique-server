@@ -1,4 +1,6 @@
 package com.artique.api.member;
+import com.artique.api.member.exception.LoginException;
+import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.request.JoinMemberReq;
 import com.artique.api.member.request.LoginMemberReq;
 import com.artique.api.member.request.OauthMemberReq;
@@ -18,7 +20,9 @@ public class MemberController implements MemberControllerSwagger{
   @GetMapping("/member/duplicate")
   public MemberDuplicate checkDuplicateMember(@RequestParam("member-id")
                                                 @NotNull(message = "member-id는 필수 입력값입니다.") String memberId){
-    return memberService.checkDuplicateMember(memberId);
+    if(!memberService.checkDuplicateMember(memberId))
+      throw new LoginException("member id duplicate exception", LoginExceptionCode.DUPLICATE_LOGIN_ID.toString());
+    return new MemberDuplicate(memberId);
   }
   @PostMapping("/member/join")
   public JoinMember join(@RequestBody JoinMemberReq memberReq){

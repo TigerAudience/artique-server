@@ -19,4 +19,7 @@ public class OauthMember {
   public static OauthMember of(KakaoUser kakaoUser){
     return new OauthMember("kakao@"+kakaoUser.getId(),"kakao");
   }
+  public static OauthMember of(GoogleUser googleUser){
+    return new OauthMember("google@"+googleUser.getId(),"google");
+  }
 }

@@ -26,33 +26,4 @@ public class ThirdPartyConnector {
     return response.getBody();
   }
 
-  @Value("${oauth.google.client-id}")
-  private String clientId;
-  @Value("${oauth.google.client-secret}")
-  private String clientSecret;
-  @Value("${oauth.google.redirect-uri}")
-  private String redirectUri;
-  @Value("${oauth.google.token-uri}")
-  private String tokenUri;
-
-  public String getGoogleAccessToken(String authorizationCode){
-    RestTemplate restTemplate = new RestTemplate();
-
-    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-    params.add("code", authorizationCode);
-    params.add("client_id", clientId);
-    params.add("client_secret", clientSecret);
-    params.add("redirect_uri", redirectUri);
-    params.add("grant_type", "authorization_code");
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-    HttpEntity<?> entity = new HttpEntity(params, headers);
-
-    ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, entity, JsonNode.class);
-    JsonNode accessTokenNode = responseNode.getBody();
-
-    return accessTokenNode.get("access_token").asText();
-  }
 }

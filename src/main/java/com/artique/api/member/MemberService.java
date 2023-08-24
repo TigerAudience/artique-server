@@ -32,20 +32,20 @@ public class MemberService {
     return memberRepository.findById(memberId).isEmpty();
   }
   public LoginMember login(LoginMemberReq memberReq, HttpServletResponse response){
-    Optional<Member> member = memberRepository.findById(memberReq.getMemberId());
-    if (member.isEmpty())
-      throw new LoginException("invalid member id", LoginExceptionCode.INVALID_MEMBER_ID.toString());
-    if (!checkPassword(member.get(),memberReq))
+    Member member = memberRepository.findById(memberReq.getMemberId())
+            .orElseThrow(() -> LoginException.builder().message("invalid member id")
+                    .errorCode(LoginExceptionCode.INVALID_MEMBER_ID.toString()).build());
+    if (!checkPassword(member,memberReq))
       throw new LoginException("wrong password", LoginExceptionCode.INVALID_PASSWORD.toString());
 
-    afterLogin(member.get(),response);
+    afterLogin(member,response);
 
-    return LoginMember.of(member.get());
+    return LoginMember.of(member);
   }
   @Transactional
   public LoginMember oauthLogin(OauthMemberReq memberReq, HttpServletResponse httpResponse){
 
-    OauthMember oauthMember = oauthService.getOauthMember(memberReq.getThirdPartyName(),memberReq.getAccessToken());
+    OauthMember oauthMember = oauthService.getOauthMember(memberReq.getThirdPartyName(),memberReq.getToken());
 
     JoinMemberReq joinMemberReq = OauthMember.toJoinMemberReq(oauthMember);
 

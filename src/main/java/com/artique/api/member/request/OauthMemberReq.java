@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OauthMemberReq {
   private String thirdPartyName;
-  private String accessToken;
+  private String token;
 
 }

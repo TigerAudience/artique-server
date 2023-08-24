@@ -5,8 +5,6 @@ import com.artique.api.member.exception.LoginException;
 import com.artique.api.member.exception.LoginExceptionCode;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

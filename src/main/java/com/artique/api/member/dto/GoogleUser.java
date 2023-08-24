@@ -11,5 +11,4 @@ import lombok.Setter;
 @Getter
 public class GoogleUser {
   private Long id;
-  private String connected_at;
 }

@@ -5,12 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-public class KakaoUser{
+public class GoogleUser {
   private Long id;
-  private String connected_at;
 }

@@ -1,26 +1,21 @@
 package com.artique.api.member;
 
 import com.artique.api.entity.Member;
-import com.artique.api.member.dto.KakaoUser;
 import com.artique.api.member.dto.OauthMember;
 import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.exception.LoginException;
+import com.artique.api.member.oauth.OauthService;
 import com.artique.api.member.request.JoinMemberReq;
 import com.artique.api.member.request.LoginMemberReq;
 import com.artique.api.member.request.OauthMemberReq;
 import com.artique.api.member.response.JoinMember;
 import com.artique.api.member.response.LoginMember;
-import com.artique.api.member.response.MemberDuplicate;
 import com.artique.api.session.CustomSession;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.*;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
@@ -31,55 +26,39 @@ public class MemberService {
 
   private final MemberRepository memberRepository;
   private final CustomSession session;
+  private final OauthService oauthService;
 
-  public MemberDuplicate checkDuplicateMember(String memberId){
-    if(memberRepository.findById(memberId).isEmpty())
-      return new MemberDuplicate(memberId);
-    else
-      throw new LoginException("member id duplicate exception", LoginExceptionCode.DUPLICATE_LOGIN_ID.toString());
+  public boolean checkDuplicateMember(String memberId){
+    return memberRepository.findById(memberId).isEmpty();
   }
   public LoginMember login(LoginMemberReq memberReq, HttpServletResponse response){
-    Optional<Member> member = memberRepository.findById(memberReq.getMemberId());
-    if (member.isEmpty())
-      throw new LoginException("invalid member id", LoginExceptionCode.INVALID_MEMBER_ID.toString());
-    if (!checkPassword(member.get(),memberReq))
+    Member member = memberRepository.findById(memberReq.getMemberId())
+            .orElseThrow(() -> LoginException.builder().message("invalid member id")
+                    .errorCode(LoginExceptionCode.INVALID_MEMBER_ID.toString()).build());
+    if (!checkPassword(member,memberReq))
       throw new LoginException("wrong password", LoginExceptionCode.INVALID_PASSWORD.toString());
 
-    afterLogin(member.get(),response);
+    afterLogin(member,response);
 
-    return LoginMember.of(member.get());
+    return LoginMember.of(member);
   }
   @Transactional
   public LoginMember oauthLogin(OauthMemberReq memberReq, HttpServletResponse httpResponse){
-    RestTemplate restTemplate = new RestTemplate();
-    String url = "https://kapi.kakao.com/v2/user/me";
 
-    HttpHeaders httpHeaders = new HttpHeaders();
-    httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-    httpHeaders.setBearerAuth(memberReq.getAccessToken());
-    HttpEntity<?> requestMessage = new HttpEntity<>(httpHeaders);
+    OauthMember oauthMember = oauthService.getOauthMember(memberReq.getThirdPartyName(),memberReq.getToken());
 
-    ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET,requestMessage,String.class);
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,true);
-    KakaoUser kakaoUser = null;
-    try {
-      kakaoUser = objectMapper.readValue(response.getBody(), KakaoUser.class);
-    }catch (Exception e){
-      throw LoginException.builder()
-              .message("oauth login failed while mapping kakao user")
-              .errorCode(LoginExceptionCode.INVALID_MEMBER_ID.toString())
-              .build();
-    }
-
-    OauthMember oauthMember = OauthMember.of(kakaoUser);
     JoinMemberReq joinMemberReq = OauthMember.toJoinMemberReq(oauthMember);
 
-    Optional<Member> member = memberRepository.findById(joinMemberReq.getMemberId());
-    if(member.isEmpty())
+    if(checkDuplicateMember(joinMemberReq.getMemberId()))
       join(joinMemberReq);
 
-    Member findMember = memberRepository.findById(joinMemberReq.getMemberId()).orElseThrow();
+    Member findMember = memberRepository.findById(joinMemberReq.getMemberId())
+            .orElseThrow(() ->
+                    LoginException.builder()
+                            .message("oauth login failed, cant find member in db")
+                            .errorCode(LoginExceptionCode.CANT_FIND_OAUTH_MEMBER.toString())
+                            .build()
+            );
 
     afterLogin(findMember,httpResponse);
 

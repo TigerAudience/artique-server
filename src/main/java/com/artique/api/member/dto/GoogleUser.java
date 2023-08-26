@@ -10,5 +10,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class GoogleUser {
-  private Long id;
+  private String id;
 }

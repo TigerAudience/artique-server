@@ -41,8 +41,8 @@ public class GoogleProvider implements OauthProvider{
   public OauthMember getUserFromThirdParty(String jwt) {
     try {
       Claims claims = Jwts.parserBuilder().setSigningKey(publicKey).build().parseClaimsJws(jwt).getBody();
-      Long id = claims.get("sub",Long.class);
-      return OauthMember.of(new GoogleUser(id));
+      String idString = claims.get("sub",String.class);
+      return OauthMember.of(new GoogleUser(idString));
     } catch (JwtException jwtException) {
       throw LoginException.builder()
               .message("invalid jwt : "+jwtException.getMessage())
@@ -50,7 +50,6 @@ public class GoogleProvider implements OauthProvider{
               .build();
     }
   }
-
   private void publicKeyGeneration()throws NoSuchAlgorithmException,InvalidKeySpecException{
     byte[] eDec = Base64Utils.decodeFromString(eStr);
     byte[] nDec = Base64Utils.decodeFromUrlSafeString(nStr);

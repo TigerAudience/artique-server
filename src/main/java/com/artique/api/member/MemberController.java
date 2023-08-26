@@ -26,7 +26,9 @@ public class MemberController implements MemberControllerSwagger{
   }
   @PostMapping("/member/join")
   public JoinMember join(@RequestBody JoinMemberReq memberReq){
-    memberService.checkDuplicateMember(memberReq.getMemberId());
+    if(!memberService.checkDuplicateMember(memberReq.getMemberId()))
+      throw LoginException.builder()
+              .errorCode(LoginExceptionCode.DUPLICATE_LOGIN_ID.toString()).message("duplicated member id").build();
     return memberService.join(memberReq);
   }
 

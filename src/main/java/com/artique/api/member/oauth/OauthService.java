@@ -19,7 +19,7 @@ public class OauthService {
         return provider.getUserFromThirdParty(accessToken);
     }
     throw LoginException.builder()
-            .message("invalid third party name : "+thirdParty)
+            .message("invalid third party : "+thirdParty)
             .errorCode(LoginExceptionCode.INVALID_THIRD_PARTY_NAME.toString())
             .build();
   }

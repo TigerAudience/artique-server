@@ -1,40 +1,24 @@
 package com.artique.api.member.oauth;
 
-import com.artique.api.member.dto.GoogleUser;
+import com.artique.api.member.dto.AppleUser;
 import com.artique.api.member.dto.OauthMember;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.member.exception.OauthExceptionCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-
-import java.math.BigInteger;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.RSAPublicKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
-
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Base64Utils;
-
 
 @Component
 @RequiredArgsConstructor
-public class GoogleProvider implements OauthProvider{
+public class AppleProvider implements OauthProvider{
   private final JwtParser jwtParser;
-
   @Override
   public OauthMember getUserFromThirdParty(String jwt) {
     try {
-      Claims claims = jwtParser.parseJwt("google",jwt);
+      Claims claims = jwtParser.parseJwt("apple",jwt);
       String idString = claims.get("sub",String.class);
-      return OauthMember.of(new GoogleUser(idString));
+      return OauthMember.of(new AppleUser(idString));
     } catch (JwtException jwtException) {
       throw LoginException.builder()
               .message("invalid jwt : "+jwtException.getMessage())
@@ -45,6 +29,6 @@ public class GoogleProvider implements OauthProvider{
 
   @Override
   public boolean canSupport(String thirdParty) {
-    return thirdParty.equals("google");
+    return thirdParty.equals("apple");
   }
 }

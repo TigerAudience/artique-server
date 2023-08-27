@@ -22,4 +22,7 @@ public class OauthMember {
   public static OauthMember of(GoogleUser googleUser){
     return new OauthMember("google@"+googleUser.getId(),"google");
   }
+  public static OauthMember of(AppleUser appleUser){
+    return new OauthMember("apple@"+appleUser.getId(),"apple");
+  }
 }

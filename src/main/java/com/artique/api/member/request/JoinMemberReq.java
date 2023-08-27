@@ -9,6 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -21,8 +25,9 @@ public class JoinMemberReq {
   private String memberPW;
 
   public static Member toMember(JoinMemberReq joinMemberReq){
+    ZonedDateTime dateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
     return new Member(joinMemberReq.getMemberId(),
-            "임시 닉네임", "임시 url","임시 소개", joinMemberReq.getMemberPW());
+            "임시 닉네임", "임시 url","임시 소개", joinMemberReq.getMemberPW(), dateTime);
   }
 
 }

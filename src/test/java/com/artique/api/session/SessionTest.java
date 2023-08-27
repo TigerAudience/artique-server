@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.ZonedDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,7 +24,7 @@ public class SessionTest {
   void create_session(){
     //given
     Member member = new Member("sample_id","sample_nickname",
-            "sample_url","sample_introduce","sample_password");
+            "sample_url","sample_introduce","sample_password",ZonedDateTime.now());
 
     //when
     String sessionId = session.createSession(member);
@@ -36,7 +38,7 @@ public class SessionTest {
   void validate_session(){
     //given
     Member member = new Member("sample_id","sample_nickname",
-            "sample_url","sample_introduce","sample_password");
+            "sample_url","sample_introduce","sample_password", ZonedDateTime.now());
     String sessionId = session.createSession(member);
     int maxSessionCount = 30;
 
@@ -54,7 +56,7 @@ public class SessionTest {
   void get_memberId(){
     //given
     Member member = new Member("sample_id","sample_nickname",
-            "sample_url","sample_introduce","sample_password");
+            "sample_url","sample_introduce","sample_password",ZonedDateTime.now());
     String sessionId = session.createSession(member);
 
     //when

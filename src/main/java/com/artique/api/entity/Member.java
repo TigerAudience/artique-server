@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,4 +22,5 @@ public class Member {
     private String profileUrl;
     private String introduce;
     private String password;
+    private ZonedDateTime createdAt;
 }

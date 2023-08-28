@@ -8,6 +8,7 @@ import com.artique.api.member.response.JoinMember;
 import com.artique.api.member.response.LoginMember;
 import com.artique.api.member.response.MemberDuplicate;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class MemberController implements MemberControllerSwagger{
   private final MemberService memberService;
   @GetMapping("/member/duplicate")
   public MemberDuplicate checkDuplicateMember(@RequestParam("member-id")
-                                                @NotNull(message = "member-id는 필수 입력값입니다.") String memberId){
+                                                @NotEmpty(message = "member-id는 필수 입력값입니다.") String memberId){
     if(!memberService.checkDuplicateMember(memberId))
       throw new LoginException("member id duplicate exception", LoginExceptionCode.DUPLICATE_LOGIN_ID.toString());
     return new MemberDuplicate(memberId);

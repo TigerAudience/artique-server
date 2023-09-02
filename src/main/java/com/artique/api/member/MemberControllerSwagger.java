@@ -13,13 +13,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotBlank;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Validated
+
 public interface MemberControllerSwagger {
   @Operation(summary = "회원 id 중복 조회 API", description = "중복 조회 API입니다.")
   @ApiResponses(value = {
@@ -28,8 +26,7 @@ public interface MemberControllerSwagger {
           @ApiResponse(responseCode = "403", description = "bad request operation",
                   content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  MemberDuplicate checkDuplicateMember(@NotBlank(message = "member-id는 필수 입력값입니다.")
-                                       @RequestParam(value = "member-id") String memberId);
+  MemberDuplicate checkDuplicateMember(@RequestParam(value = "member-id") String memberId);
 
   @Operation(summary = "회원 가입 API", description = "회원 가입 API입니다.")
   @ApiResponses(value = {

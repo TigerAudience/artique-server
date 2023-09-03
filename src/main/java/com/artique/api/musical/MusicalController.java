@@ -2,6 +2,7 @@ package com.artique.api.musical;
 
 import com.artique.api.musical.dto.MusicalInfo;
 import com.artique.api.musical.dto.MusicalReviewSmallList;
+import com.artique.api.resolver.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +19,7 @@ public class MusicalController {
   }
 
   @GetMapping("/musical/reviews")
-  public MusicalReviewSmallList reviews(@RequestParam(value = "musical-id")String musicalId){
-    return
+  public MusicalReviewSmallList reviews(@LoginUser String memberId,@RequestParam(value = "musical-id")String musicalId){
+    return musicalService.getReviews(memberId,musicalId);
   }
 }

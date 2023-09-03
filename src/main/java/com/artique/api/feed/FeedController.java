@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class FeedController {
+public class FeedController implements FeedControllerSwagger{
   private final FeedService feedService;
 
   @GetMapping("/feed")

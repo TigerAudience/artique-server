@@ -7,6 +7,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class FeedListDto {
-  List<FeedDto> feeds;
+public class FeedSliceDto {
+  private List<FeedDto> feeds;
+  private boolean hasNext;
+  private int page;
+  private int size;
 }

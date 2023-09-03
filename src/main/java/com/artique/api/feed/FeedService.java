@@ -1,5 +1,8 @@
 package com.artique.api.feed;
 
+import com.artique.api.feed.dao.FeedShortsDao;
+import com.artique.api.feed.response.FeedShorts;
+import com.artique.api.feed.response.FeedSliceDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -19,13 +22,15 @@ public class FeedService {
   public FeedSliceDto mainFeedsWithMember(String memberId,int page,int size){
     PageRequest pageRequest = PageRequest.of(page,size);
 
-    Slice<FeedDto> feeds = reviewRepository.findPageReviewsByMemberSlice(pageRequest,memberId);
+    Slice<FeedShortsDao> feeds = reviewRepository.findPageReviewsByMemberSlice(pageRequest,memberId);
 
-    List<FeedDto> feedList = feeds.stream().toList();
+    List<FeedShortsDao> feedList = feeds.stream().toList();
     boolean hasNext = feeds.hasNext();
     int pageAblePage = feeds.getPageable().getPageNumber();
     int pageAbleSize = feeds.getPageable().getPageSize();
 
-    return new FeedSliceDto(feedList,hasNext,pageAblePage,pageAbleSize);
+    List<FeedShorts> feedShorts = feedList.stream().map(FeedShorts::of).toList();
+
+    return new FeedSliceDto(feedShorts,hasNext,pageAblePage,pageAbleSize);
   }
 }

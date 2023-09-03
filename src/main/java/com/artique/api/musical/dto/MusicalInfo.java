@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class MusicalInfo {
   private String musicalId;
-  private Poster poster;
+  private String posterUrl;
   private String title;
   private String averageScore;
   private String date;
@@ -22,15 +22,12 @@ public class MusicalInfo {
   private static String averageScoreBuilder(double averageScore, long count){
     return String.format("%.1f",averageScore)+" ("+ count +")";
   }
-  private static Poster posterBuilder(String posterUrl){
-    return new Poster(posterUrl);
-  }
   private static String dateBuilder(LocalDate beginDate,LocalDate endDate){
     return beginDate.toString()+" ~ "+endDate.toString();
   }
 
   public static MusicalInfo of(MusicalWithRating m){
-    return new MusicalInfo(m.getMusicalId(),posterBuilder(m.getPosterUrl()),
+    return new MusicalInfo(m.getMusicalId(),m.getPosterUrl(),
             m.getTitle(),averageScoreBuilder(m.getAverageScore(),m.getReviewCount()),
             dateBuilder(m.getBeginDate(),m.getEndDate()),m.getPlace(),m.getDuration(),m.getCasting(),m.getPlot());
   }

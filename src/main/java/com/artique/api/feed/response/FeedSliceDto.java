@@ -1,6 +1,5 @@
-package com.artique.api.feed.dto;
+package com.artique.api.feed.response;
 
-import com.artique.api.feed.dao.FeedShorts;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -1,14 +1,13 @@
 package com.artique.api.feed;
 
 import com.artique.api.exception.ErrorResponse;
-import com.artique.api.member.response.MemberDuplicate;
+import com.artique.api.feed.response.FeedSliceDto;
 import com.artique.api.resolver.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface FeedControllerSwagger {

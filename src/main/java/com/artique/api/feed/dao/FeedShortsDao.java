@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public class FeedShorts {
+public class FeedShortsDao {
   //member info
   private String memberNickname;
   private String memberImageUrl;

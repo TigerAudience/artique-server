@@ -16,9 +16,6 @@ public class FeedService {
 
   private final ReviewRepository reviewRepository;
 
-  public FeedSliceDto mainFeeds(){
-    return null;
-  }
   public FeedSliceDto mainFeedsWithMember(String memberId,int page,int size){
     PageRequest pageRequest = PageRequest.of(page,size);
 

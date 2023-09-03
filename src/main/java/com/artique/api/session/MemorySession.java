@@ -37,6 +37,8 @@ public class MemorySession implements CustomSession {
 
   @Override
   public String getMemberId(String sessionId) {
+    if(sessionId==null)
+      return null;
     return memorySession.get(UUID.fromString(sessionId)).getMemberId();
   }
 

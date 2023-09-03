@@ -11,6 +11,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class SessionUserResolver implements HandlerMethodArgumentResolver {
@@ -32,6 +34,8 @@ public class SessionUserResolver implements HandlerMethodArgumentResolver {
   private String getSessionIdFromCookie(HttpServletRequest request){
     Cookie[] cookies = request.getCookies();
     String sessionId = null;
+    if(cookies==null)
+      return null;
     for(Cookie cookie: cookies) {
       if(cookie.getName().equals("session-id")) {
         sessionId = cookie.getValue();

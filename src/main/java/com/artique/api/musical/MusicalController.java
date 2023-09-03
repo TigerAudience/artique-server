@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class MusicalController {
+public class MusicalController implements MusicalControllerSwagger{
   private final MusicalService musicalService;
 
   @GetMapping("/musical/detail")

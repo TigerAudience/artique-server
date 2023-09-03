@@ -28,12 +28,13 @@ public class FeedShorts {
   private Long reviewId;
 
   //thumbsup info
-  private Long thumbsId;
+  private Boolean isThumbsUp;
 
   public static FeedShorts of(FeedShortsDao feedShorts){
     return new FeedShorts(feedShorts.getMemberNickname(),feedShorts.getMemberImageUrl(),
             feedShorts.getMemberId(), feedShorts.getMusicalName(),feedShorts.getPosterUrl(),
             feedShorts.getCasting(),feedShorts.getMusicalId(),feedShorts.getViewDate(),feedShorts.getStarRating(),
-            feedShorts.getThumbsCount(),feedShorts.getShortReview(),feedShorts.getReviewId(),feedShorts.getThumbsId());
+            feedShorts.getThumbsCount(),feedShorts.getShortReview(),feedShorts.getReviewId(),
+            feedShorts.getThumbsId() != null);
   }
 }

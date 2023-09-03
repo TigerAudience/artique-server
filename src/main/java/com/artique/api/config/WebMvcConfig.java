@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     registry.addInterceptor(cookieAuthorizationInterceptor)
             .excludePathPatterns("/css/**", "/images/**", "/js/**","/favicon.ico","/webjars/**","/error/**",
                     "/oauth-redirect/**", "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
-                    "/member/**","/feed/**","META-INF/**");
+                    "/member/**","/feed/**","/musical/**","META-INF/**");
   }
 
   @Override

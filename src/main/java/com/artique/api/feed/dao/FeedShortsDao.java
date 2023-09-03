@@ -1,4 +1,4 @@
-package com.artique.api.feed;
+package com.artique.api.feed.dao;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public class FeedDto {
+public class FeedShortsDao {
   //member info
   private String memberNickname;
   private String memberImageUrl;

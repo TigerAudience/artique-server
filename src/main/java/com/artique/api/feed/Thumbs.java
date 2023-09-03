@@ -7,7 +7,6 @@ import lombok.Getter;
 
 @Entity
 @Getter
-//@Table(uniqueConstraints = @UniqueConstraint(name = "UniqueMemberAndReview",columnNames = {"member","address"}))
 public class Thumbs {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -26,7 +26,10 @@ public class SessionUserResolver implements HandlerMethodArgumentResolver {
   public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                 NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
     HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
-    return session.getMemberId(resolveSessionId(request));
+    String sessionId = resolveSessionId(request);
+    if(sessionId!=null && session.validateSessionId(sessionId))
+      return session.getMemberId(sessionId);
+    return null;
   }
   private String resolveSessionId(HttpServletRequest request){
     return getSessionIdFromCookie(request);

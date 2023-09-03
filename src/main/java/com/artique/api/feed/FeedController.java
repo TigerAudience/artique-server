@@ -1,5 +1,6 @@
 package com.artique.api.feed;
 
+import com.artique.api.feed.response.FeedSliceDto;
 import com.artique.api.resolver.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

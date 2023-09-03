@@ -1,7 +1,12 @@
 package com.artique.api.musical.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.time.LocalDate;
 
+@AllArgsConstructor
+@Getter
 public class MusicalReview {
   //member info
   private String memberNickname;

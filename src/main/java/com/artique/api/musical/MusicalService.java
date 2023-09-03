@@ -1,5 +1,6 @@
 package com.artique.api.musical;
 
+import com.artique.api.entity.Musical;
 import com.artique.api.entity.Review;
 import com.artique.api.feed.ReviewRepository;
 import com.artique.api.musical.dao.MusicalWithRating;
@@ -24,10 +25,12 @@ public class MusicalService {
   private final ReviewRepository reviewRepository;
 
   public MusicalInfo getDetail(String musicalId){
-    MusicalWithRating musical = musicalRepository.findMusicalWithRating(musicalId)
+    Musical musicalEntity = musicalRepository.findById(musicalId)
             .orElseThrow(()->new MusicalException("invalid musical id","MUSICAL-001"));
-
-    return MusicalInfo.of(musical);
+    MusicalWithRating musical = musicalRepository.findMusicalWithRating(musicalId);
+    if (musical!=null)
+      return MusicalInfo.of(musical);
+    return MusicalInfo.of(MusicalWithRating.of(musicalEntity));
   }
 
   public MusicalReviewSmallList getReviews(String memberId, String musicalId){

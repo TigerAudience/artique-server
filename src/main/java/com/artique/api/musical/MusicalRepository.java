@@ -13,6 +13,6 @@ public interface MusicalRepository extends JpaRepository<Musical,String> {
           "(m.id,m.posterUrl,m.name,avg(r.starRating),count(r.id),m.beginDate," +
           "m.endDate,m.placeName,m.runningTime,m.casting,m.plot) from Musical m join m.reviews r " +
           "where m.id = :musicalId group by m.id")
-  public Optional<MusicalWithRating> findMusicalWithRating(@Param(value = "musicalId") String musicalId);
+  public MusicalWithRating findMusicalWithRating(@Param(value = "musicalId") String musicalId);
 
 }

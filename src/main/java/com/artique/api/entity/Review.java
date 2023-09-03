@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
@@ -28,4 +29,5 @@ public class Review {
     private Musical musical;
     @OneToMany(mappedBy = "review",fetch = FetchType.LAZY)
     private List<Thumbs> thumbs;
+    private ZonedDateTime createdAt;
 }

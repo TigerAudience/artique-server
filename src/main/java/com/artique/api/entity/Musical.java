@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,4 +22,6 @@ public class Musical {
     private String plot;
     private String posterUrl;
     private String musicalStatus;
+    @OneToMany(mappedBy = "musical")
+    private List<Review> reviews;
 }

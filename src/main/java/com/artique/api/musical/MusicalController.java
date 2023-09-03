@@ -1,6 +1,7 @@
 package com.artique.api.musical;
 
 import com.artique.api.musical.dto.MusicalInfo;
+import com.artique.api.musical.dto.MusicalRateStatistics;
 import com.artique.api.musical.dto.MusicalReviewSmallList;
 import com.artique.api.resolver.LoginUser;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +22,10 @@ public class MusicalController {
   @GetMapping("/musical/reviews")
   public MusicalReviewSmallList reviews(@LoginUser String memberId,@RequestParam(value = "musical-id")String musicalId){
     return musicalService.getReviews(memberId,musicalId);
+  }
+
+  @GetMapping("/musical/rate/statistics")
+  public MusicalRateStatistics rateStatistics(@RequestParam(value = "musical-id")String musicalId){
+    return musicalService.analysis(musicalId);
   }
 }

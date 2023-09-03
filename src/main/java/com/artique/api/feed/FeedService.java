@@ -1,12 +1,10 @@
 package com.artique.api.feed;
 
-import com.artique.api.entity.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,26 +13,19 @@ public class FeedService {
 
   private final ReviewRepository reviewRepository;
 
-  public FeedListDto mainFeeds(){
-    PageRequest pageRequest = PageRequest.of(0,10);
-    Slice<Review> result = reviewRepository.findPageReviewBySlice(pageRequest);
-    List<Review> reviewList = result.getContent();
-    List<FeedDto> feeds = new ArrayList<>();
-    for(Review r : reviewList){
-      System.out.println(r.getId());
-      feeds.add(new FeedDto(r.getMember().getNickname(),r.getShortReview(),r.getThumbs().size(),r.getMusical().getName()));
-    }
-    return new FeedListDto(feeds);
+  public FeedSliceDto mainFeeds(){
+    return null;
   }
-  public FeedListDto mainFeedsWithMember(){
-    PageRequest pageRequest = PageRequest.of(0,10);
-    Slice<Review> result = reviewRepository.findPageReviewBySliceWithUser(pageRequest,"abcdef");
-    List<Review> reviewList = result.getContent();
-    List<FeedDto> feeds = new ArrayList<>();
-    for(Review r : reviewList){
-      System.out.println(r.getId());
-      feeds.add(new FeedDto(r.getMember().getNickname(),r.getShortReview(),r.getThumbs().size(),r.getMusical().getName()));
-    }
-    return new FeedListDto(feeds);
+  public FeedSliceDto mainFeedsWithMember(String memberId,int page,int size){
+    PageRequest pageRequest = PageRequest.of(page,size);
+
+    Slice<FeedDto> feeds = reviewRepository.findPageReviewsByMemberSlice(pageRequest,memberId);
+
+    List<FeedDto> feedList = feeds.stream().toList();
+    boolean hasNext = feeds.hasNext();
+    int pageAblePage = feeds.getPageable().getPageNumber();
+    int pageAbleSize = feeds.getPageable().getPageSize();
+
+    return new FeedSliceDto(feedList,hasNext,pageAblePage,pageAbleSize);
   }
 }

@@ -30,24 +30,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 public class MemberControllerTest {
-
   @InjectMocks
   private MemberController memberController;
-
   @Mock
   private MemberService memberService;
-
   private MockMvc mockMvc;
-
   @BeforeEach
   public void init(){
     mockMvc = MockMvcBuilders.standaloneSetup(memberController)
             .setControllerAdvice(ExceptionController.class)
             .build();
   }
-
   @Test
-  @DisplayName("duplicated controller 성공 테스트")
+  @DisplayName("duplicated 성공 테스트")
   void duplicated_success() throws Exception{
     // given
     when(memberService.checkDuplicateMember("sample_id")).thenReturn(true);
@@ -60,11 +55,10 @@ public class MemberControllerTest {
     //then
     ResultActions mvcResult = resultActions.andExpect(status().isOk())
             .andExpect(jsonPath("memberId","sample_id").exists());
-
   }
 
   @Test
-  @DisplayName("duplicated controller 실패 테스트")
+  @DisplayName("duplicated 실패 테스트")
   void duplicated_failed()throws Exception{
     //given
     when(memberService.checkDuplicateMember("sample_id")).thenReturn(false);
@@ -85,15 +79,15 @@ public class MemberControllerTest {
             });
   }
 
+
   @Test
-  @DisplayName("duplicated controller 실패 테스트, [member-id == null]")
-  void name()throws Exception{
+  @DisplayName("join 성공 테스트")
+  void join(){
     //given
 
+
     //when
-    ResultActions resultActions = mockMvc.perform(
-            MockMvcRequestBuilders.get("/member/duplicate").param("member-id", (String) null)
-    );
+
 
     //then
   }

@@ -3,6 +3,7 @@ package com.artique.api.exception;
 import com.artique.api.feed.FeedException;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.musical.MusicalException;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;

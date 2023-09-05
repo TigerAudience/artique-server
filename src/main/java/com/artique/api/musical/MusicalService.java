@@ -4,13 +4,13 @@ import com.artique.api.entity.Musical;
 import com.artique.api.entity.Review;
 import com.artique.api.feed.ReviewRepository;
 import com.artique.api.musical.dao.MusicalWithRating;
-import com.artique.api.musical.dto.MusicalInfo;
-import com.artique.api.musical.dto.MusicalRateStatistics;
+import com.artique.api.musical.dto.*;
 import com.artique.api.musical.dao.MusicalReviewDao;
-import com.artique.api.musical.dto.MusicalReviewSmallList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -63,5 +63,19 @@ public class MusicalService {
       statistics.put(0.5D*i,0L);
     }
     return statistics;
+  }
+
+
+  public MusicalReviewSlice getReviews(String memberId,String musicalId, int page, int size, OrderBy orderBy){
+    PageRequest pageRequest = PageRequest.of(page,size, Sort.by(Sort.Direction.DESC, orderBy.getFieldName()));
+
+    Slice<MusicalReviewDao> reviewDaos = reviewRepository.findMusicalReviewsByMusicalId(pageRequest,musicalId,memberId);
+
+    List<MusicalReview> reviews = reviewDaos.stream().map(MusicalReview::of).toList();
+    int pageNumber = reviewDaos.getPageable().getPageNumber();
+    int pageSize = reviewDaos.getPageable().getPageSize();
+    boolean hasNext = reviewDaos.hasNext();
+
+    return new MusicalReviewSlice(reviews,hasNext,pageNumber,pageSize);
   }
 }

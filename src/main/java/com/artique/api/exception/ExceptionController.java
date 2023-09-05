@@ -3,7 +3,7 @@ package com.artique.api.exception;
 import com.artique.api.feed.FeedException;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.musical.MusicalException;
-import org.springframework.core.convert.ConversionFailedException;
+import com.artique.api.thumbs.ThumbsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +28,12 @@ public class ExceptionController {
   }
   @ExceptionHandler(MusicalException.class)
   public ResponseEntity<ErrorResponse> musicalException(MusicalException e){
+    return new ResponseEntity<>(ErrorResponse.builder().code(e.getErrorCode()).message(e.getMessage()).build(),
+            HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ThumbsException.class)
+  public ResponseEntity<ErrorResponse> musicalException(ThumbsException e){
     return new ResponseEntity<>(ErrorResponse.builder().code(e.getErrorCode()).message(e.getMessage()).build(),
             HttpStatus.BAD_REQUEST);
   }

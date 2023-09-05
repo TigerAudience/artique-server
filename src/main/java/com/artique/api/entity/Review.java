@@ -30,4 +30,11 @@ public class Review {
     @OneToMany(mappedBy = "review",fetch = FetchType.LAZY)
     private List<Thumbs> thumbs;
     private ZonedDateTime createdAt;
+
+    public void thumbsUp(){
+        this.thumbsUp+=1;
+    }
+    public void thumbsCancel(){
+        this.thumbsUp-=1;
+    }
 }

@@ -7,6 +7,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -22,7 +23,7 @@ public class CookieAuthorizationInterceptor implements HandlerInterceptor {
       return HandlerInterceptor.super.preHandle(request, response, handler);
     String sessionId = getSessionIdFromCookie(request);
     if(sessionId == null || !session.validateSessionId(sessionId)){
-      throw new LoginException("invalid session id during login", LoginExceptionCode.INVALID_SESSION_ID.toString());
+      throw new LoginException("authorization failure", HttpStatus.UNAUTHORIZED.toString());
     }
     return HandlerInterceptor.super.preHandle(request,response,handler);
   }
@@ -30,6 +31,8 @@ public class CookieAuthorizationInterceptor implements HandlerInterceptor {
 
   private String getSessionIdFromCookie(HttpServletRequest request){
     Cookie[] cookies = request.getCookies();
+    if(cookies==null)
+      return null;
     String sessionId = null;
     for(Cookie cookie: cookies) {
       if(cookie.getName().equals("session-id")) {

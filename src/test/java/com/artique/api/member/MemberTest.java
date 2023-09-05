@@ -39,7 +39,7 @@ public class MemberTest {
   private CustomSession session;
 
   @Test
-  @DisplayName("중복 없는 아이디 테스트")
+  @DisplayName("checkDuplicatedMember 성공 테스트(중복 아이디 없음)")
   void validateId(){
     //given
     String memberId = "sample_member_id";
@@ -53,7 +53,7 @@ public class MemberTest {
   }
 
   @Test
-  @DisplayName("증복 아이디 테스트")
+  @DisplayName("checkDuplicatedMember 실패 테스트(중복 아이디 존재)")
   void validateId_duplicate(){
     //given
     String memberId = "sample_member_id";
@@ -68,7 +68,7 @@ public class MemberTest {
   }
 
   @Test
-  @DisplayName("회원 가입 테스트")
+  @DisplayName("join 성공 테스트")
   void join(){
     //given
     JoinMemberReq joinMemberReq = new JoinMemberReq("sample_id","sample_password");
@@ -86,7 +86,7 @@ public class MemberTest {
   }
 
   @Test
-  @DisplayName("로그인 성공 테스트")
+  @DisplayName("login 성공 테스트")
   void login_success(){
     //given
     LoginMemberReq memberReq = new LoginMemberReq("sample_id","sample_password");
@@ -108,7 +108,7 @@ public class MemberTest {
   }
 
   @Test
-  @DisplayName("로그인 실패 테스트 [존재하지 않는 id일 때]")
+  @DisplayName("login 실패 테스트 [존재하지 않는 id일 때]")
   void login_invalid_memberId(){
     //given
     LoginMemberReq memberReq = new LoginMemberReq("sample_id","sample_password");
@@ -126,7 +126,7 @@ public class MemberTest {
   }
 
   @Test
-  @DisplayName("로그인 실패 테스트 [아이디 & 비밀번호가 데이터베이스 정보와 일치하지 않을 때]")
+  @DisplayName("login 실패 테스트 [아이디 & 비밀번호가 데이터베이스 정보와 일치하지 않을 때]")
   void login_invalid_password(){
     //given
     LoginMemberReq memberReq = new LoginMemberReq("sample_id","wrong_password");

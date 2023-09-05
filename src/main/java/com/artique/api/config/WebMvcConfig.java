@@ -1,10 +1,12 @@
 package com.artique.api.config;
 
+import com.artique.api.converter.MusicalReviewOrderByConverter;
 import com.artique.api.intertceptor.CookieAuthorizationInterceptor;
 import com.artique.api.resolver.SessionUserResolver;
 import com.artique.api.session.CustomSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
@@ -18,6 +20,12 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
   private final CookieAuthorizationInterceptor cookieAuthorizationInterceptor;
   private final SessionUserResolver sessionUserResolver;
+  private final MusicalReviewOrderByConverter musicalReviewOrderByConverter;
+
+  @Override
+  public void addFormatters(FormatterRegistry registry) {
+    registry.addConverter(musicalReviewOrderByConverter);
+  }
 
   @Override
   public void addInterceptors(InterceptorRegistry registry){

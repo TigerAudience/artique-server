@@ -31,4 +31,12 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
   @Query(value = "select r from Review r where r.musical.id = :musical_id")
   List<Review> findReviewsByMusicalId(@Param("musical_id")String musicalId);
+
+  @Query(value = "select new com.artique.api.musical.dao.MusicalReviewDao" +
+          "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,t.id) " +
+          "from Review r join r.musical mus join r.member mem " +
+          "left join r.thumbs t on t.member.id = :member_id " +
+          "where mus.id = :musical_id")
+  Slice<MusicalReviewDao> findMusicalReviewsByMusicalId(Pageable pageable, @Param("musical_id")String musicalId,
+                                                        @Param("member_id")String memberId);
 }

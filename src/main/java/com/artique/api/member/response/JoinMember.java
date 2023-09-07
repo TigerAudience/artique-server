@@ -4,8 +4,10 @@ import com.artique.api.entity.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class JoinMember {
   @Schema(description = "회원 가입 할 ID")

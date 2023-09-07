@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 public class SessionUserResolverTest {
   @InjectMocks
+  @Spy
   private SessionUserResolver sessionUserResolver;
 
   @Spy
@@ -125,4 +126,47 @@ public class SessionUserResolverTest {
               Assertions.assertThat(body).isEmpty();
             });
   }
+
+  @Test
+  @DisplayName("supportsParameter 성공 테스트")
+  void supportParameter_success() throws Exception{
+    //given
+    when(customSession.validateSessionId(any())).thenReturn(true);
+    when(customSession.getMemberId(any())).thenReturn("sample-id");
+
+    //when
+    ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/test/resolver")
+            .cookie(new Cookie("session-id","sample-value")));
+
+    //then
+    resultActions.andExpect(status().isOk());
+  }
+
+  @Test
+  @DisplayName("supportsParameter 실패 테스트 [parameter가 @LoginUser 어노테이션을 가지고 있지 않을 때]")
+  void supportParameter_failed_annotation_not_exist()throws Exception{
+    //given
+
+    //when
+    ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+            .get("/test/resolver/supports-parameter/annotation"));
+
+    //then
+    verify(sessionUserResolver,times(1)).supportsParameter(any());
+    verify(sessionUserResolver,never()).resolveArgument(any(),any(),any(),any());
+  }
+
+  @Test
+  @DisplayName("supportsParameter 실패 테스트 [parameter가 String타입이 아닐 때]")
+  void supportParameter_failed_parameterType_not_String() throws Exception{
+    //given
+
+    //when
+    ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders
+            .get("/test/resolver/supports-parameter/type"));
+    //then
+    verify(sessionUserResolver,times(1)).supportsParameter(any());
+    verify(sessionUserResolver,never()).resolveArgument(any(),any(),any(),any());
+  }
+
 }

@@ -22,7 +22,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   Slice<FeedShortsDao> findPageReviewsByMemberSlice(Pageable pageable, @Param("member_id") String memberId);
 
   @Query(value = "select new com.artique.api.musical.dao.MusicalReviewDao" +
-          "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,t.id) " +
+          "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.createdAt,t.id) " +
           "from Review r join r.musical mus join r.member mem " +
           "left join r.thumbs t on t.member.id = :member_id " +
           "where mus.id = :musical_id order by r.thumbsUp")
@@ -33,7 +33,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   List<Review> findReviewsByMusicalId(@Param("musical_id")String musicalId);
 
   @Query(value = "select new com.artique.api.musical.dao.MusicalReviewDao" +
-          "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,t.id) " +
+          "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.createdAt,t.id) " +
           "from Review r join r.musical mus join r.member mem " +
           "left join r.thumbs t on t.member.id = :member_id " +
           "where mus.id = :musical_id")

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @AllArgsConstructor
 @Getter
@@ -21,6 +22,7 @@ public class MusicalReview {
   private Long thumbsCount;
   private String shortReview;
   private Long reviewId;
+  private LocalDate writtenDate;
 
   //thumbsup info
   private Boolean isThumbsUp;
@@ -28,6 +30,6 @@ public class MusicalReview {
   public static MusicalReview of(MusicalReviewDao dao){
     return new MusicalReview(dao.getMemberNickname(),dao.getMemberImageUrl(),dao.getMemberId(),dao.getViewDate(),
             dao.getStarRating(),dao.getThumbsCount(),dao.getShortReview(),dao.getReviewId(),
-            dao.getThumbsId() != null);
+            dao.getCreatedAt().toLocalDate(),dao.getThumbsId() != null);
   }
 }

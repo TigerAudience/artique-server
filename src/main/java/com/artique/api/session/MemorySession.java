@@ -26,7 +26,13 @@ public class MemorySession implements CustomSession {
 
   @Override
   public boolean validateSessionId(String id) {
-    SessionValue session = memorySession.get(UUID.fromString(id));
+    UUID sessionId;
+    try {
+      sessionId = UUID.fromString(id);
+    }catch (IllegalArgumentException e) {
+      return false;
+    }
+    SessionValue session = memorySession.get(sessionId);
     if(session==null)
         return false;
     else{

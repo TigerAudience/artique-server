@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @AllArgsConstructor
 @Getter
@@ -19,6 +20,7 @@ public class MusicalReviewDao {
   private Long thumbsCount;
   private String shortReview;
   private Long reviewId;
+  private ZonedDateTime createdAt;
 
   //thumbsup info
   private Long thumbsId;

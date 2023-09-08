@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JoinMemberReq {
-  @Schema(description = "조회할 회원 ID",defaultValue = "null")
+  @Schema(description = "조회할 회원 ID")
   @Parameter(required = true)
   @NotNull(message = "member id는 필수 입력값입니다")
   private String memberId;

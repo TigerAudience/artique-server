@@ -2,6 +2,7 @@ package com.artique.api.musical;
 
 import com.artique.api.musical.dto.MusicalInfo;
 import com.artique.api.musical.dto.MusicalRateStatistics;
+import com.artique.api.musical.dto.MusicalReviewSlice;
 import com.artique.api.musical.dto.MusicalReviewSmallList;
 import com.artique.api.resolver.LoginUser;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,12 @@ public class MusicalController implements MusicalControllerSwagger{
   @GetMapping("/musical/rate/statistics")
   public MusicalRateStatistics rateStatistics(@RequestParam(value = "musical-id")String musicalId){
     return musicalService.analysis(musicalId);
+  }
+
+  @GetMapping("/musical/reviews/all")
+  public MusicalReviewSlice allReviews(@LoginUser String memberId, @RequestParam("musical-id")String musicalId,
+                                       @RequestParam("page") int page,@RequestParam("size") int size,
+                                       @RequestParam(value = "order-by") OrderBy orderBy){
+    return musicalService.getReviews(memberId,musicalId,page,size,orderBy);
   }
 }

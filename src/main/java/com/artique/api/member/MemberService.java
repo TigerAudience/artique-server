@@ -49,16 +49,12 @@ public class MemberService {
 
     JoinMemberReq joinMemberReq = OauthMember.toJoinMemberReq(oauthMember);
 
+    Member findMember;
     if(checkDuplicateMember(joinMemberReq.getMemberId()))
-      join(joinMemberReq);
-
-    Member findMember = memberRepository.findById(joinMemberReq.getMemberId())
-            .orElseThrow(() ->
-                    LoginException.builder()
-                            .message("oauth login failed, cant find member in db")
-                            .errorCode(LoginExceptionCode.CANT_FIND_OAUTH_MEMBER.toString())
-                            .build()
-            );
+       findMember = memberRepository.save(JoinMemberReq.toMember(joinMemberReq));
+    else{
+      findMember = memberRepository.findById(joinMemberReq.getMemberId()).get();
+    }
 
     afterLogin(findMember,httpResponse);
 

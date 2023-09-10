@@ -9,7 +9,10 @@ public class PublicKeyParams {
   private String n;
   private String e;
 
-  public static PublicKeyParams of(Jwk jwk){
-    return new PublicKeyParams(jwk.getN(),jwk.getE());
+  public static PublicKeyParams of(GoogleJwk googleJwk){
+    return new PublicKeyParams(googleJwk.getN(), googleJwk.getE());
+  }
+  public static PublicKeyParams of(AppleJwk appleJwk){
+    return new PublicKeyParams(appleJwk.getN(),appleJwk.getE());
   }
 }

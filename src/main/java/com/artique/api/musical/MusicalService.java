@@ -34,7 +34,7 @@ public class MusicalService {
   }
 
   public MusicalReviewSmallList getReviews(String memberId, String musicalId){
-    PageRequest pageRequest = PageRequest.of(0,3);
+    PageRequest pageRequest = PageRequest.of(0,3,Sort.by(Sort.Direction.DESC,"thumbsUp"));
     Page<MusicalReviewDao> reviews = reviewRepository.findPageMusicalReviewsByMusicalId(pageRequest,musicalId,memberId);
     return MusicalReviewSmallList.of(reviews);
   }

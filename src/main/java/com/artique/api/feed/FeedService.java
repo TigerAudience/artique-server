@@ -6,6 +6,7 @@ import com.artique.api.feed.response.FeedSliceDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class FeedService {
   private final ReviewRepository reviewRepository;
 
   public FeedSliceDto mainFeedsWithMember(String memberId,int page,int size){
-    PageRequest pageRequest = PageRequest.of(page,size);
+    PageRequest pageRequest = PageRequest.of(page,size, Sort.by(Sort.Direction.DESC,"thumbsUp"));
 
     Slice<FeedShortsDao> feeds = reviewRepository.findPageReviewsByMemberSlice(pageRequest,memberId);
 

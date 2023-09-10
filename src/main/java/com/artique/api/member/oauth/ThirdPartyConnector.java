@@ -3,19 +3,14 @@ package com.artique.api.member.oauth;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.exception.OauthExceptionCode;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,20 +31,41 @@ public class ThirdPartyConnector {
     return response.getBody();
   }
 
+  public PublicKeyParams getPublicKeyParamsFromAppleServer(String kid){
+    HttpHeaders httpHeaders = new HttpHeaders();
+    HttpEntity<String> requestMessage = new HttpEntity<>(httpHeaders);
+    RestTemplate restTemplate = new RestTemplate();
+    ResponseEntity<AppleJwks> response;
+    try {
+      response = restTemplate
+              .exchange("https://appleid.apple.com/auth/keys",HttpMethod.GET,requestMessage,AppleJwks.class);
+      AppleJwks jwks = response.getBody();
+      if(jwks==null || jwks.getKeys().isEmpty())
+        throw new LoginException("invalid kid", OauthExceptionCode.INVALID_KID.toString());
+      AppleJwk appleJwk = jwks.getKeys().stream().filter((AppleJwk a)->Objects.equals(a.getKid(),kid))
+              .findFirst().orElseThrow(()->new LoginException("invalid kid", OauthExceptionCode.INVALID_KID.toString()));
+      return PublicKeyParams.of(appleJwk);
+    }catch (Exception e){
+      throw LoginException.builder().message("google jwks api exception")
+              .errorCode(LoginExceptionCode.OAUTH_NETWORK_EXCEPTION.toString())
+              .build();
+    }
+  }
+
   public PublicKeyParams getPublicKeyParamsFromGoogleServer(String kid){
     HttpHeaders httpHeaders = new HttpHeaders();
     HttpEntity<String> requestMessage = new HttpEntity<>(httpHeaders);
     RestTemplate restTemplate = new RestTemplate();
-    ResponseEntity<Jwks> response;
+    ResponseEntity<GoogleJwks> response;
     try {
       response = restTemplate
-              .exchange("https://www.googleapis.com/oauth2/v3/certs",HttpMethod.GET,requestMessage,Jwks.class);
-      Jwks jwks = response.getBody();
+              .exchange("https://www.googleapis.com/oauth2/v3/certs",HttpMethod.GET,requestMessage,GoogleJwks.class);
+      GoogleJwks jwks = response.getBody();
       if(jwks==null || jwks.getKeys().isEmpty())
         throw new LoginException("invalid kid", OauthExceptionCode.INVALID_KID.toString());
-      Jwk jwk = jwks.getKeys().stream().filter((Jwk j)-> Objects.equals(j.getKid(), kid))
+      GoogleJwk googleJwk = jwks.getKeys().stream().filter((GoogleJwk j)-> Objects.equals(j.getKid(), kid))
               .findFirst().orElseThrow(()->new LoginException("invalid kid", OauthExceptionCode.INVALID_KID.toString()));
-      return PublicKeyParams.of(jwk);
+      return PublicKeyParams.of(googleJwk);
     }catch (Exception e){
       throw LoginException.builder().message("google jwks api exception")
               .errorCode(LoginExceptionCode.OAUTH_NETWORK_EXCEPTION.toString())
@@ -59,8 +75,14 @@ public class ThirdPartyConnector {
   @AllArgsConstructor
   @NoArgsConstructor
   @Getter
-  private static class Jwks{
-    private List<Jwk> keys;
+  private static class GoogleJwks{
+    private List<GoogleJwk> keys;
+  }
+  @AllArgsConstructor
+  @NoArgsConstructor
+  @Getter
+  private static class AppleJwks{
+    private List<AppleJwk> keys;
   }
 
 }

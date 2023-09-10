@@ -7,12 +7,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Jwk{
-  private String use;
+public class AppleJwk {
+  private String kty;
   private String kid;
+  private String use;
+  private String alg;
   private String n;
   private String e;
-  private String alg;
-  private String kty;
-
 }

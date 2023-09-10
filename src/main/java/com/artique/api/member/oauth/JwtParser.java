@@ -40,6 +40,10 @@ public class JwtParser {
     PublicKeyParams params = thirdPartyConnector.getPublicKeyParamsFromGoogleServer(kid);
     publicKeys.put("google",publicKeyGeneration(params.getE(),params.getN()));
   }
+  public void generateApplePublicKey(String kid) throws NoSuchAlgorithmException, InvalidKeySpecException{
+    PublicKeyParams params = thirdPartyConnector.getPublicKeyParamsFromAppleServer(kid);
+    publicKeys.put("apple",publicKeyGeneration(params.getE(),params.getN()));
+  }
 
   private PublicKey publicKeyGeneration(String eStr, String nStr)throws NoSuchAlgorithmException, InvalidKeySpecException {
     byte[] eDec = Base64Utils.decodeFromString(eStr);

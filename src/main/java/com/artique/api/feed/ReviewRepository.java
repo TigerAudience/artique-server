@@ -19,14 +19,14 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
           "mus.name,mus.posterUrl,mus.casting,mus.id," +
           "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,t.id)" +
           "from Review r join r.musical mus join r.member mem " +
-          "left join r.thumbs t on t.member.id = :member_id order by r.thumbsUp")
+          "left join r.thumbs t on t.member.id = :member_id")
   Slice<FeedShortsDao> findPageReviewsByMemberSlice(Pageable pageable, @Param("member_id") String memberId);
 
   @Query(value = "select new com.artique.api.musical.dao.MusicalReviewDao" +
           "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.createdAt,t.id) " +
           "from Review r join r.musical mus join r.member mem " +
           "left join r.thumbs t on t.member.id = :member_id " +
-          "where mus.id = :musical_id order by r.thumbsUp")
+          "where mus.id = :musical_id")
   Page<MusicalReviewDao> findPageMusicalReviewsByMusicalId(Pageable pageable, @Param("musical_id")String musicalId,
                                                            @Param("member_id")String memberId);
 

@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review,Long> {
 
@@ -39,4 +40,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
           "where mus.id = :musical_id")
   Slice<MusicalReviewDao> findMusicalReviewsByMusicalId(Pageable pageable, @Param("musical_id")String musicalId,
                                                         @Param("member_id")String memberId);
+
+  @Query(value = "select r from Review r join fetch r.member mem join fetch r.musical mus where r.id = :review_id")
+  Optional<Review> findReviewByIdJoinFetchMemberMusical(@Param("review_id")Long reviewId);
 }

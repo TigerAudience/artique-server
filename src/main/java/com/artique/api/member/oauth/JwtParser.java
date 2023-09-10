@@ -3,6 +3,7 @@ package com.artique.api.member.oauth;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
@@ -14,10 +15,12 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
+@RequiredArgsConstructor
 public class JwtParser {
-  private HashMap<String, PublicKey> publicKeys = new HashMap<>();
+  private ConcurrentHashMap<String, PublicKey> publicKeys = new ConcurrentHashMap<>();
   @Value("${jwt.jwk.google.n}")
   private String googleN;
   @Value("${jwt.jwk.google.e}")
@@ -27,10 +30,15 @@ public class JwtParser {
   private String appleN;
   @Value("${jwt.jwk.apple.e}")
   private String appleE;
+  private final ThirdPartyConnector thirdPartyConnector;
   @PostConstruct
   public void initPublicKey() throws NoSuchAlgorithmException, InvalidKeySpecException{
     publicKeys.put("google",publicKeyGeneration(googleE,googleN));
     publicKeys.put("apple",publicKeyGeneration(appleE,appleN));
+  }
+  public void generateGooglePublicKey(String kid) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    PublicKeyParams params = thirdPartyConnector.getPublicKeyParamsFromGoogleServer(kid);
+    publicKeys.put("google",publicKeyGeneration(params.getE(),params.getN()));
   }
 
   private PublicKey publicKeyGeneration(String eStr, String nStr)throws NoSuchAlgorithmException, InvalidKeySpecException {

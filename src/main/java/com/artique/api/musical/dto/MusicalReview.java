@@ -3,11 +3,13 @@ package com.artique.api.musical.dto;
 import com.artique.api.musical.dao.MusicalReviewDao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class MusicalReview {
 

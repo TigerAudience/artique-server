@@ -3,11 +3,13 @@ package com.artique.api.musical.dto;
 import com.artique.api.musical.dao.MusicalWithRating;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class MusicalInfo {
   private String musicalId;
   private String posterUrl;
@@ -23,7 +25,9 @@ public class MusicalInfo {
     return String.format("%.1f",averageScore)+" ("+ count +")";
   }
   private static String dateBuilder(LocalDate beginDate,LocalDate endDate){
-    return beginDate.toString()+" ~ "+endDate.toString();
+    if(beginDate==null || endDate==null)
+      return null;
+    return beginDate +" ~ "+endDate;
   }
 
   public static MusicalInfo of(MusicalWithRating m){

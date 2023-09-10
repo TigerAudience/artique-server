@@ -1,20 +1,20 @@
 package com.artique.api.musical;
 
 import com.artique.api.entity.Musical;
+import com.artique.api.entity.Review;
 import com.artique.api.feed.ReviewRepository;
 import com.artique.api.musical.dao.MusicalReviewDao;
 import com.artique.api.musical.dao.MusicalWithRating;
-import com.artique.api.musical.dto.MusicalInfo;
+import com.artique.api.musical.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -81,20 +81,90 @@ public class MusicalServiceTest {
     assertThat(exception.getErrorCode()).isEqualTo("MUSICAL-001");
   }
 
-  /*
   @Test
   @DisplayName("getReviews(smallList) 성공")
-  void name(){
+  void getReviews_smallList_success(){
     //given
-    //Page<MusicalReviewDao> musicalReviewDaos =
-    //when(reviewRepository.findPageMusicalReviewsByMusicalId(any(),anyString(),anyString())).thenReturn()
+    List<MusicalReviewDao> musicals = new ArrayList<>();
+    for(int i=0;i<3;i++){
+      musicals.add(new MusicalReviewDao("member"+i,"image "+i,"member-id "+i,
+              null,3.0,(long)50-i*5,"short",(long)i, ZonedDateTime.now(),null));
+    }
+    Page<MusicalReviewDao> musicalReviewDaos = new PageImpl<>(musicals, Pageable.ofSize(3),20);
+    when(reviewRepository.findPageMusicalReviewsByMusicalId(any(),anyString(),nullable(String.class))).thenReturn(musicalReviewDaos);
 
     //when
-
+    MusicalReviewSmallList musicalReviews = musicalService.getReviews(null,"sample-musical-id");
 
     //then
+    long tc = 50L;
+    for (MusicalReview r : musicalReviews.getReviews()){
+      assertThat(r.getThumbsCount()).isEqualTo(tc);
+      tc-=5;
+      assertThat(r.getIsThumbsUp()).isFalse();
+    }
+    assertThat(musicalReviews.getTotalReviewCount()).isEqualTo(20);
   }
-  */
+
+  @Test
+  @DisplayName("getReviews(all) 성공")
+  void getReviews_all_success(){
+    //given
+    List<MusicalReviewDao> musicals = new ArrayList<>();
+    for(int i=0;i<3;i++){
+      musicals.add(new MusicalReviewDao("member"+i,"image "+i,"member-id "+i,
+              null,3.0,(long)50-i*5,"short",(long)i, ZonedDateTime.now(),null));
+    }
+    Slice<MusicalReviewDao> musicalReviewDaos = new SliceImpl<>(musicals,Pageable.ofSize(10),true);
+    when(reviewRepository.findMusicalReviewsByMusicalId(any(),anyString(),nullable(String.class))).thenReturn(musicalReviewDaos);
+
+    //when
+    MusicalReviewSlice result = musicalService
+            .getReviews(null,"sample-musical-id",0,10,ReviewOrderBy.THUMBS);
+
+    //then
+    verify(reviewRepository,times(1))
+            .findMusicalReviewsByMusicalId(eq(PageRequest.of(0,10,
+                    Sort.by(Sort.Direction.DESC,ReviewOrderBy.THUMBS.getFieldName()))),anyString(),nullable(String.class));
+    for(MusicalReview r : result.getReviews()){
+      assertThat(r.getIsThumbsUp()).isFalse();
+    }
+    assertThat(result.getSize()).isEqualTo(10);
+    assertThat(result.isHasNext()).isTrue();
+  }
+
+  @Test
+  @DisplayName("analysis 성공")
+  void analysis_success(){
+    //given
+    List<Review> reviews = new ArrayList<>();
+    for(int i=1;i<=10;i++){
+      Review r = new Review((long)i,i>=5?i*0.5D:1.0,null,null,null,
+              null,null,null,null,null,null,null);
+      reviews.add(r);
+    }
+    reviews.add(new Review(11L,0D,null,null,null,
+            null,null,null,null,null,null,null));
+    when(reviewRepository.findReviewsByMusicalId(anyString())).thenReturn(reviews);
+    //when
+    TreeMap<Double,Long> result = musicalService.analysis("sample-musical-id").getStatistic();
+
+    //then
+    TreeMap<Double,Long> expectedMap = new TreeMap<>();
+    for(int i=1;i<=10;i++){
+      expectedMap.put(0.5D*i,i>=5?1L:0.5D*i==1D?4L:0L);
+    }
+    expectedMap.put(0.5D,1L);
+    Double sortedKey = 0.5D;
+    for(Map.Entry<Double,Long> entry : result.entrySet()){
+      Long expectedLong = expectedMap.get(entry.getKey());
+      assertThat(entry.getValue()).isEqualTo(expectedLong);
+      assertThat(entry.getKey()).isEqualTo(sortedKey);
+      sortedKey+=0.5;
+    }
+    assertThat(result.size()).isEqualTo(10);
+
+  }
 
   private Musical createSampleMusical(){
     return new Musical("id","sample-name",null,null,"sample-placeName","sample-genre","sample-casting","sample-runningTime",

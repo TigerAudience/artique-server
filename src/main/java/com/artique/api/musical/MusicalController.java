@@ -33,7 +33,7 @@ public class MusicalController implements MusicalControllerSwagger{
   @GetMapping("/musical/reviews/all")
   public MusicalReviewSlice allReviews(@LoginUser String memberId, @RequestParam("musical-id")String musicalId,
                                        @RequestParam("page") int page,@RequestParam("size") int size,
-                                       @RequestParam(value = "order-by") OrderBy orderBy){
-    return musicalService.getReviews(memberId,musicalId,page,size,orderBy);
+                                       @RequestParam(value = "order-by") ReviewOrderBy reviewOrderBy){
+    return musicalService.getReviews(memberId,musicalId,page,size, reviewOrderBy);
   }
 }

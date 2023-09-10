@@ -66,8 +66,8 @@ public class MusicalService {
   }
 
 
-  public MusicalReviewSlice getReviews(String memberId,String musicalId, int page, int size, OrderBy orderBy){
-    PageRequest pageRequest = PageRequest.of(page,size, Sort.by(Sort.Direction.DESC, orderBy.getFieldName()));
+  public MusicalReviewSlice getReviews(String memberId,String musicalId, int page, int size, ReviewOrderBy reviewOrderBy){
+    PageRequest pageRequest = PageRequest.of(page,size, Sort.by(Sort.Direction.DESC, reviewOrderBy.getFieldName()));
 
     Slice<MusicalReviewDao> reviewDaos = reviewRepository.findMusicalReviewsByMusicalId(pageRequest,musicalId,memberId);
 

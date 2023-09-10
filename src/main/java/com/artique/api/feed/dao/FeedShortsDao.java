@@ -16,6 +16,7 @@ public class FeedShortsDao {
   //musical info
   private String musicalName;
   private String posterUrl;
+  //casting is review info
   private String casting;
   private String musicalId;
 

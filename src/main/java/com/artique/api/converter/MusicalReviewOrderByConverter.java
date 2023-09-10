@@ -1,13 +1,13 @@
 package com.artique.api.converter;
 
-import com.artique.api.musical.OrderBy;
+import com.artique.api.musical.ReviewOrderBy;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MusicalReviewOrderByConverter implements Converter<String, OrderBy> {
+public class MusicalReviewOrderByConverter implements Converter<String, ReviewOrderBy> {
   @Override
-  public OrderBy convert(String source) {
-    return OrderBy.of(source);
+  public ReviewOrderBy convert(String source) {
+    return ReviewOrderBy.of(source);
   }
 }

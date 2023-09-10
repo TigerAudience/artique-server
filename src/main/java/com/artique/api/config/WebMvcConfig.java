@@ -1,6 +1,7 @@
 package com.artique.api.config;
 
 import com.artique.api.converter.MusicalReviewOrderByConverter;
+import com.artique.api.converter.SearchMusicalOrderByConverter;
 import com.artique.api.intertceptor.CookieAuthorizationInterceptor;
 import com.artique.api.resolver.SessionUserResolver;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
   private final CookieAuthorizationInterceptor cookieAuthorizationInterceptor;
   private final SessionUserResolver sessionUserResolver;
   private final MusicalReviewOrderByConverter musicalReviewOrderByConverter;
+  private final SearchMusicalOrderByConverter searchMusicalOrderByConverter;
 
   @Override
   public void addFormatters(FormatterRegistry registry) {
     registry.addConverter(musicalReviewOrderByConverter);
+    registry.addConverter(searchMusicalOrderByConverter);
   }
 
   @Override
@@ -30,7 +33,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     registry.addInterceptor(cookieAuthorizationInterceptor)
             .excludePathPatterns("/css/**", "/images/**", "/js/**","/favicon.ico","/webjars/**","/error/**",
                     "/oauth-redirect/**", "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
-                    "/member/**","/feed/**","/review/**","/musical/**","META-INF/**");
+                    "/member/**","/feed/**","/review/**","/musical/**","/search/**","META-INF/**");
   }
 
   @Override

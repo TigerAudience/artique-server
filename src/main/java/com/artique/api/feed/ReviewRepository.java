@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface ReviewRepository extends JpaRepository<Review,Long> {
 
   @Query(value = "select new com.artique.api.feed.dao.FeedShortsDao(mem.nickname,mem.profileUrl,mem.id," +
-          "mus.name,mus.posterUrl,mus.casting,mus.id," +
+          "mus.name,mus.posterUrl,r.casting,mus.id," +
           "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,t.id)" +
           "from Review r join r.musical mus join r.member mem " +
           "left join r.thumbs t on t.member.id = :member_id")

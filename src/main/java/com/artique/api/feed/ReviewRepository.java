@@ -47,12 +47,6 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   @Query(value = "select r from Review r join fetch r.member mem join fetch r.musical mus where r.id = :review_id")
   Optional<Review> findReviewByIdJoinFetchMemberMusical(@Param("review_id")Long reviewId);
 
-  /**
-   * user 작성한 reviews
-   * @param pageable
-   * @param memberId
-   * @return
-   */
   @Query(value = "select new com.artique.api.profile.userReview.UserCreateReview" +
           "(mus.name,mus.posterUrl,r.casting,mus.id, r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id) " +
           "from Review r join r.musical mus join r.member mem where r.member.id = :member_id")
@@ -67,7 +61,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   @Query(value = "select new com.artique.api.profile.userReview.ReviewThumb" +
           "(r.id,t.id) from Review r join r.thumbs t join t.member mem on t.member.id=mem.id" +
           " where mem.id=:member_id and r.id in(:rids) group by r.id")
-  List<ReviewThumb> findThumbsByReviewIds(@Param("ids")List<Long> rIds);
+  List<ReviewThumb> findThumbsByReviewIds(@Param("rids")List<Long> rIds);
 
 
   @Query(value = "select new com.artique.api.profile.userReview.UserThumbsReview" +

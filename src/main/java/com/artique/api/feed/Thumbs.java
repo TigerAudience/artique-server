@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @AllArgsConstructor
@@ -19,4 +21,5 @@ public class Thumbs {
   private Member member;
   @ManyToOne
   private Review review;
+  private LocalDateTime createdAt;
 }

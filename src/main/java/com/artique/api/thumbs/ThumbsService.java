@@ -11,6 +11,7 @@ import com.artique.api.thumbs.dto.ThumbsReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -37,7 +38,7 @@ public class ThumbsService {
   }
 
   private ThumbsResponse thumbsUp(Member member,Review review){
-    Thumbs thumbs = thumbsRepository.save(new Thumbs(null,member,review));
+    Thumbs thumbs = thumbsRepository.save(new Thumbs(null,member,review, LocalDateTime.now()));
     review.thumbsUp();
     return ThumbsResponse.of(thumbs);
   }

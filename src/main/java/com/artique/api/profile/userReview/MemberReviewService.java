@@ -1,9 +1,14 @@
 package com.artique.api.profile.userReview;
 
+import com.artique.api.entity.Member;
 import com.artique.api.feed.ReviewRepository;
+import com.artique.api.member.MemberRepository;
+import com.artique.api.profile.userReview.response.ThumbsUpShortReviewList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -12,19 +17,29 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserReviewService {
+public class MemberReviewService {
 
   private final ReviewRepository reviewRepository;
+  private final MemberRepository memberRepository;
 
-  public void findThumbsReviews(){
+  public ThumbsUpShortReviewList getThumbsUpShortReviews(String memberId){
+    memberRepository.findById(memberId).orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
+
+    Slice<UserThumbsReview> reviews = findThumbsReviews(0,5);
+
+    return ThumbsUpShortReviewList.of(reviews);
+  }
+
+  public Slice<UserThumbsReview> findThumbsReviews(int page,int size){
     //get user thumbs up reviews
-    PageRequest pageRequest = PageRequest.of(0,10);
+    PageRequest pageRequest = PageRequest.of(page,size);
     Slice<UserThumbsReview> reviews = reviewRepository.findUserReviewsByThumbs(pageRequest,"abcd");
 
     //adjust current user is thumbs up to review
     List<UserThumbsReview> reviewList = reviews.stream().toList();
 
     mapThumbsId(reviewList);
+    return new SliceImpl<>(reviewList,PageRequest.of(page,size),reviews.hasNext());
   }
   public void searchThumbsReviews(){
     //get user thumbs up reviews

@@ -1,4 +1,4 @@
-package com.artique.api.profile.userReview;
+package com.artique.api.profile.userReview.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

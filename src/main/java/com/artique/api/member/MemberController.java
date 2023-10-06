@@ -4,9 +4,12 @@ import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.request.JoinMemberReq;
 import com.artique.api.member.request.LoginMemberReq;
 import com.artique.api.member.request.OauthMemberReq;
+import com.artique.api.member.request.UpdateMemberReq;
 import com.artique.api.member.response.JoinMember;
 import com.artique.api.member.response.LoginMember;
 import com.artique.api.member.response.MemberDuplicate;
+import com.artique.api.member.response.UpdateMemberResult;
+import com.artique.api.resolver.LoginUser;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +42,10 @@ public class MemberController implements MemberControllerSwagger{
   @PostMapping("/member/oauth")
   public LoginMember oauth(@RequestBody OauthMemberReq memberReq, HttpServletResponse response){
     return memberService.oauthLogin(memberReq,response);
+  }
+
+  @PostMapping("/update/member")
+  public UpdateMemberResult update(@RequestBody UpdateMemberReq memberForm, @LoginUser String loginMemberId){
+    return memberService.update(memberForm,loginMemberId);
   }
 }

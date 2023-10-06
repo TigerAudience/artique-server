@@ -35,28 +35,14 @@ public class MemberInfoService {
 
     List<Review> reviews = reviewRepository.findReviewsByMemberId(memberId);
 
-    Map<Double,Long> statistics =createStatistics();
+    ReviewAnalyzer reviewAnalyzer = new ReviewAnalyzer();
     for(Review r: reviews){
-      Double key = getKeyFromStarRating(r.getStarRating());
-      Long cnt = statistics.get(key);
-      statistics.put(key,cnt+1);
+      reviewAnalyzer.analysisReview(r);
     }
-    TreeMap<Double,Long> sortedStatistics = new TreeMap<>(statistics);
-    return new MemberReviewRateStatistics(sortedStatistics);
+    reviewAnalyzer.analysisAllReview();
+
+    return MemberReviewRateStatistics.of(reviewAnalyzer);
   }
 
-  private Double getKeyFromStarRating(Double starRating){
-    for(int i=0;i<10;i++){
-      if(starRating>=(5.0-i*0.5))
-        return 5.0-i*0.5;
-    }
-    return 0.5D;
-  }
-  private Map<Double,Long> createStatistics(){
-    Map<Double,Long> statistics = new HashMap<>();
-    for(int i=1;i<=10;i++){
-      statistics.put(0.5D*i,0L);
-    }
-    return statistics;
-  }
+
 }

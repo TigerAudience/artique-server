@@ -4,12 +4,16 @@ import com.artique.api.entity.Member;
 import com.artique.api.member.dto.OauthMember;
 import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.exception.LoginException;
+import com.artique.api.member.exception.UpdateMemberException;
 import com.artique.api.member.oauth.OauthService;
 import com.artique.api.member.request.JoinMemberReq;
 import com.artique.api.member.request.LoginMemberReq;
 import com.artique.api.member.request.OauthMemberReq;
+import com.artique.api.member.request.UpdateMemberReq;
 import com.artique.api.member.response.JoinMember;
 import com.artique.api.member.response.LoginMember;
+import com.artique.api.member.response.NicknameDuplicate;
+import com.artique.api.member.response.UpdateMemberResult;
 import com.artique.api.session.CustomSession;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -78,5 +82,20 @@ public class MemberService {
   public JoinMember join(JoinMemberReq memberReq){
     Member member = memberRepository.save(JoinMemberReq.toMember(memberReq));
     return JoinMember.of(member);
+  }
+
+  @Transactional
+  public UpdateMemberResult update(UpdateMemberReq memberForm,String memberId){
+    Member member = memberRepository.findById(memberForm.getMemberId())
+            .orElseThrow(()->new UpdateMemberException("invalid member id","MEMBER-UPDATE-001"));
+
+    member.update(memberForm,memberId);
+
+    return UpdateMemberResult.of(member);
+  }
+
+  public NicknameDuplicate checkNickname(String nickname){
+    Optional<Member> memberOptional = memberRepository.findMemberByNickname(nickname);
+    return NicknameDuplicate.of(memberOptional,nickname);
   }
 }

@@ -24,21 +24,22 @@ public class MemberThumbsUpReviewService {
   private final ReviewRepository reviewRepository;
   private final MemberRepository memberRepository;
 
-  public ThumbsUpShortReviewList getThumbsUpShortReviews(String memberId){
+  public ThumbsUpShortReviewList getThumbsUpShortReviews(String memberId,String loginMemberId){
     memberRepository.findById(memberId).orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
 
-    UserThumbsReviewSlice reviews = findThumbsReviews(memberId,0,5);
+    UserThumbsReviewSlice reviews = findThumbsReviews(memberId,loginMemberId,0,5);
 
     return ThumbsUpShortReviewList.of(reviews);
   }
-  public ThumbsUpReviewList getThumbsUpAllReviews(String memberId,int page,int size){
+  public ThumbsUpReviewList getThumbsUpAllReviews(String memberId,String loginMemberId,int page,int size){
     memberRepository.findById(memberId).orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
 
-    UserThumbsReviewSlice reviews = findThumbsReviews(memberId,page,size);
+    UserThumbsReviewSlice reviews = findThumbsReviews(memberId,loginMemberId,page,size);
 
     return ThumbsUpReviewList.of(reviews);
   }
-  public ThumbsUpSearchReviewList getThumbsUpSearchReviews(String memberId,int page,int size,String keyword){
+  public ThumbsUpSearchReviewList getThumbsUpSearchReviews(String memberId,String loginMemberId,int page,int size
+          ,String keyword){
     memberRepository.findById(memberId).orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
 
     PageRequest pageRequest = PageRequest.of(page,size);
@@ -47,13 +48,13 @@ public class MemberThumbsUpReviewService {
 
     List<UserThumbsReview> reviewList = reviews.stream().toList();
 
-    mapThumbsId(reviewList,memberId);
+    mapThumbsId(reviewList,loginMemberId);
 
     return ThumbsUpSearchReviewList
             .of(new UserThumbsReviewSlice(reviewList,page,reviewList.size(),reviews.hasNext()));
   }
 
-  public UserThumbsReviewSlice findThumbsReviews(String memberId, int page, int size){
+  public UserThumbsReviewSlice findThumbsReviews(String memberId,String loginMemberId, int page, int size){
     //get user thumbs up reviews
     PageRequest pageRequest = PageRequest.of(page,size);
     Slice<UserThumbsReview> reviews = reviewRepository.findUserReviewsByThumbs(pageRequest,memberId);
@@ -61,15 +62,15 @@ public class MemberThumbsUpReviewService {
     //adjust current user is thumbs up to review
     List<UserThumbsReview> reviewList = reviews.stream().toList();
 
-    mapThumbsId(reviewList,memberId);
+    mapThumbsId(reviewList,loginMemberId);
     return new UserThumbsReviewSlice(reviewList,page,reviewList.size(),reviews.hasNext());
   }
 
-  public void mapThumbsId(List<UserThumbsReview> reviews,String memberId){
+  public void mapThumbsId(List<UserThumbsReview> reviews,String loginMemberId){
     //adjust current user is thumbs up to review
     List<Long> reviewIds = getReviewIds(reviews);
 
-    List<ReviewThumb> reviewThumbs = reviewRepository.findThumbsByReviewIds(reviewIds,memberId);
+    List<ReviewThumb> reviewThumbs = reviewRepository.findThumbsByReviewIds(reviewIds,loginMemberId);
     HashMap<Long,Long> reviewThumbMap = toMap(reviewThumbs);
 
     for(UserThumbsReview review: reviews){

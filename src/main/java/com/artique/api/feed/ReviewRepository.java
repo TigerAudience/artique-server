@@ -79,5 +79,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
           " where mem.id=:member_id and r.id in(:rids)")
   List<ReviewThumb> findThumbsByReviewIds(@Param("rids")List<Long> rIds,@Param("member_id")String memberId);
 
+  @Query(value = "select r from Review r join r.member mem where mem.id =:member_id")
+  List<Review> findReviewsByMemberId(@Param("member_id")String memberId);
 
 }

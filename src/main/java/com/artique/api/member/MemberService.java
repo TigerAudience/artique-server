@@ -12,6 +12,7 @@ import com.artique.api.member.request.OauthMemberReq;
 import com.artique.api.member.request.UpdateMemberReq;
 import com.artique.api.member.response.JoinMember;
 import com.artique.api.member.response.LoginMember;
+import com.artique.api.member.response.NicknameDuplicate;
 import com.artique.api.member.response.UpdateMemberResult;
 import com.artique.api.session.CustomSession;
 import jakarta.servlet.http.Cookie;
@@ -91,5 +92,10 @@ public class MemberService {
     member.update(memberForm,memberId);
 
     return UpdateMemberResult.of(member);
+  }
+
+  public NicknameDuplicate checkNickname(String nickname){
+    Optional<Member> memberOptional = memberRepository.findMemberByNickname(nickname);
+    return NicknameDuplicate.of(memberOptional,nickname);
   }
 }

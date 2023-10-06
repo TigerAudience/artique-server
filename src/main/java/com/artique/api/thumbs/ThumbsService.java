@@ -10,6 +10,7 @@ import com.artique.api.thumbs.dto.ThumbsResponse;
 import com.artique.api.thumbs.dto.ThumbsReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -20,7 +21,7 @@ public class ThumbsService {
   private final ThumbsRepository thumbsRepository;
   private final ReviewRepository reviewRepository;
   private final MemberRepository memberRepository;
-
+  @Transactional
   public ThumbsResponse process(String memberId, ThumbsReq req){
     Review review = reviewRepository.findById(req.getReviewId())
             .orElseThrow(()->new ThumbsException("invalid review Id","THUMBS-001"));

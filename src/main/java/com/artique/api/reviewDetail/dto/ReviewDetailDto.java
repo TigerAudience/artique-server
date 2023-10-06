@@ -1,4 +1,4 @@
-package com.artique.api.review.dto;
+package com.artique.api.reviewDetail.dto;
 
 import com.artique.api.entity.Review;
 import lombok.AllArgsConstructor;

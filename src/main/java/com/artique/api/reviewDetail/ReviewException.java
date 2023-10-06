@@ -1,4 +1,4 @@
-package com.artique.api.review;
+package com.artique.api.reviewDetail;
 
 import lombok.AllArgsConstructor;
 

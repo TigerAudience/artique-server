@@ -13,9 +13,4 @@ import java.util.Optional;
 public class NicknameDuplicate {
   private String nickName;
   private boolean isUnique;
-
-  public static NicknameDuplicate of(Optional<Member> member,String requestNickname){
-    boolean isUnique = member.isEmpty();
-    return new NicknameDuplicate(requestNickname,isUnique);
-  }
 }

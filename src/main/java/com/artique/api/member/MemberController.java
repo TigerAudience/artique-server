@@ -48,7 +48,7 @@ public class MemberController implements MemberControllerSwagger{
   public UpdateMemberResult update(@RequestBody UpdateMemberReq memberForm, @LoginUser String loginMemberId){
     return memberService.update(memberForm,loginMemberId);
   }
-  @GetMapping("/member/nickname")
+  @GetMapping("/member/nickname/duplicate")
   public NicknameDuplicate checkDuplicateNickName(@RequestParam String nickname){
      return memberService.checkNickname(nickname);
   }

@@ -18,9 +18,11 @@ import com.artique.api.session.CustomSession;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.*;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -95,7 +97,11 @@ public class MemberService {
   }
 
   public NicknameDuplicate checkNickname(String nickname){
-    Optional<Member> memberOptional = memberRepository.findMemberByNickname(nickname);
-    return NicknameDuplicate.of(memberOptional,nickname);
+    List<Member> members = memberRepository.findMemberByNickname(nickname);
+
+    return new NicknameDuplicate(nickname,nicknameIsUnique(members));
+  }
+  public boolean nicknameIsUnique(List<Member> list){
+    return list.isEmpty();
   }
 }

@@ -1,5 +1,6 @@
 package com.artique.api.profile.summary;
 
+import com.artique.api.profile.summary.response.MemberReviewRateStatistics;
 import com.artique.api.profile.summary.response.MemberSummary;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class MemberSummaryController {
   }
 
   @GetMapping("/member/summary/statistics")
-  public void getMemberReviewSummary(){
-    return;
+  public MemberReviewRateStatistics getMemberReviewSummary(@RequestParam("member-id")String memberId){
+    return memberInfoService.analysis(memberId);
   }
 }

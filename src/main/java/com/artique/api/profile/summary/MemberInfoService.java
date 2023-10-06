@@ -45,18 +45,6 @@ public class MemberInfoService {
     return new MemberReviewRateStatistics(sortedStatistics);
   }
 
-
-  public MusicalRateStatistics analysis(String musicalId){
-    List<Review> reviews = reviewRepository.findReviewsByMusicalId(musicalId);
-    Map<Double,Long> statistics =createStatistics();
-    for(Review r : reviews){
-      Double key = getKeyFromStarRating(r.getStarRating());
-      Long cnt = statistics.get(key);
-      statistics.put(key,cnt+1);
-    }
-    TreeMap<Double,Long> sortedStatistics = new TreeMap<>(statistics);
-    return new MusicalRateStatistics(sortedStatistics);
-  }
   private Double getKeyFromStarRating(Double starRating){
     for(int i=0;i<10;i++){
       if(starRating>=(5.0-i*0.5))

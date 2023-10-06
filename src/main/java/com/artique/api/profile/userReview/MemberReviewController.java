@@ -2,6 +2,7 @@ package com.artique.api.profile.userReview;
 
 import com.artique.api.musical.ReviewOrderBy;
 import com.artique.api.profile.userReview.response.*;
+import com.artique.api.resolver.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,18 +14,20 @@ public class MemberReviewController {
   private final MemberThumbsUpReviewService memberThumbsUpReviewService;
   private final MemberCreateReviewService memberCreateReviewService;
   @GetMapping("/member/review/thumbs/short")
-  public ThumbsUpShortReviewList getMemberThumbsShortReviews(@RequestParam("member-id") String memberId){
-    return memberThumbsUpReviewService.getThumbsUpShortReviews(memberId);
+  public ThumbsUpShortReviewList getMemberThumbsShortReviews(@RequestParam("member-id") String memberId
+          ,@LoginUser String loginMemberId){
+    return memberThumbsUpReviewService.getThumbsUpShortReviews(memberId,loginMemberId);
   }
   @GetMapping("/member/review/thumbs/all")
   public ThumbsUpReviewList getMemberThumbsAllReviews(@RequestParam("member-id") String memberId
-          ,@RequestParam int page,@RequestParam int size){
-    return memberThumbsUpReviewService.getThumbsUpAllReviews(memberId,page,size);
+          ,@RequestParam int page,@RequestParam int size, @LoginUser String loginMemberId){
+    return memberThumbsUpReviewService.getThumbsUpAllReviews(memberId,loginMemberId,page,size);
   }
   @GetMapping("/member/review/thumbs/search")
-  public ThumbsUpSearchReviewList getMemberThumbsAllReviews(@RequestParam("member-id") String memberId
-          , @RequestParam int page, @RequestParam int size, @RequestParam("keyword") String keyword){
-    return memberThumbsUpReviewService.getThumbsUpSearchReviews(memberId,page,size,keyword);
+  public ThumbsUpSearchReviewList getMemberThumbsSearchReviews(@RequestParam("member-id") String memberId
+          , @RequestParam int page, @RequestParam int size, @RequestParam("keyword") String keyword
+          , @LoginUser String loginMemberId){
+    return memberThumbsUpReviewService.getThumbsUpSearchReviews(memberId,loginMemberId,page,size,keyword);
   }
 
   @GetMapping("/member/review/create/short")

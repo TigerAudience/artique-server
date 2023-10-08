@@ -1,7 +1,6 @@
-package com.artique.api.review;
+package com.artique.api.reviewDetail;
 
-import com.artique.api.entity.Review;
-import com.artique.api.review.dto.ReviewDetailDto;
+import com.artique.api.reviewDetail.dto.ReviewDetailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

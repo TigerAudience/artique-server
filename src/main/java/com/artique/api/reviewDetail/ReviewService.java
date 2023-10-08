@@ -1,8 +1,8 @@
-package com.artique.api.review;
+package com.artique.api.reviewDetail;
 
 import com.artique.api.entity.Review;
 import com.artique.api.feed.ReviewRepository;
-import com.artique.api.review.dto.ReviewDetailDto;
+import com.artique.api.reviewDetail.dto.ReviewDetailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

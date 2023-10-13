@@ -4,6 +4,7 @@ import com.artique.api.converter.MusicalReviewOrderByConverter;
 import com.artique.api.converter.SearchMusicalOrderByConverter;
 import com.artique.api.converter.UserReviewOrderByConverter;
 import com.artique.api.intertceptor.CookieAuthorizationInterceptor;
+import com.artique.api.intertceptor.HttpRequestInfoInterceptor;
 import com.artique.api.resolver.SessionUserResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
   private final MusicalReviewOrderByConverter musicalReviewOrderByConverter;
   private final SearchMusicalOrderByConverter searchMusicalOrderByConverter;
   private final UserReviewOrderByConverter userReviewOrderByConverter;
+  private final HttpRequestInfoInterceptor httpRequestInfoInterceptor;
 
   @Override
   public void addFormatters(FormatterRegistry registry) {
@@ -33,7 +35,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry){
-    registry.addInterceptor(cookieAuthorizationInterceptor)
+    registry.addInterceptor(httpRequestInfoInterceptor).order(1)
+            .excludePathPatterns("/css/**", "/images/**", "/js/**","/favicon.ico","/webjars/**","/error/**",
+            "/oauth-redirect/**", "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
+            "/member/**","/feed/**","/review/**","/musical/**","/search/**","META-INF/**",
+            "/config/**");
+    registry.addInterceptor(cookieAuthorizationInterceptor).order(2)
             .excludePathPatterns("/css/**", "/images/**", "/js/**","/favicon.ico","/webjars/**","/error/**",
                     "/oauth-redirect/**", "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
                     "/member/**","/feed/**","/review/**","/musical/**","/search/**","META-INF/**",

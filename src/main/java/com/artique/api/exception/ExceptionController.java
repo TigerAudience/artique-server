@@ -1,9 +1,12 @@
 package com.artique.api.exception;
 
 import com.artique.api.feed.FeedException;
+import com.artique.api.intertceptor.HttpRequestRepository;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.musical.MusicalException;
 import com.artique.api.thumbs.ThumbsException;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +16,15 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class ExceptionController {
+  private final HttpRequestRepository httpRequestRepository;
 
   @ExceptionHandler(LoginException.class)
   public ResponseEntity<ErrorResponse> loginException(LoginException e){
+    HttpServletRequest request = httpRequestRepository.get();
+    httpRequestRepository.delete();
+    System.out.print(request.getMethod());
     return new ResponseEntity<>(ErrorResponse.builder().code(e.getErrorCode()).message(e.getMessage()).build(),
             HttpStatus.FORBIDDEN);
   }

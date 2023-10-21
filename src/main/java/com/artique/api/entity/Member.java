@@ -34,4 +34,7 @@ public class Member {
         this.introduce=memberForm.getIntroduce();
         this.password=memberForm.getPassword();
     }
+    public void changeImage(String imageUrl){
+        this.profileUrl=imageUrl;
+    }
 }

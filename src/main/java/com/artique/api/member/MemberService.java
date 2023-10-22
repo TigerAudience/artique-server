@@ -33,6 +33,7 @@ public class MemberService {
   private final MemberRepository memberRepository;
   private final CustomSession session;
   private final OauthService oauthService;
+  private final MemberGeneratorService memberGeneratorService;
 
   public boolean checkDuplicateMember(String memberId){
     return memberRepository.findById(memberId).isEmpty();
@@ -57,7 +58,7 @@ public class MemberService {
 
     Member findMember;
     if(checkDuplicateMember(joinMemberReq.getMemberId()))
-       findMember = memberRepository.save(JoinMemberReq.toMember(joinMemberReq));
+       findMember = saveMember(joinMemberReq);
     else{
       findMember = memberRepository.findById(joinMemberReq.getMemberId()).get();
     }
@@ -79,10 +80,13 @@ public class MemberService {
   private void adjustCookie(String sessionId,HttpServletResponse httpServletResponse){
     httpServletResponse.addCookie(new Cookie("session-id",sessionId));
   }
+  private Member saveMember(JoinMemberReq joinMemberReq){
+    return memberRepository.save(memberGeneratorService.generateInitialMember(joinMemberReq));
+  }
 
   // duplicated는 확인 완료 된 상태
   public JoinMember join(JoinMemberReq memberReq){
-    Member member = memberRepository.save(JoinMemberReq.toMember(memberReq));
+    Member member = saveMember(memberReq);
     return JoinMember.of(member);
   }
 

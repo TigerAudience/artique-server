@@ -29,7 +29,10 @@ public class MemberGeneratorService {
   public void initNickname() throws IOException{
     initAnimalsAndAdjectives();
     List<Member> members = memberRepository.findAll();
-    Map<String,String> memberNicknames = members.stream().collect(Collectors.toMap(Member::getNickname,Member::getId));
+    Map<String,String> memberNicknames = new HashMap<>();
+    for(Member member:members){
+      memberNicknames.put(member.getNickname(),member.getId());
+    }
     Queue<String> nicknamesQueue = new LinkedList<>();
     for (String animalName : animals){
       for (String adjective : adjectives){

@@ -14,4 +14,9 @@ public class ErrorResponse {
   private String code;
   private String message;
   private HttpPretty httpRequest;
+  public ErrorResponse(String code,String message){
+    this.code=code;
+    this.message=message;
+    this.httpRequest=null;
+  }
 }

@@ -2,6 +2,9 @@ FROM openjdk:17
 EXPOSE 8080
 COPY build/libs/api-0.0.1-SNAPSHOT.jar app.jar
 COPY agent.java/ agent.java/
+COPY adjectives.txt adjectives.txt
+COPY animals.txt animals.txt
+COPY default-image.png default-image.png
 COPY src/main/resources/application-deploy.properties application-db.properties
 COPY startUp-deploy.sh startUp.sh
 #ENTRYPOINT ["java"," -jar","/app.jar"]

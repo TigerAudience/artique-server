@@ -2,6 +2,7 @@ package com.artique.api.member;
 
 import com.artique.api.exception.ErrorResponse;
 import com.artique.api.exception.ExceptionController;
+import com.artique.api.intertceptor.HttpPretty;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.request.JoinMemberReq;

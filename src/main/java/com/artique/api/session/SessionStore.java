@@ -41,6 +41,8 @@ public class SessionStore{
     return sessionValue.getMemberId();
   }
   public boolean sessionExpired(long sessionKey){
+    System.out.println("sessionKey "+sessionKey);
+    System.out.println(memorySession.get(sessionKey));
     if(!memorySession.containsKey(sessionKey))
       return true;
     SessionValue session = memorySession.get(sessionKey);
@@ -80,6 +82,7 @@ public class SessionStore{
     }
     public boolean expired(){
       LocalDateTime present = LocalDateTime.now();
+      System.out.println("session expired check");
       return present.isAfter(expiredAt);
     }
   }

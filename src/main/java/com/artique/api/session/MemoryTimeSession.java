@@ -20,6 +20,7 @@ public class MemoryTimeSession implements CustomSession{
 
   @Override
   public boolean validateSessionId(String id) {
+    System.out.println("session id " + id);
     long sessionKey;
     try {
       sessionKey=Long.parseLong(id);

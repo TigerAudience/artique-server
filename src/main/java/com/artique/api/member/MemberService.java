@@ -108,4 +108,10 @@ public class MemberService {
   public boolean nicknameIsUnique(List<Member> list){
     return list.isEmpty();
   }
+
+  public String getId(String loginMemberId){
+    Member member = memberRepository.findById(loginMemberId)
+          .orElseThrow(()->new UpdateMemberException("invalid member id","MEMBER-UPDATE-001"));
+    return member.getId();
+  }
 }

@@ -43,6 +43,10 @@ public class MemberController implements MemberControllerSwagger{
   public LoginMember oauth(@RequestBody OauthMemberReq memberReq, HttpServletResponse response){
     return memberService.oauthLogin(memberReq,response);
   }
+  @GetMapping("/member/id")
+  public String getMemberId(@LoginUser String loginMemberId){
+    return memberService.getId(loginMemberId);
+  }
 
   @PostMapping("/update/member")
   public UpdateMemberResult update(@RequestBody UpdateMemberReq memberForm, @LoginUser String loginMemberId){

@@ -6,7 +6,10 @@ import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Component
@@ -47,6 +50,13 @@ public class SessionStore{
   private long memberToSessionKey(Member member){
     String memberId = member.getId();
     return memberId.hashCode();
+  }
+  public List<String> findAll(){
+    List<String> sessions = new ArrayList<>();
+    for(Map.Entry<Long,SessionValue> entry : memorySession.entrySet()){
+      sessions.add("id : "+entry.getKey()+", member id : "+entry.getValue().getMemberId());
+    }
+    return sessions;
   }
 
   @AllArgsConstructor

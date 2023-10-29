@@ -39,12 +39,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .excludePathPatterns("/css/**", "/images/**", "/js/**","/favicon.ico","/webjars/**","/error/**",
             "/oauth-redirect/**", "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
             "/member/**","/feed/**","/review/**","/musical/**","/search/**","META-INF/**",
-            "/config/**");
+            "/config/**","/session/**");
     registry.addInterceptor(cookieAuthorizationInterceptor).order(2)
             .excludePathPatterns("/css/**", "/images/**", "/js/**","/favicon.ico","/webjars/**","/error/**",
                     "/oauth-redirect/**", "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
                     "/member/**","/feed/**","/review/**","/musical/**","/search/**","META-INF/**",
-                    "/config/**");
+                    "/config/**","/session/**");
   }
 
   @Override

@@ -22,7 +22,6 @@ public class CookieAuthorizationInterceptor implements HandlerInterceptor {
     if(request.getMethod().equals("OPTIONS"))
       return HandlerInterceptor.super.preHandle(request, response, handler);
     String sessionId = getSessionIdFromCookie(request);
-    System.out.println("find session id "+sessionId);
     if(sessionId == null || !session.validateSessionId(sessionId)){
       throw new LoginException("authorization failure", HttpStatus.UNAUTHORIZED.toString());
     }
@@ -36,7 +35,6 @@ public class CookieAuthorizationInterceptor implements HandlerInterceptor {
       return null;
     String sessionId = null;
     for(Cookie cookie: cookies) {
-      System.out.println("cookie name "+cookie.getName()+", value : "+cookie.getValue());
       if(cookie.getName().equals("session-id")) {
         sessionId = cookie.getValue();
         break;

@@ -71,11 +71,15 @@ public class MemberService {
 
   public void afterLogin(Member member, HttpServletResponse response){
     String sessionId = session.createSession(member);
-    adjustCookie(sessionId, response);
+    //adjustCookie(sessionId, response);
+    adjustAuthorizationHeader(sessionId,response);
   }
 
   private boolean checkPassword(Member member,LoginMemberReq memberReq){
     return member.getPassword().equals(memberReq.getMemberPW());
+  }
+  private void adjustAuthorizationHeader(String sessionId,HttpServletResponse httpServletResponse){
+    httpServletResponse.addHeader("Authorization",sessionId);
   }
   private void adjustCookie(String sessionId,HttpServletResponse httpServletResponse){
     httpServletResponse.addCookie(new Cookie("session-id",sessionId));

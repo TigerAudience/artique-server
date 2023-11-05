@@ -3,6 +3,7 @@ package com.artique.api.config;
 import com.artique.api.converter.MusicalReviewOrderByConverter;
 import com.artique.api.converter.SearchMusicalOrderByConverter;
 import com.artique.api.converter.UserReviewOrderByConverter;
+import com.artique.api.intertceptor.AuthorizationHeaderInterceptor;
 import com.artique.api.intertceptor.CookieAuthorizationInterceptor;
 import com.artique.api.intertceptor.HttpRequestInfoInterceptor;
 import com.artique.api.resolver.SessionUserResolver;
@@ -25,6 +26,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
   private final SearchMusicalOrderByConverter searchMusicalOrderByConverter;
   private final UserReviewOrderByConverter userReviewOrderByConverter;
   private final HttpRequestInfoInterceptor httpRequestInfoInterceptor;
+  private final AuthorizationHeaderInterceptor authorizationHeaderInterceptor;
 
   @Override
   public void addFormatters(FormatterRegistry registry) {
@@ -40,7 +42,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
             "/oauth-redirect/**", "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
             "/member/**","/feed/**","/review/**","/musical/**","/search/**","META-INF/**",
             "/config/**","/session/**");
+    /*
     registry.addInterceptor(cookieAuthorizationInterceptor).order(2)
+            .excludePathPatterns("/css/**", "/images/**", "/js/**","/favicon.ico","/webjars/**","/error/**",
+                    "/oauth-redirect/**", "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
+                    "/member/**","/feed/**","/review/**","/musical/**","/search/**","META-INF/**",
+                    "/config/**","/session/**");
+
+     */
+    registry.addInterceptor(authorizationHeaderInterceptor).order(2)
             .excludePathPatterns("/css/**", "/images/**", "/js/**","/favicon.ico","/webjars/**","/error/**",
                     "/oauth-redirect/**", "/swagger-ui/**","/swagger-resources/**","/v3/api-docs/**",
                     "/member/**","/feed/**","/review/**","/musical/**","/search/**","META-INF/**",

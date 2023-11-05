@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +15,7 @@ public class ReviewUpdateRequest {
   private Double starRating;
   private String shortReview;
   private String longReview;
-  private String casting;
+  private List<String> casting;
   private LocalDate viewDate;
   private String seat;
 }

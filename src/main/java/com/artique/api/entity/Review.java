@@ -50,7 +50,14 @@ public class Review {
         this.starRating=reviewForm.getStarRating();
         this.shortReview=reviewForm.getShortReview();
         this.longReview=reviewForm.getLongReview();
-        this.casting=reviewForm.getCasting();
+        List<String> casting=reviewForm.getCasting();
+        String reviewCasting="";
+        for(int i=0;i<casting.size();i++){
+            reviewCasting+=casting.get(i);
+            if(i<casting.size()-1)
+                reviewCasting+=",";
+        }
+        this.casting=reviewCasting;
         this.viewDate=reviewForm.getViewDate();
         this.seat=reviewForm.getSeat();
     }

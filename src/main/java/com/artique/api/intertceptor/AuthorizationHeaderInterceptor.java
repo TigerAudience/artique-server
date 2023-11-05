@@ -25,6 +25,12 @@ public class AuthorizationHeaderInterceptor implements HandlerInterceptor {
     return HandlerInterceptor.super.preHandle(request,response,handler);
   }
   private String getSessionIdFromAuthorizationHeader(HttpServletRequest request){
-    return request.getHeader("Authorization");
+    String authorizationHeader = request.getHeader("Authorization");
+    if(authorizationHeader.isEmpty())
+      return null;
+    return parseSessionId(authorizationHeader);
+  }
+  private String parseSessionId(String rawSessionId){
+    return rawSessionId.replaceAll("session-id=","");
   }
 }

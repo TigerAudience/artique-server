@@ -27,12 +27,13 @@ public class UserThumbsReview {
   private Long thumbsCount;
   private String shortReview;
   private Long reviewId;
+  private Boolean reviewSpoiler;
 
   //thumbsup info
   private Long thumbsId;
 
   public UserThumbsReview(String memName,String memUrl, String memId,String musName,String musUrl,String rCast,
-                          String musId, LocalDate rView,Double rStar,Long rThumb,String rShort,Long rId){
+                          String musId, LocalDate rView,Double rStar,Long rThumb,String rShort,Boolean reviewSpoiler,Long rId){
     this.memberNickname=memName;
     this.memberImageUrl=memUrl;
     this.memberId=memId;
@@ -45,6 +46,7 @@ public class UserThumbsReview {
     this.thumbsCount=rThumb;
     this.shortReview=rShort;
     this.reviewId=rId;
+    this.reviewSpoiler=reviewSpoiler;
     this.thumbsId=null;
   }
 

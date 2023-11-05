@@ -13,8 +13,9 @@ public class CreateShortReview {
   private String musicalName;
   private Double starRating;
   private String shortReview;
+  private Boolean reviewSpoiler;
 
   public static CreateShortReview of(UserCreateReview r){
-    return new CreateShortReview(r.getReviewId(),r.getMusicalName(),r.getStarRating(),r.getShortReview());
+    return new CreateShortReview(r.getReviewId(),r.getMusicalName(),r.getStarRating(),r.getShortReview(),r.getReviewSpoiler());
   }
 }

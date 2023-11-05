@@ -20,13 +20,13 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
   @Query(value = "select new com.artique.api.feed.dao.FeedShortsDao(mem.nickname,mem.profileUrl,mem.id," +
           "mus.name,mus.posterUrl,r.casting,mus.id," +
-          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,t.id)" +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.shortSpoiler,t.id)" +
           "from Review r join r.musical mus join r.member mem " +
           "left join r.thumbs t on t.member.id = :member_id")
   Slice<FeedShortsDao> findPageReviewsByMemberSlice(Pageable pageable, @Param("member_id") String memberId);
 
   @Query(value = "select new com.artique.api.musical.dao.MusicalReviewDao" +
-          "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.createdAt,t.id) " +
+          "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.createdAt,r.shortSpoiler,t.id) " +
           "from Review r join r.musical mus join r.member mem " +
           "left join r.thumbs t on t.member.id = :member_id " +
           "where mus.id = :musical_id")
@@ -37,7 +37,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   List<Review> findReviewsByMusicalId(@Param("musical_id")String musicalId);
 
   @Query(value = "select new com.artique.api.musical.dao.MusicalReviewDao" +
-          "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.createdAt,t.id) " +
+          "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.createdAt,r.shortSpoiler,t.id) " +
           "from Review r join r.musical mus join r.member mem " +
           "left join r.thumbs t on t.member.id = :member_id " +
           "where mus.id = :musical_id")
@@ -49,12 +49,12 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
   @Query(value = "select new com.artique.api.profile.userReview.dto.UserCreateReview" +
           "(mem.nickname,mem.profileUrl,mem.id, mus.name,mus.posterUrl,r.casting,mus.id," +
-          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id) " +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) " +
           "from Review r join r.musical mus join r.member mem where r.member.id = :member_id order by r.thumbsUp desc")
   Slice<UserCreateReview> findUserReviewsByMemberId(Pageable pageable, @Param("member_id")String memberId);
   @Query(value = "select new com.artique.api.profile.userReview.dto.UserCreateReview" +
           "(mem.nickname,mem.profileUrl,mem.id, mus.name,mus.posterUrl,r.casting,mus.id," +
-          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id) " +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) " +
           "from Review r join r.musical mus join r.member mem where r.member.id = :member_id and " +
           "(mus.name like %:keyword%)")
   Slice<UserCreateReview> findUserReviewsByMemberIdAndKeyword(Pageable pageable, @Param("member_id")String memberId,
@@ -62,14 +62,14 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
   @Query(value = "select new com.artique.api.profile.userReview.dto.UserThumbsReview" +
           "(mem.nickname,mem.profileUrl,mem.id, mus.name,mus.posterUrl,r.casting,mus.id, " +
-          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id) from Review r join r.musical mus join r.thumbs t join t.member mem " +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) from Review r join r.musical mus join r.thumbs t join t.member mem " +
           "where mem.id = :member_id order by t.createdAt")
   Slice<UserThumbsReview> findUserReviewsByThumbs(Pageable pageable, @Param("member_id")String memberId);
 
 
   @Query(value = "select new com.artique.api.profile.userReview.dto.UserThumbsReview" +
           "(mem.nickname,mem.profileUrl,mem.id, mus.name,mus.posterUrl,r.casting,mus.id, " +
-          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id) from Review r join r.musical mus join r.thumbs t join t.member mem " +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) from Review r join r.musical mus join r.thumbs t join t.member mem " +
           "where mem.id =:member_id and (mus.name like %:keyword%) order by t.createdAt")
   Slice<UserThumbsReview> findUserReviewsByThumbsAndKeyword(Pageable pageable, @Param("member_id")String memberId,
                                                             @Param("keyword")String keyword);

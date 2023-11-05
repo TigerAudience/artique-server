@@ -26,6 +26,7 @@ public class FeedShorts {
   private Long thumbsCount;
   private String shortReview;
   private Long reviewId;
+  private Boolean reviewSpoiler;
 
   //thumbsup info
   private Boolean isThumbsUp;
@@ -35,6 +36,6 @@ public class FeedShorts {
             feedShorts.getMemberId(), feedShorts.getMusicalName(),feedShorts.getPosterUrl(),
             feedShorts.getCasting(),feedShorts.getMusicalId(),feedShorts.getViewDate(),feedShorts.getStarRating(),
             feedShorts.getThumbsCount(),feedShorts.getShortReview(),feedShorts.getReviewId(),
-            feedShorts.getThumbsId() != null);
+            feedShorts.getReviewSpoiler(),feedShorts.getThumbsId() != null);
   }
 }

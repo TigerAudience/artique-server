@@ -5,6 +5,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -32,7 +33,8 @@ public class SessionUserResolver implements HandlerMethodArgumentResolver {
     return null;
   }
   private String resolveSessionId(HttpServletRequest request){
-    return getSessionIdFromCookie(request);
+    return getSessionIdFromAuthorizationHeader(request);
+    //return getSessionIdFromCookie(request);
   }
   private String getSessionIdFromCookie(HttpServletRequest request){
     Cookie[] cookies = request.getCookies();
@@ -46,5 +48,8 @@ public class SessionUserResolver implements HandlerMethodArgumentResolver {
       }
     }
     return sessionId;
+  }
+  private String getSessionIdFromAuthorizationHeader(HttpServletRequest request){
+    return request.getHeader("Authorization");
   }
 }

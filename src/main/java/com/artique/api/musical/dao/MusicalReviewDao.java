@@ -21,6 +21,7 @@ public class MusicalReviewDao {
   private String shortReview;
   private Long reviewId;
   private ZonedDateTime createdAt;
+  private Boolean reviewSpoiler;
 
   //thumbsup info
   private Long thumbsId;

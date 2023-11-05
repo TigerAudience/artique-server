@@ -79,7 +79,7 @@ public class MemberService {
     return member.getPassword().equals(memberReq.getMemberPW());
   }
   private void adjustAuthorizationHeader(String sessionId,HttpServletResponse httpServletResponse){
-    httpServletResponse.addHeader("authorization",sessionId);
+    httpServletResponse.addHeader("Authorization",sessionId);
   }
   private void adjustCookie(String sessionId,HttpServletResponse httpServletResponse){
     httpServletResponse.addCookie(new Cookie("session-id",sessionId));

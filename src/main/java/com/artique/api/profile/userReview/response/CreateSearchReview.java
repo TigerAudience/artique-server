@@ -41,10 +41,4 @@ public class CreateSearchReview {
             r.getShortReview(),r.getReviewId(),r.getReviewSpoiler(),thumbsId!=null);
   }
 
-  public static ThumbsUpSearchReview of(UserThumbsReview r){
-    Long thumbsId = r.getThumbsId();
-    return new ThumbsUpSearchReview(r.getMemberNickname(),r.getMemberImageUrl(),r.getMemberId(),r.getMusicalName(),
-            r.getPosterUrl(),r.getCasting(),r.getMusicalId(),r.getViewDate(),r.getStarRating(),r.getThumbsCount(),
-            r.getShortReview(),r.getReviewId(), thumbsId != null);
-  }
 }

@@ -29,10 +29,14 @@ public class Member {
     public void update(UpdateMemberReq memberForm,String loginMemberId){
         if(!loginMemberId.equals(this.id))
             throw new UpdateMemberException("user do not match.","MEMBER-UPDATE-002");
-        this.nickname=memberForm.getNickname();
-        this.profileUrl=memberForm.getProfileUrl();
-        this.introduce=memberForm.getIntroduce();
-        this.password=memberForm.getPassword();
+        if(memberForm.getNickname()!=null)
+            this.nickname=memberForm.getNickname();
+        if(memberForm.getProfileUrl()!=null)
+            this.profileUrl=memberForm.getProfileUrl();
+        if (memberForm.getIntroduce()!=null)
+            this.introduce=memberForm.getIntroduce();
+        if (memberForm.getPassword()!=null)
+            this.password=memberForm.getPassword();
     }
     public void changeImage(String imageUrl){
         this.profileUrl=imageUrl;

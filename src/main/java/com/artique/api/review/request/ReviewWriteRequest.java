@@ -22,6 +22,8 @@ public class ReviewWriteRequest {
   private LocalDate viewDate;
   private String seat;
   private String musicalId;
+  private boolean shortSpoiler;
+  private boolean longSpoiler;
 
   public Review toReview(Member member, Musical musical){
     String reviewCasting="";
@@ -31,6 +33,6 @@ public class ReviewWriteRequest {
         reviewCasting+=",";
     }
     return new Review(null,starRating,shortReview,longReview,reviewCasting,viewDate,seat
-            ,0L,member,musical,null, ZonedDateTime.now());
+            ,0L,member,musical,null, ZonedDateTime.now(),shortSpoiler,longSpoiler);
   }
 }

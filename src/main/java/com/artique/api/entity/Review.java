@@ -37,6 +37,8 @@ public class Review {
     @OneToMany(mappedBy = "review",fetch = FetchType.LAZY)
     private List<Thumbs> thumbs;
     private ZonedDateTime createdAt;
+    private boolean shortSpoiler;
+    private boolean longSpoiler;
 
     public void thumbsUp(){
         this.thumbsUp+=1;

@@ -61,7 +61,7 @@ public class Review {
         this.viewDate=reviewForm.getViewDate();
         this.seat=reviewForm.getSeat();
     }
-    private void checkAuthority(String memberId){
+    public void checkAuthority(String memberId){
         if(!Objects.equals(member.getId(), memberId))
             throw new WriteReviewException("Author and user do not match.","REVIEW-UPDATE-002");
     }

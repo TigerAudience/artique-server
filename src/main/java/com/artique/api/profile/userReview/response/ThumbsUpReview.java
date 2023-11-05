@@ -28,6 +28,7 @@ public class ThumbsUpReview {
   private Long thumbsCount;
   private String shortReview;
   private Long reviewId;
+  private Boolean reviewSpoiler;
 
   //thumbsup info
   private Boolean isThumbsUp;
@@ -36,6 +37,6 @@ public class ThumbsUpReview {
     Long thumbsId = r.getThumbsId();
     return new ThumbsUpReview(r.getMemberNickname(),r.getMemberImageUrl(),r.getMemberId(),r.getMusicalName(),
             r.getPosterUrl(),r.getCasting(),r.getMusicalId(),r.getViewDate(),r.getStarRating(),r.getThumbsCount(),
-            r.getShortReview(),r.getReviewId(), thumbsId != null);
+            r.getShortReview(),r.getReviewId(),r.getReviewSpoiler(),thumbsId != null);
   }
 }

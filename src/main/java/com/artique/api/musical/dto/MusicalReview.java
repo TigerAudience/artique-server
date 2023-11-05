@@ -23,6 +23,7 @@ public class MusicalReview {
   private String shortReview;
   private Long reviewId;
   private LocalDate writtenDate;
+  private Boolean reviewSpoiler;
 
   //thumbsup info
   private Boolean isThumbsUp;
@@ -30,6 +31,6 @@ public class MusicalReview {
   public static MusicalReview of(MusicalReviewDao dao){
     return new MusicalReview(dao.getMemberNickname(),dao.getMemberImageUrl(),dao.getMemberId(),dao.getViewDate(),
             dao.getStarRating(),dao.getThumbsCount(),dao.getShortReview(),dao.getReviewId(),
-            dao.getCreatedAt().toLocalDate(),dao.getThumbsId() != null);
+            dao.getCreatedAt().toLocalDate(),dao.getReviewSpoiler(),dao.getThumbsId() != null);
   }
 }

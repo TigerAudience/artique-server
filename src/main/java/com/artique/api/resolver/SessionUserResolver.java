@@ -51,7 +51,7 @@ public class SessionUserResolver implements HandlerMethodArgumentResolver {
   }
   private String getSessionIdFromAuthorizationHeader(HttpServletRequest request){
     String authorizationHeader = request.getHeader("Authorization");
-    if(authorizationHeader.isEmpty())
+    if(authorizationHeader==null)
       return null;
     return parseSessionId(authorizationHeader);
   }

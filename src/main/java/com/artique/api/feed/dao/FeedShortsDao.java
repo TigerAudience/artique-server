@@ -26,6 +26,7 @@ public class FeedShortsDao {
   private Long thumbsCount;
   private String shortReview;
   private Long reviewId;
+  private Boolean reviewSpoiler;
 
   //thumbsup info
   private Long thumbsId;

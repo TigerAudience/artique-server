@@ -24,6 +24,7 @@ public class Member {
     private String profileUrl;
     private String introduce;
     private String password;
+    private ZonedDateTime banDate;
     private ZonedDateTime createdAt;
 
     public void update(UpdateMemberReq memberForm,String loginMemberId){

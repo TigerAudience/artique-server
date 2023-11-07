@@ -63,7 +63,7 @@ public class MemberGeneratorService {
       String profileUrl = s3Service.upload(generateInitialFile(),joinMemberReq.getMemberId());
       ZonedDateTime dateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
       member = new Member(joinMemberReq.getMemberId(),
-              nickname, profileUrl,"소개 글을 입력해주세요!", joinMemberReq.getMemberPW(), dateTime);
+              nickname, profileUrl,"소개 글을 입력해주세요!", joinMemberReq.getMemberPW(),null,dateTime);
     }catch (Exception e){
       throw new RuntimeException("create member exception");
     }

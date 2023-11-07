@@ -58,7 +58,7 @@ public class MemberTest {
     //given
     String memberId = "sample_member_id";
     Member initMember = new Member(memberId,"sample_nickname","sample_profileUrl",
-            "sample_introduce","sample_password", ZonedDateTime.now());
+            "sample_introduce","sample_password",0,null,ZonedDateTime.now());
     when(memberRepository.findById(memberId)).thenReturn(Optional.of(initMember));
 
     //when
@@ -73,7 +73,7 @@ public class MemberTest {
     //given
     JoinMemberReq joinMemberReq = new JoinMemberReq("sample_id","sample_password");
     Member member = new Member(joinMemberReq.getMemberId(),"임시 닉네임", "임시 url",
-            "임시 소개", joinMemberReq.getMemberPW(),ZonedDateTime.now());
+            "임시 소개", joinMemberReq.getMemberPW(),0,null,ZonedDateTime.now());
     when(memberRepository.save(any(Member.class))).thenReturn(member);
     JoinMember joinMember = new JoinMember(member.getId(),member.getNickname(),
             member.getProfileUrl(),member.getIntroduce());
@@ -91,7 +91,7 @@ public class MemberTest {
     //given
     LoginMemberReq memberReq = new LoginMemberReq("sample_id","sample_password");
     Member member = new Member(memberReq.getMemberId(),"sample_nickname","sample_profile_url"
-            ,"sample_intro",memberReq.getMemberPW(),ZonedDateTime.now());
+            ,"sample_intro",memberReq.getMemberPW(),0,null,ZonedDateTime.now());
     MockHttpServletResponse response = new MockHttpServletResponse();
     String sampleSessionId = UUID.randomUUID().toString();
     when(session.createSession(member)).thenReturn(sampleSessionId);
@@ -132,7 +132,7 @@ public class MemberTest {
     LoginMemberReq memberReq = new LoginMemberReq("sample_id","wrong_password");
     MockHttpServletResponse response = new MockHttpServletResponse();
     Member dbMember = new Member(memberReq.getMemberId(),"sample_nickname","sample_profile_url"
-            ,"sample_intro","sample_password",ZonedDateTime.now());
+            ,"sample_intro","sample_password",0,null,ZonedDateTime.now());
     when(memberRepository.findById(memberReq.getMemberId())).thenReturn(Optional.of(dbMember));
 
     //when

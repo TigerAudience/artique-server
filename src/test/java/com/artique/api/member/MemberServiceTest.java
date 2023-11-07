@@ -49,7 +49,8 @@ public class MemberServiceTest {
 
     ZonedDateTime dateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
     Member member = new Member(oauthMember.getId(), "임시 닉네임",
-            "임시 url","임시 소개", null, dateTime);
+            "임시 url","임시 소개","임시 password", 0, null,
+            dateTime);
     when(oauthService.getOauthMember(anyString(), anyString()))
             .thenReturn(oauthMember);
     doReturn(false)
@@ -80,7 +81,8 @@ public class MemberServiceTest {
 
     ZonedDateTime dateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
     Member member = new Member(oauthMember.getId(), "임시 닉네임",
-            "임시 url","임시 소개", null, dateTime);
+            "임시 url","임시 소개","임시 password",0,
+            null, dateTime);
     when(oauthService.getOauthMember(anyString(), anyString()))
             .thenReturn(oauthMember);
     doReturn(true)

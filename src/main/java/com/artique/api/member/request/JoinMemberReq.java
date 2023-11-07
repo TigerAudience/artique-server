@@ -27,7 +27,8 @@ public class JoinMemberReq {
   public static Member toMember(JoinMemberReq joinMemberReq){
     ZonedDateTime dateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
     return new Member(joinMemberReq.getMemberId(),
-            "임시 닉네임", "임시 url","임시 소개", joinMemberReq.getMemberPW(),null,dateTime);
+            "임시 닉네임", "임시 url","임시 소개", joinMemberReq.getMemberPW(),
+            0,null,dateTime);
   }
 
 }

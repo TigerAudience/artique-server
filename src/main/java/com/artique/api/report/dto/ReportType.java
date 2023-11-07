@@ -1,13 +1,11 @@
 package com.artique.api.report.dto;
 
-import com.artique.api.musical.MusicalException;
-import com.artique.api.profile.userReview.UserReviewOrderBy;
 import lombok.Getter;
 
 @Getter
 public enum ReportType {
 
-  SPOILER("spoiler"),CREATE("inappropriate-review");
+  SPOILER("spoiler"),INAPPROPRIATE("inappropriate-review");
 
   private final String type;
   ReportType(String type){

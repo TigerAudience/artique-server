@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class ReportController {
-
+  private final ReportService reportService;
   @PostMapping("/report")
   public ReportRes reportReview(@RequestParam(value = "review-id")Long reviewId,
                                 @RequestParam(value = "type")ReportType reportType,
                                 @LoginUser String reportMemberId){
+    reportService.report(reviewId,reportType,reportMemberId);
     return new ReportRes(true);
   }
 }

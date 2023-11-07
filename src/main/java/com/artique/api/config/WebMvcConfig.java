@@ -1,6 +1,7 @@
 package com.artique.api.config;
 
 import com.artique.api.converter.MusicalReviewOrderByConverter;
+import com.artique.api.converter.ReportTypeConverter;
 import com.artique.api.converter.SearchMusicalOrderByConverter;
 import com.artique.api.converter.UserReviewOrderByConverter;
 import com.artique.api.intertceptor.AuthorizationHeaderInterceptor;
@@ -27,12 +28,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
   private final UserReviewOrderByConverter userReviewOrderByConverter;
   private final HttpRequestInfoInterceptor httpRequestInfoInterceptor;
   private final AuthorizationHeaderInterceptor authorizationHeaderInterceptor;
+  private final ReportTypeConverter reportTypeConverter;
 
   @Override
   public void addFormatters(FormatterRegistry registry) {
     registry.addConverter(musicalReviewOrderByConverter);
     registry.addConverter(searchMusicalOrderByConverter);
     registry.addConverter(userReviewOrderByConverter);
+    registry.addConverter(reportTypeConverter);
   }
 
   @Override

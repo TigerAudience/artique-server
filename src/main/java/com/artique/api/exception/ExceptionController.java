@@ -1,5 +1,6 @@
 package com.artique.api.exception;
 
+import com.artique.api.exception.global.InterceptorException;
 import com.artique.api.feed.FeedException;
 import com.artique.api.intertceptor.HttpPretty;
 import com.artique.api.intertceptor.HttpRequestRepository;
@@ -50,6 +51,12 @@ public class ExceptionController {
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   public ResponseEntity<ErrorResponse> methodArgumentTypeException(MethodArgumentTypeMismatchException e){
     return new ResponseEntity<>(ErrorResponse.builder().code(e.getErrorCode()).message(e.getMessage()).build(),
+            HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(InterceptorException.class)
+  public ResponseEntity<ErrorResponse> interceptor(InterceptorException e){
+    return new ResponseEntity<>(ErrorResponse.builder().code(e.getInterceptorName()).message(e.getMessage()).build(),
             HttpStatus.BAD_REQUEST);
   }
 }

@@ -1,5 +1,6 @@
 package com.artique.api.intertceptor;
 
+import com.artique.api.exception.global.InterceptorException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,9 @@ import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 public class InvalidUrlInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-    if(handler.getClass().equals(ResourceHttpRequestHandler.class))
-      throw new RuntimeException("invalid url");
+    if(handler.getClass().equals(ResourceHttpRequestHandler.class)) {
+      throw new InterceptorException(this.getClass().getSimpleName(), "invalid url [" + request.getRequestURI() + "]");
+    }
     return HandlerInterceptor.super.preHandle(request, response, handler);
   }
 }

@@ -24,6 +24,9 @@ public class Member {
     private String profileUrl;
     private String introduce;
     private String password;
+    private Integer warningCount;
+    private Integer reportCount;
+    private ZonedDateTime banDate;
     private ZonedDateTime createdAt;
 
     public void update(UpdateMemberReq memberForm,String loginMemberId){
@@ -40,5 +43,8 @@ public class Member {
     }
     public void changeImage(String imageUrl){
         this.profileUrl=imageUrl;
+    }
+    public void increaseReportCount(){
+        this.reportCount+=1;
     }
 }

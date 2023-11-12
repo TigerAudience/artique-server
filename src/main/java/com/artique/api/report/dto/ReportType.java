@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ReportType {
 
-  SPOILER("spoiler"),INAPPROPRIATE("inappropriate-review");
+  SPOILER("spoiler"),INAPPROPRIATE("inappropriate"),PROMOTION("promotion"),SPAM("spam");
 
   private final String type;
   ReportType(String type){

@@ -18,4 +18,6 @@ public class ReviewUpdateRequest {
   private List<String> casting;
   private LocalDate viewDate;
   private String seat;
+  private Boolean shortSpoiler;
+  private Boolean longSpoiler;
 }

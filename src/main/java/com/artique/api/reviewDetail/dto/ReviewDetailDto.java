@@ -18,9 +18,12 @@ public class ReviewDetailDto {
   private String shortReview;
   private String longReview;
   private LocalDate viewDate;
+  private Boolean shortSpoiler;
+  private Boolean longSpoiler;
 
   public static ReviewDetailDto of(Review r){
     return new ReviewDetailDto(r.getId(),r.getMember().getNickname(),r.getMusical().getName(),r.getCasting(),
-            r.getSeat(),r.getStarRating(),r.getShortReview(),r.getLongReview(),r.getViewDate());
+            r.getSeat(),r.getStarRating(),r.getShortReview(),r.getLongReview(),r.getViewDate(),r.isShortSpoiler(),
+            r.isLongSpoiler());
   }
 }

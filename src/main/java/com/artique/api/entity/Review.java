@@ -62,6 +62,8 @@ public class Review {
         this.casting=reviewCasting;
         this.viewDate=reviewForm.getViewDate();
         this.seat=reviewForm.getSeat();
+        this.shortReview=reviewForm.getShortReview();
+        this.longReview=reviewForm.getLongReview();
     }
     public void checkAuthority(String memberId){
         if(!Objects.equals(member.getId(), memberId))

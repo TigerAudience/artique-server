@@ -25,6 +25,7 @@ public class Member {
     private String introduce;
     private String password;
     private Integer warningCount;
+    private Integer reportCount;
     private ZonedDateTime banDate;
     private ZonedDateTime createdAt;
 

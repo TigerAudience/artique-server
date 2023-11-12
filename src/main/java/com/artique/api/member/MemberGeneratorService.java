@@ -64,7 +64,7 @@ public class MemberGeneratorService {
       ZonedDateTime dateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
       member = new Member(joinMemberReq.getMemberId(),
               nickname, profileUrl,"소개 글을 입력해주세요!", joinMemberReq.getMemberPW(),
-              0,null,dateTime);
+              0,0,null,dateTime);
     }catch (Exception e){
       throw new RuntimeException("create member exception");
     }

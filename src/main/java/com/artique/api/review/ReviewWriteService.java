@@ -7,6 +7,7 @@ import com.artique.api.feed.ReviewRepository;
 import com.artique.api.feed.ThumbsRepository;
 import com.artique.api.member.MemberRepository;
 import com.artique.api.musical.MusicalRepository;
+import com.artique.api.report.ReportRepository;
 import com.artique.api.review.request.ReviewUpdateRequest;
 import com.artique.api.review.request.ReviewWriteRequest;
 import com.artique.api.review.response.ReviewUpdateResult;
@@ -23,6 +24,7 @@ public class ReviewWriteService {
   private final MemberRepository memberRepository;
   private final ReviewRepository reviewRepository;
   private final ThumbsRepository thumbsRepository;
+  private final ReportRepository reportRepository;
   @Transactional
   public ReviewWriteResult createReview(ReviewWriteRequest reviewForm,String memberId){
     Member member = memberRepository.findById(memberId)
@@ -50,6 +52,7 @@ public class ReviewWriteService {
             .orElseThrow(()->new WriteReviewException("invalid review id","REVIEW-UPDATE-001"));
     review.checkAuthority(memberId);
     thumbsRepository.deleteAllByReviewIds(review.getId());
+    reportRepository.deleteAllByReviewId(review.getId());
     reviewRepository.delete(review);
     return true;
   }

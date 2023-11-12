@@ -27,6 +27,7 @@ public class ReportService {
     Review review = reviewRepository.findById(reviewId)
             .orElseThrow(()->new ReportException("invalid review id","REPORT-004"));
     Report createdReview = new Report(null,reportType,reportMember,review,LocalDateTime.now());
+    reportMember.increaseReportCount();
     reportRepository.save(createdReview);
   }
 }

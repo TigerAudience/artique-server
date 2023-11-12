@@ -44,4 +44,7 @@ public class Member {
     public void changeImage(String imageUrl){
         this.profileUrl=imageUrl;
     }
+    public void increaseReportCount(){
+        this.reportCount+=1;
+    }
 }

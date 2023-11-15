@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -57,6 +58,13 @@ public class ExceptionController {
   @ExceptionHandler(InterceptorException.class)
   public ResponseEntity<ErrorResponse> interceptor(InterceptorException e){
     return new ResponseEntity<>(ErrorResponse.builder().code(e.getInterceptorName()).message(e.getMessage()).build(),
+            HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(MissingServletRequestParameterException.class)
+  public ResponseEntity<ErrorResponse> missingQueryParam(MissingServletRequestParameterException e){
+    String message = "missing query parameter ["+e.getParameterName()+"]";
+    return new ResponseEntity<>(ErrorResponse.builder().code("REQUEST_PARAM_MISSING").message(message).build(),
             HttpStatus.BAD_REQUEST);
   }
 }

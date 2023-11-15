@@ -74,9 +74,8 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
   }
   public ResponseEntity<Object> handleTypeMismatch(MethodArgumentTypeMismatchException e){
     String paramName = e.getName();
-    String value = String.valueOf(e.getValue());
-    String message="failed to convert, parameter name is ["+paramName+"]. given value : "+value;
-    return new ResponseEntity<>(ErrorResponse.builder().code("PARAM_MISMATCHING").message(message),
+    String message="failed to convert, parameter name is ["+paramName+"]. given value : "+e.getValue();
+    return new ResponseEntity<>(ErrorResponse.builder().code("PARAM_MISMATCHING").message(message).build(),
             HttpStatus.BAD_REQUEST);
   }
   public ResponseEntity<Object> cannotResolveRequestBody(HttpMessageNotReadableException e){

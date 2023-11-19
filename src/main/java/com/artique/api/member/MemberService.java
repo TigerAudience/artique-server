@@ -1,6 +1,10 @@
 package com.artique.api.member;
 
+import com.artique.api.entity.EmailLog;
 import com.artique.api.entity.Member;
+import com.artique.api.mail.EmailLogRepository;
+import com.artique.api.mail.dto.EmailRequest;
+import com.artique.api.mail.dto.EmailRequest.VerificationRequest;
 import com.artique.api.member.dto.OauthMember;
 import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.exception.LoginException;
@@ -34,9 +38,20 @@ public class MemberService {
   private final CustomSession session;
   private final OauthService oauthService;
   private final MemberGeneratorService memberGeneratorService;
+  private final EmailLogRepository emailLogRepository;
 
   public boolean checkDuplicateMember(String memberId){
     return memberRepository.findById(memberId).isEmpty();
+  }
+  public boolean isCorrectVerificationNumber(VerificationRequest request){
+    EmailLog emailLog = emailLogRepository.findById(request.getEmail())
+            .orElseThrow(()->new RuntimeException("fail"));
+    if(!compareVerificationNumber(request,emailLog))
+      throw new RuntimeException("fail");
+    return true;
+  }
+  public boolean compareVerificationNumber(VerificationRequest request,EmailLog emailLog){
+    return request.getCode().equals(emailLog.getCode());
   }
   public LoginMember login(LoginMemberReq memberReq, HttpServletResponse response){
     Member member = memberRepository.findById(memberReq.getMemberId())

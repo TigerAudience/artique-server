@@ -28,7 +28,7 @@ public class AuthorizationHeaderInterceptor implements HandlerInterceptor {
       throw new LoginException("authorization failure", HttpStatus.UNAUTHORIZED.toString());
     }
     if(!validateBanedMember(sessionId))
-      throw new LoginException("authorization failure [banned member]", HttpStatus.UNAUTHORIZED.toString());;
+      throw new LoginException("banned member", HttpStatus.UNAUTHORIZED.toString());;
     return HandlerInterceptor.super.preHandle(request,response,handler);
   }
   private boolean validateBanedMember(String sessionId){

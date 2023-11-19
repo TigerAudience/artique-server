@@ -61,15 +61,17 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
                                                               @Param("keyword")String keyword);
 
   @Query(value = "select new com.artique.api.profile.userReview.dto.UserThumbsReview" +
-          "(mem.nickname,mem.profileUrl,mem.id, mus.name,mus.posterUrl,r.casting,mus.id, " +
-          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) from Review r join r.musical mus join r.thumbs t join t.member mem " +
+          "(r_mem.nickname,r_mem.profileUrl,r_mem.id, mus.name,mus.posterUrl,r.casting,mus.id, " +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) from Review r join r.musical mus " +
+          "join r.thumbs t join r.member r_mem join t.member mem " +
           "where mem.id = :member_id order by t.createdAt")
   Slice<UserThumbsReview> findUserReviewsByThumbs(Pageable pageable, @Param("member_id")String memberId);
 
 
   @Query(value = "select new com.artique.api.profile.userReview.dto.UserThumbsReview" +
-          "(mem.nickname,mem.profileUrl,mem.id, mus.name,mus.posterUrl,r.casting,mus.id, " +
-          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) from Review r join r.musical mus join r.thumbs t join t.member mem " +
+          "(r_mem.nickname,r_mem.profileUrl,r_mem.id, mus.name,mus.posterUrl,r.casting,mus.id, " +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) from Review r join r.musical mus " +
+          "join r.thumbs t join r.member r_mem join t.member mem " +
           "where mem.id =:member_id and (mus.name like %:keyword%) order by t.createdAt")
   Slice<UserThumbsReview> findUserReviewsByThumbsAndKeyword(Pageable pageable, @Param("member_id")String memberId,
                                                             @Param("keyword")String keyword);

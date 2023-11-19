@@ -32,6 +32,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
   private final HttpRequestInfoInterceptor httpRequestInfoInterceptor;
   private final AuthorizationHeaderInterceptor authorizationHeaderInterceptor;
   private final ReportTypeConverter reportTypeConverter;
+  private final InvalidUrlInterceptor invalidUrlInterceptor;
 
   @Override
   public void addFormatters(FormatterRegistry registry) {
@@ -45,6 +46,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
   public void addInterceptors(InterceptorRegistry registry){
     String[] excludePatterns = buildExcludePattern();
     registry.addInterceptor(httpRequestInfoInterceptor).order(1).excludePathPatterns();
+    registry.addInterceptor(invalidUrlInterceptor).order(2).excludePathPatterns();
     registry.addInterceptor(authorizationHeaderInterceptor).order(3).excludePathPatterns(excludePatterns);
   }
   public String[] buildExcludePattern(){

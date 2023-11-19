@@ -1,5 +1,11 @@
 package com.artique.api.member;
 import com.artique.api.entity.Member;
+import com.artique.api.mail.EmailException;
+import com.artique.api.mail.EmailSender;
+import com.artique.api.mail.dto.EmailRequest;
+import com.artique.api.mail.dto.EmailRequest.JoinAuthorizationRequest;
+import com.artique.api.mail.dto.EmailRequest.VerificationRequest;
+import com.artique.api.mail.dto.JoinEmailForm;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.request.JoinMemberReq;
@@ -20,6 +26,23 @@ import java.util.Optional;
 public class MemberController implements MemberControllerSwagger{
 
   private final MemberService memberService;
+  private final EmailSender emailSender;
+  @PostMapping("/member/join/email")
+  public String sendVerificationEmail(@RequestBody JoinAuthorizationRequest emailRequest){
+    int verificationCode=emailSender.sendVerificationMail(emailRequest);
+    if(verificationCode==-1)
+      throw new EmailException("internal server failed to send email","EMAIL_FAILURE");
+    return "ok";
+  }
+  @PostMapping("/member/join/email/verify")
+  public Boolean verifyCode(@RequestBody VerificationRequest verificationRequest){
+    try {
+      memberService.isCorrectVerificationNumber(verificationRequest);
+    }catch (Exception e){
+      return false;
+    }
+    return true;
+  }
   @GetMapping("/member/duplicate")
   public MemberDuplicate checkDuplicateMember(@RequestParam(value = "member-id") String memberId){
     if(!memberService.checkDuplicateMember(memberId))

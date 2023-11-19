@@ -4,6 +4,7 @@ import com.artique.api.exception.global.InterceptorException;
 import com.artique.api.feed.FeedException;
 import com.artique.api.intertceptor.HttpPretty;
 import com.artique.api.intertceptor.HttpRequestRepository;
+import com.artique.api.mail.EmailException;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.musical.MusicalException;
 import com.artique.api.thumbs.ThumbsException;
@@ -64,6 +65,12 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
   public ResponseEntity<ErrorResponse> invalidRequestBody(InvalidDataAccessApiUsageException e){
     String message = "invalid request body : "+e.getMessage();
     return new ResponseEntity<>(ErrorResponse.builder().code("REQUEST_BODY_MISMATCHING").message(message).build(),
+            HttpStatus.BAD_REQUEST);
+  }
+  @ExceptionHandler(EmailException.class)
+  public ResponseEntity<ErrorResponse> emailException(EmailException e){
+    String message = "mail send failure : "+e.getMessage();
+    return new ResponseEntity<>(ErrorResponse.builder().code("MAIL_SEND_FAIL").message(message).build(),
             HttpStatus.BAD_REQUEST);
   }
 

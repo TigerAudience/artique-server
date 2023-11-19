@@ -28,6 +28,7 @@ public class Member {
     private Integer reportCount;
     private ZonedDateTime banDate;
     private ZonedDateTime createdAt;
+    private Integer verificationNumber;
 
     public void update(UpdateMemberReq memberForm,String loginMemberId){
         if(!loginMemberId.equals(this.id))

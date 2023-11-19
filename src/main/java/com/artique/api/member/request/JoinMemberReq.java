@@ -23,6 +23,4 @@ public class JoinMemberReq {
   @NotNull(message = "member id는 필수 입력값입니다")
   private String memberId;
   private String memberPW;
-
-
 }

@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class EmailLog {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private String email;
   private Integer code;
 

@@ -4,9 +4,11 @@ import com.artique.api.entity.EmailLog;
 import com.artique.api.mail.dto.EmailRequest;
 import com.artique.api.mail.dto.EmailRequest.JoinAuthorizationRequest;
 import com.artique.api.mail.dto.JoinEmailForm;
+import com.artique.api.mail.dto.RenewPasswordForm;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,24 @@ public class EmailSender {
 
   private final JavaMailSender mailSender;
   private final EmailLogRepository emailLogRepository;
+  @Value("${spring.mail.username}")
+  private String adminEmail;
+  public Boolean sendRenewPasswordMail(String email,String newPassword){
+    try {
+      MimeMessage message = mailSender.createMimeMessage();
+      MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+      helper.setFrom(adminEmail);
+      helper.setTo(email);
+      helper.setSubject("[Artitque] 비밀번호 재발급 이메일입니다");
+      helper.setText(RenewPasswordForm.getMailBody(newPassword),true);
+
+      mailSender.send(message);
+    }catch (MessagingException e){
+      return false;
+    }
+    return true;
+  }
   public Integer sendVerificationMail(@RequestBody JoinAuthorizationRequest emailRequest){
     int code=generateJoinCode();
     EmailLog emailLog = getCodeAdjustedEmailLog(emailRequest,code);
@@ -29,7 +49,7 @@ public class EmailSender {
       MimeMessage message = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-      helper.setFrom("your-email@example.com");
+      helper.setFrom(adminEmail);
       helper.setTo(emailRequest.getMailAddress());
       helper.setSubject("[Artitque] 본인인증 이메일입니다");
       helper.setText(JoinEmailForm.getMailBody(code), true);

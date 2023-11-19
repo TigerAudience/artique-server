@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
@@ -46,5 +47,10 @@ public class Member {
     }
     public void increaseReportCount(){
         this.reportCount+=1;
+    }
+    public String updateToRandomPassword(){
+        String randomUUID = UUID.randomUUID().toString().substring(0,8);
+        this.password=randomUUID;
+        return randomUUID;
     }
 }

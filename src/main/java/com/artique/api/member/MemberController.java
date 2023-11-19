@@ -27,6 +27,14 @@ public class MemberController implements MemberControllerSwagger{
 
   private final MemberService memberService;
   private final EmailSender emailSender;
+  @PostMapping("/member/password/renew")
+  public String renewPassword(@RequestParam(value = "member-email") String memberEmail){
+    String generatedPassword= memberService.renewPassword(memberEmail);
+    Boolean sendSuccess = emailSender.sendRenewPasswordMail(memberEmail,generatedPassword);
+    if(!sendSuccess)
+      throw new EmailException("internal server failed to send email","EMAIL_FAILURE");
+    return "ok";
+  }
   @PostMapping("/member/join/email")
   public String sendVerificationEmail(@RequestBody JoinAuthorizationRequest emailRequest){
     int verificationCode=emailSender.sendVerificationMail(emailRequest);

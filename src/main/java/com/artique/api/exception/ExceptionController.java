@@ -1,6 +1,7 @@
 package com.artique.api.exception;
 
 import com.artique.api.exception.global.InterceptorException;
+import com.artique.api.exception.global.RepositoryException;
 import com.artique.api.feed.FeedException;
 import com.artique.api.intertceptor.HttpPretty;
 import com.artique.api.intertceptor.HttpRequestRepository;
@@ -53,6 +54,12 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ThumbsException.class)
   public ResponseEntity<ErrorResponse> musicalException(ThumbsException e){
     return new ResponseEntity<>(ErrorResponse.builder().code(e.getErrorCode()).message(e.getMessage()).build(),
+            HttpStatus.BAD_REQUEST);
+  }
+  @ExceptionHandler(RepositoryException.class)
+  public ResponseEntity<ErrorResponse> repositoryException(RepositoryException e){
+    String message = "repository exception : "+e.getMessage();
+    return new ResponseEntity<>(ErrorResponse.builder().code(e.getCode()).message(message).build(),
             HttpStatus.BAD_REQUEST);
   }
 

@@ -2,6 +2,7 @@ package com.artique.api.member;
 
 import com.artique.api.entity.EmailLog;
 import com.artique.api.entity.Member;
+import com.artique.api.exception.global.RepositoryException;
 import com.artique.api.mail.EmailLogRepository;
 import com.artique.api.mail.dto.EmailRequest;
 import com.artique.api.mail.dto.EmailRequest.VerificationRequest;
@@ -132,5 +133,12 @@ public class MemberService {
     Member member = memberRepository.findById(loginMemberId)
           .orElseThrow(()->new UpdateMemberException("invalid member id","MEMBER-UPDATE-001"));
     return member.getId();
+  }
+
+  @Transactional
+  public String renewPassword(String memberId){
+    Member member = memberRepository.findById(memberId)
+            .orElseThrow(()->new RepositoryException("invalid member email","INVALID MEMBER"));
+    return member.updateToRandomPassword();
   }
 }

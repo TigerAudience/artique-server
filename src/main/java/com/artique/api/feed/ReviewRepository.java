@@ -14,17 +14,22 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review,Long> {
 
-  @Query(value = "select new com.artique.api.feed.dao.FeedShortsDao(mem.nickname,mem.profileUrl,mem.id," +
+  @Query(value = "SELECT new com.artique.api.feed.dao.FeedShortsDao(mem.nickname,mem.profileUrl,mem.id," +
           "mus.name,mus.posterUrl,r.casting,mus.id," +
-          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.shortSpoiler,t.id)" +
-          "from Review r join r.musical mus join r.member mem " +
-          "left join r.thumbs t on t.member.id = :member_id")
-  Slice<FeedShortsDao> findPageReviewsByMemberSlice(Pageable pageable, @Param("member_id") String memberId);
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.shortSpoiler)" +
+          "FROM Review r JOIN r.musical mus JOIN r.member mem " +
+          "WHERE r.createdAt BETWEEN :begin_date AND :end_date")
+  Slice<FeedShortsDao> findPageReviewsByMemberSlice(Pageable pageable,
+                                                    @Param("begin_date") ZonedDateTime beginDate,
+                                                    @Param("end_date") ZonedDateTime endDate);
 
   @Query(value = "select new com.artique.api.musical.dao.MusicalReviewDao" +
           "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.createdAt,r.shortSpoiler,t.id) " +

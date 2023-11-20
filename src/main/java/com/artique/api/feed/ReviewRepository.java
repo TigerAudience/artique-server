@@ -86,7 +86,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   List<Review> findReviewsByMemberId(@Param("member_id")String memberId);
 
   @Modifying
-  @Query(value = "delete Review r where r.member.id = :member_id")
+  @Query(value = "delete from Review r where r.member.id = :member_id")
   void deleteAllByMemberId(@Param(value = "member_id")String memberId);
 
 }

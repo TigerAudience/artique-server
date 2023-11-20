@@ -50,7 +50,33 @@ public class Member {
     }
     public String updateToRandomPassword(){
         String randomUUID = UUID.randomUUID().toString().substring(0,8);
-        this.password=randomUUID;
+        this.password=seahnHash(randomUUID);
         return randomUUID;
     }
+    private String seahnHash(String password){
+        int a=1;
+        int c=0;
+        for(int i=password.length()-1;i>=0;i--){
+            char tmp = password.charAt(i);
+            a = (a<<6&268435455) + tmp + (tmp<<14);
+            c = a & 266338304;
+            a = c!=0 ? a^c>>21 : a;
+        }
+        return String.valueOf(a);
+    }
+    /** 프런트측 해시 생성 함수
+     * export default function hash (s) {
+     *     let a = 1, c = 0, h, o;
+     *     if (s) {
+     *         a = 0;
+     *         for (h = s.length - 1; h >= 0; h--) {
+     *             o = s.charCodeAt(h);
+     *             a = (a << 6 & 268435455) + o + (o << 14);
+     *             c = a & 266338304;
+     *             a = c !== 0 ? a ^ c >> 21 : a;
+     *         }
+     *     }
+     *     return String(a);
+     * }
+     */
 }

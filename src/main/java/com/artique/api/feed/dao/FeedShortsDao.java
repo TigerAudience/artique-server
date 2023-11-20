@@ -51,4 +51,7 @@ public class FeedShortsDao {
 
     this.thumbsId=null;
   }
+  public void adjustThumbsId(Long thumbsId){
+    this.thumbsId=thumbsId;
+  }
 }

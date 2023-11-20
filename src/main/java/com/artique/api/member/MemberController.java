@@ -87,4 +87,8 @@ public class MemberController implements MemberControllerSwagger{
   public NicknameDuplicate checkDuplicateNickName(@RequestParam String nickname){
      return memberService.checkNickname(nickname);
   }
+  @DeleteMapping("/delete/member")
+  public Boolean deleteMember(@LoginUser String loginMemberId){
+    return memberService.exit(loginMemberId);
+  }
 }

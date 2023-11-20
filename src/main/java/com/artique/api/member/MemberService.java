@@ -3,6 +3,8 @@ package com.artique.api.member;
 import com.artique.api.entity.EmailLog;
 import com.artique.api.entity.Member;
 import com.artique.api.exception.global.RepositoryException;
+import com.artique.api.feed.ReviewRepository;
+import com.artique.api.feed.ThumbsRepository;
 import com.artique.api.mail.EmailLogRepository;
 import com.artique.api.mail.dto.EmailRequest;
 import com.artique.api.mail.dto.EmailRequest.VerificationRequest;
@@ -19,6 +21,7 @@ import com.artique.api.member.response.JoinMember;
 import com.artique.api.member.response.LoginMember;
 import com.artique.api.member.response.NicknameDuplicate;
 import com.artique.api.member.response.UpdateMemberResult;
+import com.artique.api.report.ReportRepository;
 import com.artique.api.session.CustomSession;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,6 +43,9 @@ public class MemberService {
   private final OauthService oauthService;
   private final MemberGeneratorService memberGeneratorService;
   private final EmailLogRepository emailLogRepository;
+  private final ThumbsRepository thumbsRepository;
+  private final ReviewRepository reviewRepository;
+  private final ReportRepository reportRepository;
 
   public boolean checkDuplicateMember(String memberId){
     return memberRepository.findById(memberId).isEmpty();
@@ -140,5 +146,25 @@ public class MemberService {
     Member member = memberRepository.findById(memberId)
             .orElseThrow(()->new RepositoryException("invalid member email","INVALID MEMBER"));
     return member.updateToRandomPassword();
+  }
+
+  @Transactional
+  public Boolean exit(String memberId){
+    Member member = memberRepository.findById(memberId)
+            .orElseThrow(()->new RepositoryException("invalid member id","INVALID MEMBER"));
+    deleteThumbsByMemberId(memberId);
+    deleteReviewsByMemberId(memberId);
+    deleteReportsByMemberId(memberId);
+    memberRepository.delete(member);
+    return Boolean.TRUE;
+  }
+  public void deleteThumbsByMemberId(String memberId){
+    thumbsRepository.deleteAllByMemberId(memberId);
+  }
+  public void deleteReviewsByMemberId(String memberId){
+    reviewRepository.deleteAllByMemberId(memberId);
+  }
+  public void deleteReportsByMemberId(String memberId){
+    reportRepository.deleteAllByMemberId(memberId);
   }
 }

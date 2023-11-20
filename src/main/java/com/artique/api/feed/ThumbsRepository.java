@@ -15,4 +15,8 @@ public interface ThumbsRepository extends JpaRepository<Thumbs,Long> {
   @Modifying
   @Query(value = "delete from Thumbs t where t.review.id = :review_id")
   void deleteAllByReviewIds(@Param("review_id")Long review);
+
+  @Modifying
+  @Query(value = "delete from Thumbs t where t.member.id = :member_id")
+  void deleteAllByMemberId(@Param("member_id")String memberId);
 }

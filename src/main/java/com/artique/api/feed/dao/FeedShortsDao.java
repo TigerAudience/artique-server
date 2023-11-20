@@ -30,4 +30,28 @@ public class FeedShortsDao {
 
   //thumbsup info
   private Long thumbsId;
+
+  public FeedShortsDao(String memNick,String memUrl,String memId,String musNm,String musUrl,String musCast,String musId,
+                       LocalDate rDate,Double rRate,Long rThumbs,String rShort,Long rId,Boolean rSpoiler){
+    this.memberNickname=memNick;
+    this.memberImageUrl=memUrl;
+    this.memberId=memId;
+
+    this.musicalName=musNm;
+    this.posterUrl=musUrl;
+    this.casting=musCast;
+    this.musicalId=musId;
+
+    this.viewDate=rDate;
+    this.starRating=rRate;
+    this.thumbsCount=rThumbs;
+    this.shortReview=rShort;
+    this.reviewId=rId;
+    this.reviewSpoiler=rSpoiler;
+
+    this.thumbsId=null;
+  }
+  public void adjustThumbsId(Long thumbsId){
+    this.thumbsId=thumbsId;
+  }
 }

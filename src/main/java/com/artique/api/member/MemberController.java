@@ -15,6 +15,7 @@ import com.artique.api.member.request.OauthMemberReq;
 import com.artique.api.member.request.UpdateMemberReq;
 import com.artique.api.member.response.*;
 import com.artique.api.resolver.LoginUser;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

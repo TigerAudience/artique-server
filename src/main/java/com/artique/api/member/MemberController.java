@@ -6,6 +6,7 @@ import com.artique.api.mail.dto.EmailRequest;
 import com.artique.api.mail.dto.EmailRequest.JoinAuthorizationRequest;
 import com.artique.api.mail.dto.EmailRequest.VerificationRequest;
 import com.artique.api.mail.dto.JoinEmailForm;
+import com.artique.api.member.dto.ValidatePasswordRequest;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.request.JoinMemberReq;
@@ -27,6 +28,11 @@ public class MemberController implements MemberControllerSwagger{
 
   private final MemberService memberService;
   private final EmailSender emailSender;
+  @PostMapping("/validation/member/password")
+  public Boolean validatePassword(@RequestBody ValidatePasswordRequest passwordRequest,
+                                  @LoginUser String loginMemberId){
+    return memberService.validatePassword(passwordRequest,loginMemberId);
+  }
   @PostMapping("/member/password/renew")
   public String renewPassword(@RequestParam(value = "member-email") String memberEmail){
     String generatedPassword= memberService.renewPassword(memberEmail);

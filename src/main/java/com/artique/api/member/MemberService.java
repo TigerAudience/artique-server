@@ -9,6 +9,7 @@ import com.artique.api.mail.EmailLogRepository;
 import com.artique.api.mail.dto.EmailRequest;
 import com.artique.api.mail.dto.EmailRequest.VerificationRequest;
 import com.artique.api.member.dto.OauthMember;
+import com.artique.api.member.dto.ValidatePasswordRequest;
 import com.artique.api.member.exception.LoginExceptionCode;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.member.exception.UpdateMemberException;
@@ -166,5 +167,10 @@ public class MemberService {
   }
   public void deleteReportsByMemberId(String memberId){
     reportRepository.deleteAllByMemberId(memberId);
+  }
+  public boolean validatePassword(ValidatePasswordRequest passwordRequest, String memberId){
+    Member member = memberRepository.findById(memberId)
+            .orElseThrow(()->new RepositoryException("invalid member id ["+memberId+"]","INVALID MEMBER"));
+    return member.isCorrectPassword(passwordRequest.getPassword());
   }
 }

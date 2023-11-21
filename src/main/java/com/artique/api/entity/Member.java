@@ -81,4 +81,9 @@ public class Member {
      *     return String(a);
      * }
      */
+    public boolean isCorrectPassword(String givenPassword){
+        if(givenPassword==null)
+            return true;
+        return this.password.equals(givenPassword);
+    }
 }

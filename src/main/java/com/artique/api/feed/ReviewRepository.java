@@ -71,14 +71,14 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
           "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) from Review r join r.musical mus " +
           "join r.thumbs t join r.member r_mem join t.member mem " +
           "where mem.id = :member_id order by t.createdAt desc")
-  Slice<UserThumbsReview> findUserShortReviewsByThumbs(Pageable pageable, @Param("member_id")String memberId);
+  Slice<UserThumbsReview> findUserReviewsByThumbs(Pageable pageable, @Param("member_id")String memberId);
 
 
   @Query(value = "select new com.artique.api.profile.userReview.dto.UserThumbsReview" +
           "(r_mem.nickname,r_mem.profileUrl,r_mem.id, mus.name,mus.posterUrl,r.casting,mus.id, " +
           "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) from Review r join r.musical mus " +
           "join r.thumbs t join r.member r_mem join t.member mem " +
-          "where mem.id =:member_id and (mus.name like %:keyword%) order by t.createdAt")
+          "where mem.id =:member_id and (mus.name like %:keyword%) order by t.createdAt desc")
   Slice<UserThumbsReview> findUserReviewsByThumbsAndKeyword(Pageable pageable, @Param("member_id")String memberId,
                                                             @Param("keyword")String keyword);
 

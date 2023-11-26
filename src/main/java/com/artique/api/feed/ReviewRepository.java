@@ -56,7 +56,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   @Query(value = "select new com.artique.api.profile.userReview.dto.UserCreateReview" +
           "(mem.nickname,mem.profileUrl,mem.id, mus.name,mus.posterUrl,r.casting,mus.id," +
           "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) " +
-          "from Review r join r.musical mus join r.member mem where r.member.id = :member_id order by r.thumbsUp desc")
+          "from Review r join r.musical mus join r.member mem where r.member.id = :member_id")
   Slice<UserCreateReview> findUserReviewsByMemberId(Pageable pageable, @Param("member_id")String memberId);
   @Query(value = "select new com.artique.api.profile.userReview.dto.UserCreateReview" +
           "(mem.nickname,mem.profileUrl,mem.id, mus.name,mus.posterUrl,r.casting,mus.id," +
@@ -70,8 +70,8 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
           "(r_mem.nickname,r_mem.profileUrl,r_mem.id, mus.name,mus.posterUrl,r.casting,mus.id, " +
           "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.shortSpoiler,r.id) from Review r join r.musical mus " +
           "join r.thumbs t join r.member r_mem join t.member mem " +
-          "where mem.id = :member_id order by t.createdAt")
-  Slice<UserThumbsReview> findUserReviewsByThumbs(Pageable pageable, @Param("member_id")String memberId);
+          "where mem.id = :member_id order by t.createdAt desc")
+  Slice<UserThumbsReview> findUserShortReviewsByThumbs(Pageable pageable, @Param("member_id")String memberId);
 
 
   @Query(value = "select new com.artique.api.profile.userReview.dto.UserThumbsReview" +

@@ -1,6 +1,5 @@
 package com.artique.api.profile.userReview;
 
-import com.artique.api.musical.ReviewOrderBy;
 import com.artique.api.profile.userReview.response.*;
 import com.artique.api.resolver.LoginUser;
 import lombok.RequiredArgsConstructor;

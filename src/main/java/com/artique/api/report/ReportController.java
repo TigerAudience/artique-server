@@ -22,7 +22,9 @@ public class ReportController {
   }
   @PostMapping("/report/member")
   public ReportRes reportMember(@RequestParam(value = "member-id")String memberId,
+                                @RequestParam(value = "type")String reportType,
                                 @LoginUser String reportMemberId){
+    reportService.reportMember(memberId,reportMemberId,reportType);
     return new ReportRes(true);
   }
 }

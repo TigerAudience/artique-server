@@ -57,7 +57,7 @@ public class MemberThumbsUpReviewService {
   public UserThumbsReviewSlice findThumbsReviews(String memberId,String loginMemberId, int page, int size){
     //get user thumbs up reviews
     PageRequest pageRequest = PageRequest.of(page,size);
-    Slice<UserThumbsReview> reviews = reviewRepository.findUserShortReviewsByThumbs(pageRequest,memberId);
+    Slice<UserThumbsReview> reviews = reviewRepository.findUserReviewsByThumbs(pageRequest,memberId);
 
     //adjust current user is thumbs up to review
     List<UserThumbsReview> reviewList = reviews.stream().toList();

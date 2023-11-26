@@ -53,6 +53,9 @@ dependencies {
 	//for email
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	//for slack
+	implementation 'com.slack.api:slack-api-client:1.36.1'
+
 }
 
 tasks.named('test') {

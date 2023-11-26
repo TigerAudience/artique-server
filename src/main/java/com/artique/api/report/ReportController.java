@@ -13,11 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReportController {
   private final ReportService reportService;
-  @PostMapping("/report")
+  @PostMapping("/report/review")
   public ReportRes reportReview(@RequestParam(value = "review-id")Long reviewId,
                                 @RequestParam(value = "type")ReportType reportType,
                                 @LoginUser String reportMemberId){
-    reportService.report(reviewId,reportType,reportMemberId);
+    reportService.reportReview(reviewId,reportType,reportMemberId);
+    return new ReportRes(true);
+  }
+  @PostMapping("/report/member")
+  public ReportRes reportMember(@RequestParam(value = "member-id")String memberId,
+                                @RequestParam(value = "type")String reportType,
+                                @LoginUser String reportMemberId){
+    reportService.reportMember(memberId,reportMemberId,reportType);
     return new ReportRes(true);
   }
 }

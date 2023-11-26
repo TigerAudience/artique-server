@@ -21,7 +21,7 @@ public class ReportService {
   private final ReviewRepository reviewRepository;
   private final ReportRepository reportRepository;
   @Transactional
-  public void report(Long reviewId, ReportType reportType, String reportMemberId){
+  public void reportReview(Long reviewId, ReportType reportType, String reportMemberId){
     Member reportMember = memberRepository.findById(reportMemberId)
             .orElseThrow(()->new ReportException("invalid member id","REPORT-003"));
     Review review = reviewRepository.findById(reviewId)
@@ -29,5 +29,8 @@ public class ReportService {
     Report createdReview = new Report(null,reportType,reportMember,review,LocalDateTime.now());
     reportMember.increaseReportCount();
     reportRepository.save(createdReview);
+  }
+  public void reportMember(String memberId,String reportMemberId){
+
   }
 }

@@ -4,10 +4,9 @@ import com.artique.api.feed.ReviewRepository;
 import com.artique.api.member.MemberRepository;
 import com.artique.api.profile.userReview.dto.*;
 import com.artique.api.profile.userReview.response.*;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,12 +14,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class MemberCreateReviewService {
-  private final MemberThumbsUpReviewService memberThumbsUpReviewService;
   private final MemberRepository memberRepository;
 
   private final ReviewRepository reviewRepository;
+  @Autowired
+  public MemberCreateReviewService(MemberRepository memberRepository,
+                                   ReviewRepository reviewRepository){
+    this.memberRepository=memberRepository;
+    this.reviewRepository=reviewRepository;
+  }
 
   public CreateShortReviewList getCreateShortReviews(String memberId){
     memberRepository.findById(memberId).orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
@@ -40,7 +43,7 @@ public class MemberCreateReviewService {
           ,UserReviewOrderBy orderBy){
     memberRepository.findById(memberId).orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
 
-    PageRequest pageRequest = PageRequest.of(page,size, Sort.by(Sort.Direction.DESC, orderBy.getFieldName()));
+    PageRequest pageRequest = PageRequest.of(page,size, UserReviewOrderBy.sortBy(orderBy));
     Slice<UserCreateReview> reviews = reviewRepository
             .findUserReviewsByMemberIdAndKeyword(pageRequest,memberId,keyword);
 
@@ -57,7 +60,7 @@ public class MemberCreateReviewService {
 
   public UserCreateReviewSlice findCreateReviews(String memberId, int page, int size,UserReviewOrderBy orderBy){
     //get user thumbs up reviews
-    PageRequest pageRequest = PageRequest.of(page,size,Sort.by(Sort.Direction.DESC, orderBy.getFieldName()));
+    PageRequest pageRequest = PageRequest.of(page,size,UserReviewOrderBy.sortBy(orderBy));
     Slice<UserCreateReview> reviews = reviewRepository.findUserReviewsByMemberId(pageRequest,memberId);
 
     //adjust current user is thumbs up to review

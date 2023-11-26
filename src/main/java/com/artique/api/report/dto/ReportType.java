@@ -16,7 +16,7 @@ public enum ReportType {
     if(str==null)
       throw new ReportException("report type can't be null","REPORT-001");
     for(ReportType r : ReportType.values()){
-      if(r.getType().equals(str))
+      if(r.toString().equals(str))
         return r;
     }
     throw new ReportException("invalid report type name","REPORT-002");

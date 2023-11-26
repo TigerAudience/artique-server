@@ -6,6 +6,7 @@ import com.artique.api.entity.Review;
 import com.artique.api.feed.ReviewRepository;
 import com.artique.api.member.MemberRepository;
 import com.artique.api.report.dto.ReportException;
+import com.artique.api.report.dto.ReportMemberType;
 import com.artique.api.report.dto.ReportType;
 import com.artique.api.slack.SlackMessageSender;
 import lombok.AllArgsConstructor;
@@ -51,8 +52,8 @@ public class ReportService {
             .orElseThrow(()->new ReportException("invalid report member id","REPORT-004"));
     HashMap<String,String> message = new HashMap<>();
     message.put("신고 일자", ZonedDateTime.now(ZoneId.of("Asia/Seoul"))
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-    message.put("신고 사유", reportType);
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh-mm-ss")));
+    message.put("신고 사유", ReportMemberType.getDetail(reportType));
     message.put("피신고자", SlackMemberInfo.of(member).toString());
     message.put("신고자",SlackMemberInfo.of(reportMember).toString());
     return message;

@@ -153,10 +153,13 @@ public class MemberService {
   public Boolean exit(String memberId){
     Member member = memberRepository.findById(memberId)
             .orElseThrow(()->new RepositoryException("invalid member id","INVALID MEMBER"));
+    /*
     deleteThumbsByMemberId(memberId);
     deleteReportsByMemberId(memberId);
     deleteReviewsByMemberId(memberId);
     memberRepository.delete(member);
+     */
+    memberRepository.deleteMemberByProcedure(member.getId());
     return Boolean.TRUE;
   }
   public void deleteThumbsByMemberId(String memberId){

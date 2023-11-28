@@ -154,8 +154,8 @@ public class MemberService {
     Member member = memberRepository.findById(memberId)
             .orElseThrow(()->new RepositoryException("invalid member id","INVALID MEMBER"));
     deleteThumbsByMemberId(memberId);
-    deleteReviewsByMemberId(memberId);
     deleteReportsByMemberId(memberId);
+    deleteReviewsByMemberId(memberId);
     memberRepository.delete(member);
     return Boolean.TRUE;
   }

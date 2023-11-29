@@ -10,12 +10,14 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ThumbsUpShortReview {
   private Long reviewId;
+  private String reviewMemberId;
   private String musicalName;
   private Double starRating;
   private String shortReview;
   private Boolean reviewSpoiler;
 
   public static ThumbsUpShortReview of(UserThumbsReview r){
-    return new ThumbsUpShortReview(r.getReviewId(),r.getMusicalName(),r.getStarRating(),r.getShortReview(),r.getReviewSpoiler());
+    return new ThumbsUpShortReview(r.getReviewId(),r.getMemberId(),r.getMusicalName(),r.getStarRating(),
+            r.getShortReview(),r.getReviewSpoiler());
   }
 }

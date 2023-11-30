@@ -23,7 +23,12 @@ public class MusicalInfo {
     return String.format("%.1f",averageScore)+" ("+ count +")";
   }
   private static String dateBuilder(LocalDate beginDate,LocalDate endDate){
-    return beginDate.toString()+" ~ "+endDate.toString();
+    String endDateString="";
+    if (endDate == null)
+      endDateString="오픈런";
+    else
+      endDateString=endDate.toString();
+    return beginDate.toString()+" ~ "+endDateString;
   }
 
   public static MusicalInfo of(MusicalWithRating m){

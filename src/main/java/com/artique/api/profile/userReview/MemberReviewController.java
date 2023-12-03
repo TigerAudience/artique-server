@@ -30,14 +30,16 @@ public class MemberReviewController {
   }
 
   @GetMapping("/member/review/create/short")
-  public CreateShortReviewList getMemberCreateShortReviews(@RequestParam("member-id") String memberId){
-    return memberCreateReviewService.getCreateShortReviews(memberId);
+  public CreateShortReviewList getMemberCreateShortReviews(@RequestParam("member-id") String memberId,
+                                                           @LoginUser String loginMemberId){
+    return memberCreateReviewService.getCreateShortReviews(memberId,loginMemberId);
   }
   @GetMapping("/member/review/create/all")
   public CreateReviewList getMemberCreateAllReviews(@RequestParam("member-id") String memberId
+          , @LoginUser String loginMemberId
           , @RequestParam int page, @RequestParam int size
-          ,@RequestParam(value = "order-by") UserReviewOrderBy reviewOrderBy){
-    return memberCreateReviewService.getCreateAllReviews(memberId,page,size,reviewOrderBy);
+          , @RequestParam(value = "order-by") UserReviewOrderBy reviewOrderBy){
+    return memberCreateReviewService.getCreateAllReviews(memberId,loginMemberId,page,size,reviewOrderBy);
   }
   @GetMapping("/member/review/create/search")
   public CreateSearchReviewList getMemberCreateAllReviews(@RequestParam("member-id") String memberId

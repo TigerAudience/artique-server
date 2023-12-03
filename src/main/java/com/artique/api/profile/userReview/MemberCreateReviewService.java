@@ -25,17 +25,18 @@ public class MemberCreateReviewService {
     this.reviewRepository=reviewRepository;
   }
 
-  public CreateShortReviewList getCreateShortReviews(String memberId){
+  public CreateShortReviewList getCreateShortReviews(String memberId, String loginMemberId){
     memberRepository.findById(memberId).orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
 
-    UserCreateReviewSlice reviews = findCreateReviews(memberId,0,5);
+    UserCreateReviewSlice reviews = findCreateReviews(memberId, loginMemberId,0,5);
 
     return CreateShortReviewList.of(reviews);
   }
-  public CreateReviewList getCreateAllReviews(String memberId, int page, int size,UserReviewOrderBy orderBy){
+  public CreateReviewList getCreateAllReviews(String memberId, String loginMemberId, int page, int size,
+                                              UserReviewOrderBy orderBy){
     memberRepository.findById(memberId).orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
 
-    UserCreateReviewSlice reviews = findCreateReviews(memberId,page,size,orderBy);
+    UserCreateReviewSlice reviews = findCreateReviews(memberId, loginMemberId, page,size,orderBy);
 
     return CreateReviewList.of(reviews);
   }
@@ -54,11 +55,12 @@ public class MemberCreateReviewService {
     return CreateSearchReviewList
             .of(new UserCreateReviewSlice(reviewList,page,reviewList.size(),reviews.hasNext()));
   }
-  public UserCreateReviewSlice findCreateReviews(String memberId, int page, int size){
-    return findCreateReviews(memberId,page,size,UserReviewOrderBy.THUMBS);
+  public UserCreateReviewSlice findCreateReviews(String memberId, String loginMemberId, int page, int size){
+    return findCreateReviews(memberId, loginMemberId, page,size,UserReviewOrderBy.THUMBS);
   }
 
-  public UserCreateReviewSlice findCreateReviews(String memberId, int page, int size,UserReviewOrderBy orderBy){
+  public UserCreateReviewSlice findCreateReviews(String memberId, String loginMemberId, int page, int size,
+                                                 UserReviewOrderBy orderBy){
     //get user thumbs up reviews
     PageRequest pageRequest = PageRequest.of(page,size,UserReviewOrderBy.sortBy(orderBy));
     Slice<UserCreateReview> reviews = reviewRepository.findUserReviewsByMemberId(pageRequest,memberId);
@@ -66,7 +68,7 @@ public class MemberCreateReviewService {
     //adjust current user is thumbs up to review
     List<UserCreateReview> reviewList = reviews.stream().toList();
 
-    mapThumbsId(reviewList,memberId);
+    mapThumbsId(reviewList,loginMemberId);
     return new UserCreateReviewSlice(reviewList,page,reviewList.size(),reviews.hasNext());
   }
   public void mapThumbsId(List<UserCreateReview> reviews,String memberId){

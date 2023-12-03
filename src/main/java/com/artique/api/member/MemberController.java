@@ -1,11 +1,8 @@
 package com.artique.api.member;
-import com.artique.api.entity.Member;
 import com.artique.api.mail.EmailException;
 import com.artique.api.mail.EmailSender;
-import com.artique.api.mail.dto.EmailRequest;
 import com.artique.api.mail.dto.EmailRequest.JoinAuthorizationRequest;
 import com.artique.api.mail.dto.EmailRequest.VerificationRequest;
-import com.artique.api.mail.dto.JoinEmailForm;
 import com.artique.api.member.dto.ValidatePasswordRequest;
 import com.artique.api.member.exception.LoginException;
 import com.artique.api.member.exception.LoginExceptionCode;
@@ -15,13 +12,12 @@ import com.artique.api.member.request.OauthMemberReq;
 import com.artique.api.member.request.UpdateMemberReq;
 import com.artique.api.member.response.*;
 import com.artique.api.resolver.LoginUser;
-import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.regex.Pattern;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,9 +56,15 @@ public class MemberController implements MemberControllerSwagger{
   }
   @GetMapping("/member/duplicate")
   public MemberDuplicate checkDuplicateMember(@RequestParam(value = "member-id") String memberId){
+    if(!isEmailFormat(memberId))
+      throw new LoginException("is not email format", LoginExceptionCode.DUPLICATE_LOGIN_ID.toString());
     if(!memberService.checkDuplicateMember(memberId))
       throw new LoginException("member id duplicate exception", LoginExceptionCode.DUPLICATE_LOGIN_ID.toString());
     return new MemberDuplicate(memberId);
+  }
+  public static boolean isEmailFormat(String memberId) {
+    String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    return Pattern.matches(emailRegex, memberId);
   }
   @PostMapping("/member/join")
   public JoinMember join(@Valid @RequestBody JoinMemberReq memberReq){

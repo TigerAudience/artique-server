@@ -32,5 +32,5 @@ public class RedisSession {
   public void renew(){
     this.expirationInSeconds=maxTime;
   }
-  private static final Long maxTime=60L;
+  private static final Long maxTime=2592000L;
 }

@@ -57,8 +57,7 @@ dependencies {
 	implementation 'com.slack.api:slack-api-client:1.36.1'
 
 	//for redis
-	//https://mvnrepository.com/artifact/org.springframework.session/spring-session-data-redis
-	implementation 'org.springframework.session:spring-session-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	// https://mvnrepository.com/artifact/io.lettuce/lettuce-core
 	implementation 'io.lettuce:lettuce-core'
 

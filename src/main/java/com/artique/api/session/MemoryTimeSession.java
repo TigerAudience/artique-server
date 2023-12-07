@@ -4,7 +4,6 @@ import com.artique.api.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class MemoryTimeSession implements CustomSession{
   private final SessionStore sessionStore;

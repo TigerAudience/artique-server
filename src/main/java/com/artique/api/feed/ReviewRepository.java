@@ -30,6 +30,11 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   Slice<FeedShortsDao> findPageReviewsByMemberSlice(Pageable pageable,
                                                     @Param("begin_date") ZonedDateTime beginDate,
                                                     @Param("end_date") ZonedDateTime endDate);
+  @Query(value = "SELECT new com.artique.api.feed.dao.FeedShortsDao(mem.nickname,mem.profileUrl,mem.id," +
+          "mus.name,mus.posterUrl,r.casting,mus.id," +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.shortSpoiler)" +
+          "FROM Review r JOIN r.musical mus JOIN r.member mem ")
+  Slice<FeedShortsDao> findPageReviewsByMemberSliceAllDate(Pageable pageable);
 
   @Query(value = "select new com.artique.api.musical.dao.MusicalReviewDao" +
           "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.createdAt,r.shortSpoiler,t.id) " +

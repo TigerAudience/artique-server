@@ -25,13 +25,13 @@ public class MemberInfoService {
   private final MemberRepository memberRepository;
   public MemberSummary getSummary(String memberId){
     Member member = memberRepository.findById(memberId)
-            .orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
+            .orElseThrow(()->invalidMemberId(memberId));
 
     return MemberSummary.of(member);
   }
   public MemberReviewRateStatistics analysis(String memberId){
     Member member = memberRepository.findById(memberId)
-            .orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
+            .orElseThrow(()->invalidMemberId(memberId));
 
     List<Review> reviews = reviewRepository.findReviewsByMemberId(memberId);
 
@@ -43,6 +43,9 @@ public class MemberInfoService {
 
     return MemberReviewRateStatistics.of(reviewAnalyzer);
   }
-
+  private ProfileException invalidMemberId(String requestId){
+    requestId = requestId == null ? "null id" : requestId;
+    return new ProfileException("invalid member id ["+requestId+"]","PROFILE-001");
+  }
 
 }

@@ -29,6 +29,7 @@ public class RedisCustomSession implements CustomSession{
     if(session==null)
       return false;
     session.renew();
+    sessionRepository.save(session);
     return true;
   }
 

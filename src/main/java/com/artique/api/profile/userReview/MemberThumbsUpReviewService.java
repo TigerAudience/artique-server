@@ -25,7 +25,8 @@ public class MemberThumbsUpReviewService {
   private final MemberRepository memberRepository;
 
   public ThumbsUpShortReviewList getThumbsUpShortReviews(String memberId,String loginMemberId){
-    memberRepository.findById(memberId).orElseThrow(()->new ProfileException("invalid member id","PROFILE-001"));
+    memberRepository.findById(memberId).orElseThrow(()->
+            new ProfileException("invalid member id ["+(memberId==null ? "null value" : memberId)+"]","PROFILE-001"));
 
     UserThumbsReviewSlice reviews = findThumbsReviews(memberId,loginMemberId,0,5);
 

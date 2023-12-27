@@ -22,6 +22,7 @@ public class Musical {
     private String plot;
     private String posterUrl;
     private String musicalStatus;
+    private String stickyName;
     @OneToMany(mappedBy = "musical")
     private List<Review> reviews;
 }

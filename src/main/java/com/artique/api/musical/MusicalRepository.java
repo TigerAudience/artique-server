@@ -17,11 +17,13 @@ public interface MusicalRepository extends JpaRepository<Musical,String> {
   public MusicalWithRating findMusicalWithRating(@Param(value = "musicalId") String musicalId);
 
   @Query("select m from Musical m left join m.reviews r where m.name " +
-          "like %:key_world% or m.casting like %:key_world% group by m.id order by count(r.id) desc")
-  public List<Musical> findMusicalsByKeyWordOrderByReviews(@Param(value = "key_world")String keyWorld);
+          "like %:key_word% or m.stickyName like %:key_word% or m.casting like %:key_word% " +
+          "group by m.id order by count(r.id) desc")
+  public List<Musical> findMusicalsByKeyWordOrderByReviews(@Param(value = "key_word")String keyWord);
 
   @Query("select m from Musical m left join m.reviews r where m.name " +
-          "like %:key_world% or m.casting like %:key_world% group by m.id order by m.beginDate desc")
-  public List<Musical> findMusicalsByKeyWordOrderByTime(@Param(value = "key_world")String keyWorld);
+          "like %:key_word% or m.stickyName like %:key_word% or m.casting like %:key_word% " +
+          "group by m.id order by m.beginDate desc")
+  public List<Musical> findMusicalsByKeyWordOrderByTime(@Param(value = "key_word")String keyWord);
 
 }

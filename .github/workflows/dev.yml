@@ -24,7 +24,6 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: make application.properties
-        if: contains(github.ref, 'main')
         run: |
           cd ./src/main/resources
           touch ./application-db.properties

@@ -38,7 +38,6 @@ jobs:
           ./gradlew clean build --exclude-task test
 
       - name: Docker build & push
-        if: contains(github.ref, 'main')
         run: |
           docker build -t artique-dev -f Dockerfile .
           docker save artique-dev > artique-dev-container.tar

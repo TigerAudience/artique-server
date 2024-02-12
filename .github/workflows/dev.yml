@@ -51,14 +51,14 @@ jobs:
           source: "./artique-dev-container.tar"
           target: "/home/ubuntu/dev/"
 
-      ## deploy to main
-      #- name: Deploy to main server
-      #  uses: appleboy/ssh-action@master
-      #  with:
-      #    host: ${{ secrets.HOST }}
-      #    username: ${{ secrets.USERNAME }}
-      #    key: ${{ secrets.REMOTE_SSH_KEY }}
-      #    port: ${{ secrets.SSH_PORT }}
-      #    script: |
-      #      cd /home/ubuntu/dev
-      #      sudo sh release-process.sh
+      # deploy to main
+      - name: Deploy to main server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /home/ubuntu/dev
+            sudo sh release-process.sh

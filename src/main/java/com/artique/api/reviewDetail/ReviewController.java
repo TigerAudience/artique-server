@@ -1,5 +1,6 @@
 package com.artique.api.reviewDetail;
 
+import com.artique.api.resolver.LoginUser;
 import com.artique.api.reviewDetail.dto.ReviewDetailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,7 @@ public class ReviewController {
   private final ReviewService reviewService;
 
   @GetMapping("/review")
-  public ReviewDetailDto detail(@RequestParam(value = "review-id")Long reviewId){
-    return reviewService.getDetail(reviewId);
+  public ReviewDetailDto detail(@RequestParam(value = "review-id")Long reviewId, @LoginUser String memberId){
+    return reviewService.getDetail(reviewId,memberId);
   }
 }

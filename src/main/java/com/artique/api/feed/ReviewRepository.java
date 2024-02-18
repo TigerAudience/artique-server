@@ -6,6 +6,8 @@ import com.artique.api.musical.dao.MusicalReviewDao;
 import com.artique.api.profile.userReview.dto.ReviewThumb;
 import com.artique.api.profile.userReview.dto.UserCreateReview;
 import com.artique.api.profile.userReview.dto.UserThumbsReview;
+import com.artique.api.reviewDetail.ReviewService;
+import com.artique.api.reviewDetail.dto.ReviewDetailThumbsInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -99,4 +101,8 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   @Query(value = "delete from Review r where r.member.id = :member_id")
   void deleteAllByMemberId(@Param(value = "member_id")String memberId);
 
+  @Query(value = "select new com.artique.api.reviewDetail.dto.ReviewDetailThumbsInfo(t.id)" +
+          " from Review r join r.thumbs t join t.member mem where mem.id=:member_id and r.id=:review_id")
+  List<ReviewDetailThumbsInfo> findThumbsByMemberId(@Param("member_id")String memberId,
+                                                    @Param("review_id")Long reviewId);
 }

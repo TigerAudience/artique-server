@@ -20,10 +20,12 @@ public class SearchMusicalDto {
   private String duration;
 
   public static SearchMusicalDto of(Musical m){
-    DateTimeFormatter dateformat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter dateformat = DateTimeFormatter.ofPattern("-MM-dd");
     String beginDate = m.getBeginDate().format(dateformat);
+    int beginYear = m.getBeginDate().getYear();
     String endDate = m.getEndDate().format(dateformat);
-    String duration = beginDate + " ~ " + endDate;
+    int endYear = m.getEndDate().getYear();
+    String duration = beginYear%100 + beginDate + " ~ " + endYear%100 + endDate;
     return new SearchMusicalDto(m.getId(),m.getPosterUrl(),m.getName(), duration);
   }
 }

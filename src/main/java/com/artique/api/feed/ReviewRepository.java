@@ -102,6 +102,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   void deleteAllByMemberId(@Param(value = "member_id")String memberId);
 
   @Query(value = "select new com.artique.api.reviewDetail.dto.ReviewDetailThumbsInfo(t.id)" +
-          " from Review r join r.thumbs t join t.member mem where mem.id=:member_id")
-  List<ReviewDetailThumbsInfo> findThumbsByMemberId(@Param("member_id")String memberId);
+          " from Review r join r.thumbs t join t.member mem where mem.id=:member_id and r.id=:review_id")
+  List<ReviewDetailThumbsInfo> findThumbsByMemberId(@Param("member_id")String memberId,
+                                                    @Param("review_id")Long reviewId);
 }

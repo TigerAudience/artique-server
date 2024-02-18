@@ -19,7 +19,8 @@ public class ReviewService {
     Review review = reviewRepository.findReviewByIdJoinFetchMemberMusical(reviewId)
             .orElseThrow(()->new ReviewException("REVIEW-001","invalid review id"));
 
-    Optional<ReviewDetailThumbsInfo> thumbsInfo = reviewRepository.findThumbsByMemberId(memberId).stream().findFirst();
+    Optional<ReviewDetailThumbsInfo> thumbsInfo = reviewRepository.findThumbsByMemberId(memberId,reviewId)
+            .stream().findFirst();
     return ReviewDetailDto.of(review,thumbsInfo);
   }
 }

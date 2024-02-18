@@ -55,7 +55,7 @@ public class FeedService {
     return new FeedSliceDto(feedShorts,hasNext,pageAblePage,pageAbleSize);
   }
 
-  private void mapThumbsId(List<FeedShortsDao> feeds,String memberId){
+  public void mapThumbsId(List<FeedShortsDao> feeds,String memberId){
     List<Long> reviewIds = feeds.stream().map(FeedShortsDao::getReviewId).toList();
     List<ReviewThumb> thumbs =  reviewRepository.findThumbsByReviewIds(reviewIds,memberId);
 

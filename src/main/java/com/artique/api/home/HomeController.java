@@ -13,4 +13,16 @@ public class HomeController {
   public HomeReviewList recentReview(){
     return homeFeedService.findRecentReviews();
   }
+  @GetMapping("/home/review/many-thumbs")
+  public HomeReviewList manyThumbsReview(){
+    return homeFeedService.findManyThumbsUpReviews();
+  }
+  @GetMapping("/home/review/long")
+  public HomeReviewList longReview(){
+    return homeFeedService.findIncludingLongReviews();
+  }
+  @GetMapping("/home/review/five-star-rating")
+  public HomeReviewList fiveStarRatingReview(){
+    return homeFeedService.findFiveStarRatingReviews();
+  }
 }

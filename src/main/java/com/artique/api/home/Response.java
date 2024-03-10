@@ -12,17 +12,17 @@ import java.util.List;
 public class Response {
   @AllArgsConstructor
   @Getter
-  public static class RecentReviewList{
-    private final String title = "최신 리뷰";
-    private List<RecentReview> reviews;
-    public static RecentReviewList of(List<Review> reviews){
-      List<RecentReview> recentReviews = reviews.stream().map(RecentReview::of).toList();
-      return new RecentReviewList(recentReviews);
+  public static class HomeReviewList{
+    private String title;
+    private List<HomeReview> reviews;
+    public static HomeReviewList of(String title, List<Review> reviews){
+      List<HomeReview> recentReviews = reviews.stream().map(HomeReview::of).toList();
+      return new HomeReviewList(title, recentReviews);
     }
   }
   @AllArgsConstructor
   @Getter
-  private static class RecentReview{
+  private static class HomeReview{
     private String musicalId;
     private String musicalImageUrl;
     private String musicalTitle;
@@ -36,11 +36,11 @@ public class Response {
     private String memberId;
     private String memberNickname;
 
-    public static RecentReview of(Review review){
+    public static HomeReview of(Review review){
 
       Musical musical = review.getMusical();
       Member member = review.getMember();
-      return new RecentReview(
+      return new HomeReview(
               musical.getId(),musical.getPosterUrl(),musical.getName(),
               review.getId(),review.getViewDate(),review.getStarRating(),review.getThumbsUp(),review.getShortReview(),
               member.getId(),member.getNickname()

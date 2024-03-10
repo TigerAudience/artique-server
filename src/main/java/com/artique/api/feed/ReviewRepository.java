@@ -108,4 +108,10 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
 
   @Query(value = "select r from Review r order by r.createdAt desc")
   List<Review> findReviewsOrderByCreatedAt(Pageable pageable);
+  @Query(value = "select r from Review r order by r.thumbsUp desc ")
+  List<Review> findReviewsOrderByThumbsUp(Pageable pageable);
+  @Query(value = "select r from Review r where r.longReview is not null order by r.createdAt desc")
+  List<Review> findLongReviews(Pageable pageable);
+  @Query(value = "select r from Review r where r.starRating=5.0 order by r.createdAt desc")
+  List<Review> findStarRatingFiveReviews(Pageable pageable);
 }

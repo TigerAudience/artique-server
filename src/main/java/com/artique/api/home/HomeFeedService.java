@@ -2,7 +2,7 @@ package com.artique.api.home;
 
 import com.artique.api.entity.Review;
 import com.artique.api.feed.ReviewRepository;
-import com.artique.api.home.Response.RecentReviewList;
+import com.artique.api.home.Response.HomeReviewList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HomeFeedService {
   private final ReviewRepository reviewRepository;
-  public RecentReviewList findRecentReviews(){
+  public HomeReviewList findRecentReviews(){
     List<Review> reviews = reviewRepository.findReviewsOrderByCreatedAt(PageRequest.of(0,5));
-    return RecentReviewList.of(reviews);
+    return HomeReviewList.of("최신 리뷰",reviews);
+  }
+  public HomeReviewList findManyThumbsUpReviews(){
+    List<Review> reviews = reviewRepository.findReviewsOrderByThumbsUp(PageRequest.of(0,5));
+    return HomeReviewList.of("공감 많은 리뷰",reviews);
+  }
+  public HomeReviewList findIncludingLongReviews(){
+    List<Review> reviews = reviewRepository.findLongReviews(PageRequest.of(0,5));
+    return HomeReviewList.of("긴줄 평 있는 리뷰",reviews);
+  }
+  public HomeReviewList findFiveStarRatingReviews(){
+    List<Review> reviews = reviewRepository.findStarRatingFiveReviews(PageRequest.of(0,5));
+    return HomeReviewList.of("별점 5점 리뷰",reviews);
   }
 }

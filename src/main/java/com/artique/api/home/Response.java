@@ -1,5 +1,6 @@
 package com.artique.api.home;
 
+import com.artique.api.entity.ArtiqueRecommendMusical;
 import com.artique.api.entity.Member;
 import com.artique.api.entity.Musical;
 import com.artique.api.entity.Review;
@@ -8,6 +9,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Response {
   @AllArgsConstructor
@@ -45,6 +47,40 @@ public class Response {
               review.getId(),review.getViewDate(),review.getStarRating(),review.getThumbsUp(),review.getShortReview(),
               member.getId(),member.getNickname()
       );
+    }
+  }
+
+  @AllArgsConstructor
+  @Getter
+  public static class RecommendMusicalList{
+    private Integer size;
+    private List<RecommendMusical> recommendMusicals;
+    public static RecommendMusicalList of(List<ArtiqueRecommendMusical> r){
+      List<RecommendMusical> recommendMusicals = r.stream().map(RecommendMusical::of).toList();
+      return new RecommendMusicalList(r.size(),recommendMusicals);
+    }
+  }
+
+  @AllArgsConstructor
+  @Getter
+  private static class RecommendMusical{
+    private String musicalId;
+    private String musicalPosterUrl;
+    private String musicalName;
+    private Double averageRate;
+    private Integer totalReviewCount;
+    private static RecommendMusical of(ArtiqueRecommendMusical recommendMusical){
+      Musical musical = recommendMusical.getMusical();
+      int reviewCount = musical.getReviews().size();
+      double averageRate = calculateAverageRate(musical);
+      return new RecommendMusical(musical.getId(),musical.getPosterUrl(),musical.getName(),
+              averageRate,reviewCount);
+    }
+    private static double calculateAverageRate(Musical musical){
+      List<Review> reviews = musical.getReviews();
+      if(reviews.size()==0)
+        return 0D;
+      return reviews.stream().collect(Collectors.averagingDouble(Review::getStarRating));
     }
   }
 }

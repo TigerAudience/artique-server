@@ -1,8 +1,10 @@
 package com.artique.api.home;
 
+import com.artique.api.home.Response.BannerList;
 import com.artique.api.home.Response.HomeReviewList;
 import com.artique.api.home.Response.RecommendMusicalList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.Banner;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +31,9 @@ public class HomeController {
   @GetMapping("/home/recommend")
   public RecommendMusicalList artiqueRecommend(){
     return homeFeedService.getRecommendMusicalList();
+  }
+  @GetMapping("/home/banner")
+  public BannerList bannerList(){
+    return homeFeedService.getBannerList();
   }
 }

@@ -2,6 +2,7 @@ package com.artique.api.home;
 
 import com.artique.api.entity.Review;
 import com.artique.api.feed.ReviewRepository;
+import com.artique.api.home.Response.BannerList;
 import com.artique.api.home.Response.HomeReviewList;
 import com.artique.api.home.Response.RecommendMusicalList;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 public class HomeFeedService {
   private final ReviewRepository reviewRepository;
   private final ArtiqueRecommendMusicalRepository artiqueRecommendMusicalRepository;
+  private final HomeBannerRepository homeBannerRepository;
   public HomeReviewList findRecentReviews(){
     List<Review> reviews = reviewRepository.findReviewsOrderByCreatedAt(PageRequest.of(0,5));
     return HomeReviewList.of("최신 리뷰",reviews);
@@ -35,5 +37,8 @@ public class HomeFeedService {
   }
   public RecommendMusicalList getRecommendMusicalList(){
     return RecommendMusicalList.of(artiqueRecommendMusicalRepository.findAll(PageRequest.of(0,5)).toList());
+  }
+  public BannerList getBannerList(){
+    return BannerList.of(homeBannerRepository.getHomeBannerOrderBySequence());
   }
 }

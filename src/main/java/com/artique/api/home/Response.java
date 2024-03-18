@@ -1,9 +1,6 @@
 package com.artique.api.home;
 
-import com.artique.api.entity.ArtiqueRecommendMusical;
-import com.artique.api.entity.Member;
-import com.artique.api.entity.Musical;
-import com.artique.api.entity.Review;
+import com.artique.api.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -81,6 +78,25 @@ public class Response {
       if(reviews.size()==0)
         return 0D;
       return reviews.stream().collect(Collectors.averagingDouble(Review::getStarRating));
+    }
+  }
+
+  @AllArgsConstructor
+  @Getter
+  public static class BannerList{
+    List<Banner> banners;
+    public static BannerList of(List<HomeBanner> banners){
+      return new BannerList(banners.stream().map(Banner::of).toList());
+    }
+  }
+  @AllArgsConstructor
+  @Getter
+  private static class Banner{
+    private String imageUrl;
+    private String href;
+    private Integer sequence;
+    public static Banner of(HomeBanner banner){
+      return new Banner(banner.getImageUrl(),banner.getHref(),banner.getSequence());
     }
   }
 }

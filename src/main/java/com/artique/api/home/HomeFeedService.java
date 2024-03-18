@@ -2,7 +2,9 @@ package com.artique.api.home;
 
 import com.artique.api.entity.Review;
 import com.artique.api.feed.ReviewRepository;
+import com.artique.api.home.Response.BannerList;
 import com.artique.api.home.Response.HomeReviewList;
+import com.artique.api.home.Response.RecommendMusicalList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HomeFeedService {
   private final ReviewRepository reviewRepository;
+  private final ArtiqueRecommendMusicalRepository artiqueRecommendMusicalRepository;
+  private final HomeBannerRepository homeBannerRepository;
   public HomeReviewList findRecentReviews(){
     List<Review> reviews = reviewRepository.findReviewsOrderByCreatedAt(PageRequest.of(0,5));
     return HomeReviewList.of("최신 리뷰",reviews);
@@ -30,5 +34,11 @@ public class HomeFeedService {
   public HomeReviewList findFiveStarRatingReviews(){
     List<Review> reviews = reviewRepository.findStarRatingFiveReviews(PageRequest.of(0,5));
     return HomeReviewList.of("별점 5점 리뷰",reviews);
+  }
+  public RecommendMusicalList getRecommendMusicalList(){
+    return RecommendMusicalList.of(artiqueRecommendMusicalRepository.findAllOrderBySequence());
+  }
+  public BannerList getBannerList(){
+    return BannerList.of(homeBannerRepository.getHomeBannerOrderBySequence());
   }
 }

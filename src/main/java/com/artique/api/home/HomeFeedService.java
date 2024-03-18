@@ -36,7 +36,7 @@ public class HomeFeedService {
     return HomeReviewList.of("별점 5점 리뷰",reviews);
   }
   public RecommendMusicalList getRecommendMusicalList(){
-    return RecommendMusicalList.of(artiqueRecommendMusicalRepository.findAll(PageRequest.of(0,5)).toList());
+    return RecommendMusicalList.of(artiqueRecommendMusicalRepository.findAllOrderBySequence());
   }
   public BannerList getBannerList(){
     return BannerList.of(homeBannerRepository.getHomeBannerOrderBySequence());

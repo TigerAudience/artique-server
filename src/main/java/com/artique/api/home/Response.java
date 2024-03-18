@@ -66,12 +66,13 @@ public class Response {
     private String musicalName;
     private Double averageRate;
     private Integer totalReviewCount;
+    private Integer sequence;
     private static RecommendMusical of(ArtiqueRecommendMusical recommendMusical){
       Musical musical = recommendMusical.getMusical();
       int reviewCount = musical.getReviews().size();
       double averageRate = calculateAverageRate(musical);
       return new RecommendMusical(musical.getId(),musical.getPosterUrl(),musical.getName(),
-              averageRate,reviewCount);
+              averageRate,reviewCount,recommendMusical.getSequence());
     }
     private static double calculateAverageRate(Musical musical){
       List<Review> reviews = musical.getReviews();

@@ -1,8 +1,6 @@
 package com.artique.api.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ArtiqueRecommendMusical {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @ManyToOne
   private Musical musical;
+  private Integer sequence;
 }

@@ -54,7 +54,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
   }
   public String[] buildExcludePattern(){
     String[] excludePatternsForUri = {"/member/**","/feed/**","/review/**","/musical/**","/search/**",
-            "/config/**","/session/**"};
+            "/config/**","/session/**","/home/**"};
     List<String> patterns = new ArrayList<>();
     patterns.addAll(Arrays.asList(excludePatternsForStaticResource));
     patterns.addAll(Arrays.asList(excludePatternsForUri));

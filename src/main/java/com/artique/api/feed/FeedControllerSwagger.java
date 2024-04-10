@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface FeedControllerSwagger {
@@ -18,6 +19,13 @@ public interface FeedControllerSwagger {
           @ApiResponse(responseCode = "400", description = "bad request operation (page, size를 정수로 주어야 합니다.)",
                   content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  FeedSliceDto feeds(@LoginUser String memberId, @RequestParam(value = "page")int page,
-                            @RequestParam(value = "size")int size);
+  @GetMapping("/feed/many-thumbs")
+  public FeedSliceDto thumbsFeeds(@LoginUser String memberId, @RequestParam(value = "page")int page,
+                                  @RequestParam(value = "size")int size);
+  @GetMapping("/feed/long")
+  public FeedSliceDto longFeeds(@LoginUser String memberId, @RequestParam(value = "page")int page,
+                                @RequestParam(value = "size")int size);
+  @GetMapping("/feed/five-star-rating")
+  public FeedSliceDto fiveStarFeeds(@LoginUser String memberId, @RequestParam(value = "page")int page,
+                                    @RequestParam(value = "size")int size);
 }

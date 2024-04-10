@@ -15,4 +15,6 @@ public class HomeBanner {
   private String imageUrl;
   private String href;
   private Integer sequence;
+  // 0:외부 링크, 1:뮤지컬 아이디, 2:리뷰 아이디
+  private Integer type;
 }

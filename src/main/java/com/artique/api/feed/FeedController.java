@@ -12,9 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class FeedController implements FeedControllerSwagger{
   private final FeedService feedService;
 
-  @GetMapping("/feed")
-  public FeedSliceDto feeds(@LoginUser String memberId, @RequestParam(value = "page")int page,
+  @GetMapping("/feed/recent")
+  public FeedSliceDto recentFeeds(@LoginUser String memberId, @RequestParam(value = "page")int page,
                             @RequestParam(value = "size")int size){
-    return feedService.mainFeedsWithMember(memberId,page,size);
+    return feedService.mainFeedsWithMember(memberId,page,size,"recent");
+  }
+  @GetMapping("/feed/many-thumbs")
+  public FeedSliceDto thumbsFeeds(@LoginUser String memberId, @RequestParam(value = "page")int page,
+                            @RequestParam(value = "size")int size){
+    return feedService.mainFeedsWithMember(memberId,page,size,"many-thumbs");
+  }
+  @GetMapping("/feed/long")
+  public FeedSliceDto longFeeds(@LoginUser String memberId, @RequestParam(value = "page")int page,
+                            @RequestParam(value = "size")int size){
+    return feedService.mainFeedsWithMember(memberId,page,size,"long");
+  }
+  @GetMapping("/feed/five-star-rating")
+  public FeedSliceDto fiveStarFeeds(@LoginUser String memberId, @RequestParam(value = "page")int page,
+                            @RequestParam(value = "size")int size){
+    return feedService.mainFeedsWithMember(memberId,page,size,"five-star-rating");
   }
 }

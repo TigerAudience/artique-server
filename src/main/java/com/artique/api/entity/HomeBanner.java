@@ -15,4 +15,5 @@ public class HomeBanner {
   private String imageUrl;
   private String href;
   private Integer sequence;
+  private Integer type;
 }

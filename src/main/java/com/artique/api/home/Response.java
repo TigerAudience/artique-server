@@ -94,10 +94,10 @@ public class Response {
   @Getter
   private static class Banner{
     private String imageUrl;
+    private Integer type;
     private String href;
-    private Integer sequence;
     public static Banner of(HomeBanner banner){
-      return new Banner(banner.getImageUrl(),banner.getHref(),banner.getSequence());
+      return new Banner(banner.getImageUrl(),banner.getType(),banner.getHref());
     }
   }
 }

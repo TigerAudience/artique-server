@@ -93,9 +93,9 @@ public class Response {
   @AllArgsConstructor
   @Getter
   private static class Banner{
-    private String imageUrl;
+    private String bannerImg;
     private Integer type;
-    private String href;
+    private String link;
     public static Banner of(HomeBanner banner){
       return new Banner(banner.getImageUrl(),banner.getType(),banner.getHref());
     }

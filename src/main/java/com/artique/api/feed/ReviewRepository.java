@@ -35,8 +35,25 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
   @Query(value = "SELECT new com.artique.api.feed.dao.FeedShortsDao(mem.nickname,mem.profileUrl,mem.id," +
           "mus.name,mus.posterUrl,r.casting,mus.id," +
           "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.shortSpoiler)" +
-          "FROM Review r JOIN r.musical mus JOIN r.member mem ")
-  Slice<FeedShortsDao> findPageReviewsByMemberSliceAllDate(Pageable pageable);
+          "FROM Review r JOIN r.musical mus JOIN r.member mem ORDER BY r.createdAt DESC")
+  Slice<FeedShortsDao> findPageReviewsByMemberSliceOrderByCreatedAt(Pageable pageable);
+  @Query(value = "SELECT new com.artique.api.feed.dao.FeedShortsDao(mem.nickname,mem.profileUrl,mem.id," +
+          "mus.name,mus.posterUrl,r.casting,mus.id," +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.shortSpoiler)" +
+          "FROM Review r JOIN r.musical mus JOIN r.member mem ORDER BY r.thumbsUp DESC")
+  Slice<FeedShortsDao> findPageReviewsByMemberSliceOrderByThumbsUp(Pageable pageable);
+  @Query(value = "SELECT new com.artique.api.feed.dao.FeedShortsDao(mem.nickname,mem.profileUrl,mem.id," +
+          "mus.name,mus.posterUrl,r.casting,mus.id," +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.shortSpoiler)" +
+          "FROM Review r JOIN r.musical mus JOIN r.member mem WHERE r.longReview IS NOT NULL " +
+          "ORDER BY r.createdAt DESC")
+  Slice<FeedShortsDao> findLongPageReviewsByMemberSlice(Pageable pageable);
+  @Query(value = "SELECT new com.artique.api.feed.dao.FeedShortsDao(mem.nickname,mem.profileUrl,mem.id," +
+          "mus.name,mus.posterUrl,r.casting,mus.id," +
+          "r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.shortSpoiler)" +
+          "FROM Review r JOIN r.musical mus JOIN r.member mem WHERE r.starRating=5.0 " +
+          "ORDER BY r.createdAt DESC")
+  Slice<FeedShortsDao> findStarRatingFivePageReviewsByMemberSlice(Pageable pageable);
 
   @Query(value = "select new com.artique.api.musical.dao.MusicalReviewDao" +
           "(mem.nickname,mem.profileUrl,mem.id,r.viewDate,r.starRating,r.thumbsUp,r.shortReview,r.id,r.createdAt,r.shortSpoiler,t.id) " +

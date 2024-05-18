@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Getter
@@ -22,12 +23,14 @@ public class ReviewDetailDto {
   private LocalDate viewDate;
   private Boolean shortSpoiler;
   private Boolean longSpoiler;
+  private Long thumbsCount;
 
-  public static ReviewDetailDto of(Review r){
+  private Boolean isThumbsUp;
+  public static ReviewDetailDto of(Review r, Optional<ReviewDetailThumbsInfo> t){
     return new ReviewDetailDto(r.getId(),
             r.getMember().getId(),r.getMember().getNickname(),
             r.getMusical().getPosterUrl(),r.getMusical().getName(),
             r.getCasting(),r.getSeat(),r.getStarRating(),r.getShortReview(),r.getLongReview(),r.getViewDate(),
-            r.isShortSpoiler(), r.isLongSpoiler());
+            r.isShortSpoiler(), r.isLongSpoiler(),r.getThumbsUp(), t.isPresent());
   }
 }

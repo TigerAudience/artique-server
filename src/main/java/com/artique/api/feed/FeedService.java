@@ -8,6 +8,7 @@ import com.artique.api.profile.userReview.dto.UserCreateReview;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -22,26 +23,12 @@ public class FeedService {
 
   private final ReviewRepository reviewRepository;
 
-  public FeedSliceDto mainFeedsWithMember(String memberId,int page,int size){
+  public FeedSliceDto mainFeedsWithMember(String memberId,int page,int size, String type){
 
-    //최근 일주일동안 작성된 리뷰중, 공감 수 많은 순서로 리뷰 가져오기
-    //회의 결과, 리뷰가 지속적으로 쌓일 정도로 서비스가 조금 더 성장했을 때 사용할 전략으로 결정
-    /*
-    PageRequest pageRequest = PageRequest.of(page,size, Sort.by(Sort.Direction.DESC,"thumbsUp"));
-    Slice<FeedShortsDao> feeds = reviewRepository
-            .findPageReviewsByMemberSlice(pageRequest, ZonedDateTime.now().minusDays(7),ZonedDateTime.now());
-     */
-    //작성된 모든 리뷰 중, 공감 수 많은 순서로 리뷰 가져오기
-    //2024/01/04 회의 결과, 피드의 리뷰 회전율이 너무 낮아 해당 방식은 보류하기로 결정
-    /*
-    PageRequest pageRequest = PageRequest.of(page,size, Sort.by(Sort.Direction.DESC,"thumbsUp"));
-    Slice<FeedShortsDao> feeds = reviewRepository
-            .findPageReviewsByMemberSliceAllDate(pageRequest);
-     */
-    //작성된 모든 리뷰 중, 가장 최근에 작성된 순서로 리뷰 가져오기
-    PageRequest pageRequest = PageRequest.of(page,size, Sort.by(Sort.Direction.DESC,"createdAt"));
-    Slice<FeedShortsDao> feeds = reviewRepository
-            .findPageReviewsByMemberSliceAllDate(pageRequest);
+    //4가지 버전의 피드 서비스 제공
+    // 1.최신순(type:recent) 2.공감 많은 순(type:many-thumbs)
+    // 3.긴줄평 있는 리뷰(type:long) 4.별점5.0 리뷰(type:five-star-rating)
+    Slice<FeedShortsDao> feeds = findFeedShortsDao(page,size,type);
 
     List<FeedShortsDao> feedList = feeds.stream().toList();
     boolean hasNext = feeds.hasNext();
@@ -54,8 +41,18 @@ public class FeedService {
 
     return new FeedSliceDto(feedShorts,hasNext,pageAblePage,pageAbleSize);
   }
+  private Slice<FeedShortsDao> findFeedShortsDao(int page,int size,String type){
+    return switch (type) {
+      case "recent" -> reviewRepository.findPageReviewsByMemberSliceOrderByCreatedAt(PageRequest.of(page, size));
+      case "many-thumbs" -> reviewRepository.findPageReviewsByMemberSliceOrderByThumbsUp(PageRequest.of(page, size));
+      case "long" -> reviewRepository.findLongPageReviewsByMemberSlice(PageRequest.of(page, size));
+      case "five-star-rating" ->
+              reviewRepository.findStarRatingFivePageReviewsByMemberSlice(PageRequest.of(page, size));
+      default -> reviewRepository.findPageReviewsByMemberSliceOrderByCreatedAt(PageRequest.of(page, size));
+    };
+  }
 
-  private void mapThumbsId(List<FeedShortsDao> feeds,String memberId){
+  public void mapThumbsId(List<FeedShortsDao> feeds,String memberId){
     List<Long> reviewIds = feeds.stream().map(FeedShortsDao::getReviewId).toList();
     List<ReviewThumb> thumbs =  reviewRepository.findThumbsByReviewIds(reviewIds,memberId);
 

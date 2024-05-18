@@ -1,5 +1,8 @@
 package com.artique.api.feed.dao;
 
+import com.artique.api.entity.Member;
+import com.artique.api.entity.Musical;
+import com.artique.api.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -53,5 +56,29 @@ public class FeedShortsDao {
   }
   public void adjustThumbsId(Long thumbsId){
     this.thumbsId=thumbsId;
+  }
+  public static FeedShortsDao of(Review review){
+    Member member = review.getMember();
+    String memberNickname=member.getNickname();
+    String memberImageUrl=member.getProfileUrl();
+    String memberId=member.getId();
+
+    Musical musical = review.getMusical();
+    String musicalName=musical.getName();
+    String musicalPosterUrl=musical.getPosterUrl();
+    String musicalCasting=musical.getCasting();
+    String musicalId=musical.getId();
+
+    LocalDate reviewViewDate=review.getViewDate();
+    Double reviewStarRating=review.getStarRating();
+    Long reviewThumbsCount=review.getThumbsUp();
+    String reviewShortReview=review.getShortReview();
+    Long reviewId=review.getId();
+    Boolean reviewSpoiler=review.isShortSpoiler();
+
+    Long thumbsId = null;
+    return new FeedShortsDao(memberNickname,memberImageUrl,memberId,musicalName,musicalPosterUrl,musicalCasting,
+            musicalId, reviewViewDate,reviewStarRating,reviewThumbsCount,reviewShortReview,reviewId,reviewSpoiler,
+            thumbsId);
   }
 }

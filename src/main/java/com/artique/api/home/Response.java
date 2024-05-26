@@ -31,6 +31,7 @@ public class Response {
     private Double reviewRate;
     private Long thumbsCount;
     private String shortReview;
+    private Boolean isSpoiler;
 
     private String memberId;
     private String memberNickname;
@@ -42,6 +43,7 @@ public class Response {
       return new HomeReview(
               musical.getId(),musical.getPosterUrl(),musical.getName(),
               review.getId(),review.getViewDate(),review.getStarRating(),review.getThumbsUp(),review.getShortReview(),
+              review.isShortSpoiler(),
               member.getId(),member.getNickname()
       );
     }

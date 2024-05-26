@@ -33,7 +33,7 @@ dependencies {
 
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
-	implementation 'mysql:mysql-connector-java'
+	implementation 'com.mysql:mysql-connector-j'
 
 	//for aws
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
